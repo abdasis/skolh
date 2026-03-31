@@ -4,6 +4,22 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        {{-- Default SEO meta tags (overridden per-page via Inertia Head) --}}
+        <meta name="description" content="SDIT Al-Aziz - Sekolah Dasar Islam Terpadu. Pendidikan berkualitas berbasis nilai-nilai Islam untuk generasi unggul.">
+        <meta name="robots" content="index, follow">
+
+        {{-- Open Graph defaults --}}
+        <meta property="og:site_name" content="{{ config('app.name', 'SDIT Al-Aziz') }}">
+        <meta property="og:locale" content="id_ID">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="{{ config('app.name', 'SDIT Al-Aziz') }} - Sekolah Dasar Islam Terpadu">
+        <meta property="og:description" content="Pendidikan berkualitas berbasis nilai-nilai Islam untuk generasi unggul.">
+
+        {{-- Twitter Card defaults --}}
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:title" content="{{ config('app.name', 'SDIT Al-Aziz') }} - Sekolah Dasar Islam Terpadu">
+        <meta name="twitter:description" content="Pendidikan berkualitas berbasis nilai-nilai Islam untuk generasi unggul.">
+
         {{-- Inline script to detect system dark mode preference and apply it immediately --}}
         <script>
             (function() {
