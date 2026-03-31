@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Repositories\AnnouncementRepository;
+use App\Repositories\CategoryRepository;
+use App\Repositories\Contracts\AnnouncementRepositoryInterface;
+use App\Repositories\Contracts\CategoryRepositoryInterface;
 use App\Repositories\Contracts\CurriculumRepositoryInterface;
 use App\Repositories\CurriculumRepository;
 use Carbon\CarbonImmutable;
@@ -18,6 +22,8 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(CurriculumRepositoryInterface::class, CurriculumRepository::class);
+        $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
+        $this->app->bind(AnnouncementRepositoryInterface::class, AnnouncementRepository::class);
     }
 
     /**
