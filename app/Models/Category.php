@@ -24,4 +24,12 @@ class Category extends Model
     {
         return $this->morphedByMany(Announcement::class, 'categoriable');
     }
+
+    /**
+     * @return MorphToMany<Article, $this>
+     */
+    public function articles(): MorphToMany
+    {
+        return $this->morphedByMany(Article::class, 'categoriable');
+    }
 }

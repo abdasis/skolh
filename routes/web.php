@@ -3,20 +3,26 @@
 use App\Http\Controllers\Admin\AgendaController;
 use App\Http\Controllers\Admin\AnnouncementAttachmentController;
 use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementController;
+use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CurriculumController as AdminCurriculumController;
 use App\Http\Controllers\Admin\FacilityController as AdminFacilityController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\FacilityController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', WelcomeController::class)->name('home');
+Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 Route::get('/facilities/{facility:slug}', [FacilityController::class, 'show'])->name('facilities.show');
 Route::get('/curricula/{curriculum:slug}', [CurriculumController::class, 'show'])->name('curricula.show');
 Route::get('/announcements/{announcement:slug}', [AnnouncementController::class, 'show'])->name('announcements.show');
+Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
+Route::get('/articles/{article:slug}', [ArticleController::class, 'show'])->name('articles.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
@@ -29,6 +35,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::resource('curricula', AdminCurriculumController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('announcements', AdminAnnouncementController::class);
+    Route::resource('articles', AdminArticleController::class);
     Route::delete('announcement-attachments/{attachment}', [AnnouncementAttachmentController::class, 'destroy'])
         ->name('announcement-attachments.destroy');
 });

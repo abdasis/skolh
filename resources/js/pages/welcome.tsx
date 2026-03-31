@@ -19,14 +19,27 @@ interface FacilityCard {
     description: string;
 }
 
+interface ArticlePreview {
+    id: number;
+    title: string;
+    slug: string;
+    excerpt: string | null;
+    featured_image: string | null;
+    published_at: string | null;
+    author: { id: number; name: string };
+    categories: { id: number; name: string; slug: string }[];
+}
+
 export default function Welcome({
     canRegister = true,
     agendas = [],
     facilities = [],
+    articles = [],
 }: {
     canRegister?: boolean;
     agendas?: AgendaPreview[];
     facilities?: FacilityCard[];
+    articles?: ArticlePreview[];
 }) {
     const { auth } = usePage().props;
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -34,6 +47,11 @@ export default function Welcome({
     return (
         <>
             <Head title="SDIT Al-Aziz - Sekolah Dasar Islam Terpadu">
+                <meta name="description" content="SDIT Al-Aziz - Sekolah Dasar Islam Terpadu. Pendidikan berkualitas berbasis nilai-nilai Islam untuk generasi unggul." />
+                <meta property="og:title" content="SDIT Al-Aziz - Sekolah Dasar Islam Terpadu" />
+                <meta property="og:description" content="Pendidikan berkualitas berbasis nilai-nilai Islam untuk generasi unggul." />
+                <meta property="og:type" content="website" />
+                <link rel="canonical" href={window.location.origin} />
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link
                     href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800"
@@ -1901,6 +1919,19 @@ export default function Welcome({
                     </div>
                 </footer>
             </div>
+
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        '@context': 'https://schema.org',
+                        '@type': 'EducationalOrganization',
+                        name: 'SDIT Al-Aziz',
+                        description: 'Sekolah Dasar Islam Terpadu - Pendidikan berkualitas berbasis nilai-nilai Islam untuk generasi unggul.',
+                        url: window.location.origin,
+                    }),
+                }}
+            />
         </>
     );
 }
