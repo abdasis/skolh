@@ -7,25 +7,20 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateAgendaRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    // TODO: authorize admin users only
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
-    // TODO: add rules — date (required, date), title (required, string, max:255), description (nullable, string)
     public function rules(): array
     {
         return [
-            //
+            'date' => ['required', 'date'],
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
         ];
     }
 }

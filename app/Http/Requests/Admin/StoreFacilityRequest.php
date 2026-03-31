@@ -5,7 +5,7 @@ namespace App\Http\Requests\Admin;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreAgendaRequest extends FormRequest
+class StoreFacilityRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -18,9 +18,12 @@ class StoreAgendaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'date' => ['required', 'date'],
+            'icon' => ['required', 'string', 'max:100'],
             'title' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
+            'description' => ['required', 'string'],
+            'content' => ['nullable', 'string'],
+            'featured_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'status' => ['required', 'in:public,draft'],
         ];
     }
 }
