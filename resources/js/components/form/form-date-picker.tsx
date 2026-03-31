@@ -1,6 +1,23 @@
 import * as React from 'react';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
+
+/**
+ * Parse a YYYY-MM-DD string as a local-time Date (no UTC shift).
+ * Use this instead of new Date(str) to avoid timezone offset issues.
+ */
+export function parseLocalDate(dateStr: string): Date {
+    const [year, month, day] = dateStr.split('-').map(Number);
+    return new Date(year, month - 1, day);
+}
+
+/**
+ * Format a Date to YYYY-MM-DD string using local time (no UTC shift).
+ * Use this instead of date.toISOString().split('T')[0].
+ */
+export function formatLocalDate(date: Date): string {
+    return format(date, 'yyyy-MM-dd');
+}
 import { type DateRange } from 'react-day-picker';
 
 import { cn } from '@/lib/utils';

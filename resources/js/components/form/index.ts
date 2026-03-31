@@ -1,5 +1,5 @@
 export { FormCheckbox } from './form-checkbox';
-export { FormDatePicker } from './form-date-picker';
+export { FormDatePicker, parseLocalDate, formatLocalDate } from './form-date-picker';
 export type { FormDatePickerProps, DatePreset, DateRangePreset } from './form-date-picker';
 export { FormInput } from './form-input';
 export { FormMultiSelect } from './form-multi-select';
