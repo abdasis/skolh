@@ -11,8 +11,14 @@ class WelcomeController extends Controller
 {
     public function __invoke(): Response
     {
+        $agendas = Agenda::whereDate('date', '>=', today())
+            ->orderBy('date')
+            ->limit(6)
+            ->get(['id', 'date', 'title', 'description']);
+
         return Inertia::render('welcome', [
             'canRegister' => Features::enabled(Features::registration()),
+            'agendas' => $agendas,
         ]);
     }
 }

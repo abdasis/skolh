@@ -2,10 +2,19 @@ import { dashboard, login, register } from '@/routes';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { type FormEvent, useState } from 'react';
 
+interface AgendaPreview {
+    id: number;
+    date: string;
+    title: string;
+    description: string | null;
+}
+
 export default function Welcome({
     canRegister = true,
+    agendas = [],
 }: {
     canRegister?: boolean;
+    agendas?: AgendaPreview[];
 }) {
     const { auth } = usePage().props;
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -1274,39 +1283,24 @@ export default function Welcome({
                         </div>
 
                         {/* Agenda grid */}
+                        {agendas.length === 0 && (
+                            <p className="mt-8 text-center text-sm text-gray-400">
+                                Belum ada agenda yang dijadwalkan.
+                            </p>
+                        )}
                         <div className="mt-16 grid gap-x-10 gap-y-8 sm:grid-cols-2">
-                            {[
-                                {
-                                    day: '15',
-                                    month: 'Apr',
-                                    year: '2026',
-                                    title: 'Ujian Tengah Semester Genap',
-                                    desc: 'Pelaksanaan UTS semester genap untuk seluruh kelas. Siswa diharapkan mempersiapkan diri dengan baik.',
-                                },
-                                {
-                                    day: '22',
-                                    month: 'Apr',
-                                    year: '2026',
-                                    title: 'Wisuda Tahfidz Al-Quran',
-                                    desc: 'Acara wisuda bagi siswa yang telah menyelesaikan target hafalan Al-Quran semester ini.',
-                                },
-                                {
-                                    day: '01',
-                                    month: 'Mei',
-                                    year: '2026',
-                                    title: 'Penerimaan Rapor Mid Semester',
-                                    desc: 'Orang tua/wali murid diundang untuk mengambil rapor dan berdiskusi dengan wali kelas.',
-                                },
-                                {
-                                    day: '10',
-                                    month: 'Mei',
-                                    year: '2026',
-                                    title: 'Lomba Tahfidz Antar Kelas',
-                                    desc: 'Kompetisi hafalan Al-Quran antar kelas untuk memotivasi semangat menghafal siswa.',
-                                },
-                            ].map((agenda) => (
+                            {agendas.map((item) => {
+                                const d = new Date(item.date);
+                                const agenda = {
+                                    day: d.getDate().toString().padStart(2, '0'),
+                                    month: d.toLocaleString('id-ID', { month: 'short' }),
+                                    year: d.getFullYear().toString(),
+                                    title: item.title,
+                                    desc: item.description ?? '',
+                                };
+                                return (
                                 <div
-                                    key={agenda.title}
+                                    key={item.id}
                                     className="flex items-center gap-5"
                                 >
                                     {/* Date box */}
@@ -1338,7 +1332,8 @@ export default function Welcome({
                                         </p>
                                     </div>
                                 </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
                 </section>

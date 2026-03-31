@@ -104,7 +104,7 @@ const navGroups: NavGroup[] = [
             },
             {
                 title: 'Agenda',
-                href: '/agenda',
+                href: '/admin/agendas',
                 icon: CalendarDays,
             },
             {
