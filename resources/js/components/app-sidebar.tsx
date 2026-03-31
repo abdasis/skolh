@@ -168,15 +168,9 @@ const navGroups: NavGroup[] = [
                 icon: Settings2,
             },
             {
-                title: 'Manajemen Admin',
-                href: '/admin',
-                icon: ShieldCheck,
-            },
-            // T028 [US1 Polish]: User Management menu item
-            {
                 title: 'Manajemen User',
                 href: '/admin/users',
-                icon: Users,
+                icon: ShieldCheck,
             },
             {
                 title: 'Pengaturan Akun',
