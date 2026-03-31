@@ -2,12 +2,42 @@
 
 Platform web profil sekolah modern dengan sistem Penerimaan Peserta Didik Baru (PPDB) terintegrasi. Dibangun di atas Laravel 13 dan React 19.
 
+![Dashboard Skolh](docs/dashboard-preview.png)
+
 ## Fitur
 
-- **Profil Sekolah** — Halaman publik yang menampilkan informasi sekolah, visi & misi, fasilitas, ekstrakurikuler, dan prestasi
-- **PPDB Online** — Pendaftaran peserta didik baru secara daring, mulai dari pengisian formulir hingga pengumuman hasil seleksi
-- **Manajemen Konten** — Panel admin untuk mengelola berita, pengumuman, galeri, dan halaman profil
-- **Autentikasi** — Login & registrasi dengan verifikasi email dan two-factor authentication
+**Profil Sekolah**
+- Tentang Sekolah
+- Visi & Misi
+- Struktur Organisasi
+- Fasilitas
+- Prestasi
+- Ekstrakulikuler
+
+**Konten**
+- Artikel
+- Pengumuman
+- Agenda
+- Galeri
+
+**Akademik**
+- SPMB (Sistem Penerimaan Murid Baru)
+- Data Siswa
+- Alumni
+- Kurikulum
+
+**Komunikasi**
+- Pesan Masuk
+- Testimoni
+- Laporan
+
+**Pengaturan**
+- Preferensi Situs
+- Manajemen User
+- Pengaturan Akun
+
+**Autentikasi**
+- Login & registrasi dengan verifikasi email dan two-factor authentication
 
 ## Tech Stack
 
