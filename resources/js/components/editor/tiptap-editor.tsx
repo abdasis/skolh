@@ -36,7 +36,7 @@ const TiptapEditor = ({ label, content, onChange, error, required, id = 'tiptap-
         if (!editor) return;
         const current = editor.getHTML();
         if (content !== current) {
-            editor.commands.setContent(content, false);
+            editor.commands.setContent(content);
         }
     }, [content, editor]);
 
