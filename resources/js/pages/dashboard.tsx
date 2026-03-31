@@ -97,7 +97,7 @@ export default function Dashboard() {
                 </div>
 
                 {/* Stats Cards */}
-                <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
+                <div className="grid grid-cols-2 gap-2 px-2 lg:grid-cols-4">
                     {[
                         {
                             title: 'Total Siswa',
@@ -106,6 +106,7 @@ export default function Dashboard() {
                             icon: StudentsIcon,
                             iconColor: 'text-emerald-600 dark:text-emerald-400',
                             bgColor: 'bg-emerald-50 dark:bg-emerald-950/50',
+                            valueColor: '',
                         },
                         {
                             title: 'Total Guru',
@@ -114,6 +115,7 @@ export default function Dashboard() {
                             icon: TeachersIcon,
                             iconColor: 'text-blue-600 dark:text-blue-400',
                             bgColor: 'bg-blue-50 dark:bg-blue-950/50',
+                            valueColor: '',
                         },
                         {
                             title: 'Kelas Aktif',
@@ -122,6 +124,7 @@ export default function Dashboard() {
                             icon: ClassIcon,
                             iconColor: 'text-orange-600 dark:text-orange-400',
                             bgColor: 'bg-orange-50 dark:bg-orange-950/50',
+                            valueColor: '',
                         },
                         {
                             title: 'Kehadiran Hari Ini',
@@ -130,12 +133,18 @@ export default function Dashboard() {
                             icon: AttendanceIcon,
                             iconColor: 'text-teal-600 dark:text-teal-400',
                             bgColor: 'bg-teal-50 dark:bg-teal-950/50',
+                            valueColor: 'text-teal-700 dark:text-teal-400',
                         },
                     ].map((card) => (
                         <div
                             key={card.title}
                             className="overflow-hidden rounded-2xl bg-gradient-to-b from-muted/60 to-muted/30 p-1 ring-1 ring-foreground/8"
                         >
+                            <div className="px-4 pt-3 pb-3">
+                                <p className="text-xs font-medium text-muted-foreground">
+                                    {card.title}
+                                </p>
+                            </div>
                             <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
                                 <div className="flex items-center gap-3 p-4">
                                     <div
@@ -146,10 +155,7 @@ export default function Dashboard() {
                                         />
                                     </div>
                                     <div className="min-w-0 flex-1">
-                                        <p className="truncate text-xs text-muted-foreground">
-                                            {card.title}
-                                        </p>
-                                        <p className="text-2xl font-bold leading-tight">
+                                        <p className={`text-2xl font-bold leading-tight ${card.valueColor}`}>
                                             {card.value}
                                         </p>
                                         <p className="truncate text-xs text-muted-foreground">

@@ -15,6 +15,7 @@ export interface FacilityResource {
     description: string;
     content: string | null;
     featured_image: string | null;
+    featured_image_url: string | null;
     status: FacilityStatus;
     created_at: string;
     updated_at: string;

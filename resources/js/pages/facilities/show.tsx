@@ -2,26 +2,24 @@ import { Head, Link } from '@inertiajs/react';
 import * as Icons from 'lucide-react';
 import { ArrowLeft } from 'lucide-react';
 
-interface FacilityDetail {
-    id: number;
-    icon: string;
-    title: string;
-    slug: string;
-    description: string;
-    content: string | null;
-    featured_image: string | null;
-    featured_image_url: string | null;
-    status: 'public' | 'draft';
-    created_at: string;
-    updated_at: string;
+import { type FacilityResource } from '@/types';
+
+interface Props {
+    facility: FacilityResource;
 }
 
-export default function FacilityShow({ facility }: { facility: FacilityDetail }) {
+const FacilityShow = ({ facility }: Props) => {
     const IconComponent = (Icons[facility.icon as keyof typeof Icons] ?? Icons.Building2) as React.ComponentType<{ className?: string }>;
 
     return (
         <>
             <Head title={`${facility.title} - SDIT Al-Aziz`}>
+                <meta name="description" content={facility.description} />
+                <meta property="og:title" content={`${facility.title} - SDIT Al-Aziz`} />
+                <meta property="og:description" content={facility.description} />
+                <meta property="og:type" content="article" />
+                {facility.featured_image_url && <meta property="og:image" content={facility.featured_image_url} />}
+                <link rel="canonical" href={window.location.href.split('?')[0]} />
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link
                     href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800"
@@ -81,6 +79,25 @@ export default function FacilityShow({ facility }: { facility: FacilityDetail })
                     )}
                 </div>
             </div>
+
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        '@context': 'https://schema.org',
+                        '@type': 'Place',
+                        name: facility.title,
+                        description: facility.description,
+                        ...(facility.featured_image_url ? { image: facility.featured_image_url } : {}),
+                        containedInPlace: {
+                            '@type': 'EducationalOrganization',
+                            name: 'SDIT Al-Aziz',
+                        },
+                    }),
+                }}
+            />
         </>
     );
-}
+};
+
+export default FacilityShow;
