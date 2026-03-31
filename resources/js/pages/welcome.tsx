@@ -459,12 +459,14 @@ export default function Welcome({
                 {/* Tentang Section */}
                 <section id="tentang" className="py-20 sm:py-28">
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-                            <div>
-                                <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold tracking-widest text-emerald-700 uppercase dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
-                                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
-                                    Tentang Kami
-                                </span>
+                        <div className="grid items-stretch gap-12 lg:grid-cols-2 lg:gap-16">
+                            <div className="flex flex-col">
+                                <div>
+                                    <span className="inline-flex w-auto items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold tracking-widest text-emerald-700 uppercase dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
+                                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
+                                        Tentang Kami
+                                    </span>
+                                </div>
                                 <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
                                     Pendidikan Berkualitas dengan Nilai-Nilai
                                     Islam
@@ -541,38 +543,58 @@ export default function Welcome({
                                 </div>
                             </div>
 
-                            <div className="relative">
-                                <div className="aspect-[4/3] overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-100 to-teal-100 dark:from-emerald-900/30 dark:to-teal-900/30">
-                                    <div className="flex h-full flex-col items-center justify-center p-8 text-center">
-                                        <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-emerald-600/10 dark:bg-emerald-400/10">
-                                            <svg
-                                                className="h-10 w-10 text-emerald-600 dark:text-emerald-400"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                strokeWidth={1.5}
-                                                stroke="currentColor"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5"
-                                                />
-                                            </svg>
+                            <div className="grid h-full grid-cols-5 gap-4">
+                                {/* Gambar maskot - 3 col */}
+                                <div className="relative col-span-3 overflow-hidden rounded-3xl bg-gray-50 dark:bg-gray-800/50">
+                                    <img
+                                        src="/images/maskot.png"
+                                        alt="Maskot SDIT Al-Aziz"
+                                        className="absolute inset-0 h-full w-full object-contain object-bottom"
+                                    />
+                                </div>
+
+                                {/* Right cards - 2 col */}
+                                <div className="col-span-2 flex flex-col gap-4">
+                                    {/* Visi card */}
+                                    <div className="relative flex flex-1 flex-col overflow-hidden rounded-3xl bg-gray-50 p-5 dark:bg-gray-800/60">
+                                        {/* Decorative shapes */}
+                                        <div className="absolute -top-6 -right-6 h-20 w-20 rounded-full bg-white/60 dark:bg-white/5" />
+                                        <div className="absolute -bottom-4 -left-4 h-16 w-16 rotate-45 rounded-2xl bg-white/50 dark:bg-white/5" />
+                                        <div className="absolute top-1/2 right-3 h-10 w-10 rounded-full border-2 border-white/40 dark:border-white/5" />
+
+                                        <div className="relative z-10">
+                                            <h4 className="text-sm font-bold text-gray-900 dark:text-white">
+                                                Visi Kami
+                                            </h4>
+                                            <p className="mt-2 flex-1 text-xs leading-relaxed text-gray-500 dark:text-gray-400">
+                                                Menjadi lembaga pendidikan Islam terpadu yang unggul dalam membentuk generasi Qurani, berilmu, berakhlak mulia, dan berprestasi.
+                                            </p>
                                         </div>
-                                        <h3 className="mt-4 text-xl font-bold text-gray-900 dark:text-white">
-                                            Visi Kami
-                                        </h3>
-                                        <p className="mt-3 max-w-sm text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-                                            "Menjadi lembaga pendidikan Islam
-                                            terpadu yang unggul dalam membentuk
-                                            generasi Qurani, berilmu, berakhlak
-                                            mulia, dan berprestasi."
+
+                                        {/* Opportunity icon - bottom right */}
+                                        <img
+                                            src="/images/opportunity.png"
+                                            alt=""
+                                            className="absolute right-3 bottom-3 z-10 h-14 w-14 object-contain opacity-80"
+                                        />
+                                    </div>
+
+                                    {/* Stat card - dark */}
+                                    <div className="relative flex flex-1 flex-col overflow-hidden rounded-3xl bg-gray-900 p-5 dark:bg-gray-950">
+                                        {/* Decorative shapes */}
+                                        <div className="absolute -top-5 -right-5 h-18 w-18 rounded-full bg-gray-800 dark:bg-gray-800/80" />
+                                        <div className="absolute -bottom-3 -left-3 h-14 w-14 rotate-45 rounded-2xl bg-gray-800 dark:bg-gray-800/80" />
+                                        <div className="absolute right-4 bottom-1/2 h-8 w-8 rounded-full border-2 border-gray-700 dark:border-gray-700/80" />
+
+                                        <div className="relative z-10 flex items-baseline gap-1">
+                                            <span className="text-4xl font-extrabold text-white">500</span>
+                                            <span className="text-base font-semibold text-emerald-400">+Siswa</span>
+                                        </div>
+                                        <p className="relative z-10 mt-3 flex-1 text-xs leading-relaxed text-gray-400">
+                                            Siswa berprestasi yang telah dibimbing dengan kurikulum terpadu berbasis nilai-nilai Islam.
                                         </p>
                                     </div>
                                 </div>
-
-                                <div className="absolute -right-4 -bottom-4 h-40 w-40 rounded-2xl bg-emerald-600/5 dark:bg-emerald-400/5" />
-                                <div className="absolute -top-4 -left-4 h-24 w-24 rounded-2xl bg-teal-600/5 dark:bg-teal-400/5" />
                             </div>
                         </div>
                     </div>
@@ -943,22 +965,12 @@ export default function Welcome({
                             {/* Card Berita 1 - Featured */}
                             <article className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] transition hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.1),0_20px_25px_-5px_rgba(0,0,0,0.05)] dark:bg-gray-900 dark:shadow-[0_2px_15px_-3px_rgba(0,0,0,0.3),0_10px_20px_-2px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.4),0_20px_25px_-5px_rgba(0,0,0,0.3)]">
                                 <div className="relative overflow-hidden">
-                                    <div className="aspect-[16/9] bg-gradient-to-br from-emerald-600 to-teal-700">
-                                        <div className="flex h-full items-center justify-center p-8">
-                                            <svg
-                                                className="h-16 w-16 text-white/30"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                strokeWidth={1}
-                                                stroke="currentColor"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                                                />
-                                            </svg>
-                                        </div>
+                                    <div className="aspect-[16/9]">
+                                        <img
+                                            src="/images/blog-3.jpg"
+                                            alt="Olimpiade Matematika Nasional"
+                                            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                                        />
                                     </div>
                                     <div className="absolute top-4 left-4">
                                         <span className="inline-flex items-center rounded-full bg-emerald-600 px-3 py-1 text-xs font-semibold text-white">
@@ -1049,22 +1061,12 @@ export default function Welcome({
                             {/* Card Berita 2 */}
                             <article className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] transition hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.1),0_20px_25px_-5px_rgba(0,0,0,0.05)] dark:bg-gray-900 dark:shadow-[0_2px_15px_-3px_rgba(0,0,0,0.3),0_10px_20px_-2px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.4),0_20px_25px_-5px_rgba(0,0,0,0.3)]">
                                 <div className="relative overflow-hidden">
-                                    <div className="aspect-[16/9] bg-gradient-to-br from-emerald-600 to-teal-700">
-                                        <div className="flex h-full items-center justify-center p-8">
-                                            <svg
-                                                className="h-16 w-16 text-white/30"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                strokeWidth={1}
-                                                stroke="currentColor"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                                                />
-                                            </svg>
-                                        </div>
+                                    <div className="aspect-[16/9]">
+                                        <img
+                                            src="/images/blog-2.jpg"
+                                            alt="Kunjungan Museum Nasional"
+                                            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                                        />
                                     </div>
                                     <div className="absolute top-4 left-4">
                                         <span className="inline-flex items-center rounded-full bg-emerald-600 px-3 py-1 text-xs font-semibold text-white">
@@ -1155,22 +1157,12 @@ export default function Welcome({
                             {/* Card Berita 3 */}
                             <article className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] transition hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.1),0_20px_25px_-5px_rgba(0,0,0,0.05)] dark:bg-gray-900 dark:shadow-[0_2px_15px_-3px_rgba(0,0,0,0.3),0_10px_20px_-2px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.4),0_20px_25px_-5px_rgba(0,0,0,0.3)]">
                                 <div className="relative overflow-hidden">
-                                    <div className="aspect-[16/9] bg-gradient-to-br from-emerald-600 to-teal-700">
-                                        <div className="flex h-full items-center justify-center p-8">
-                                            <svg
-                                                className="h-16 w-16 text-white/30"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                strokeWidth={1}
-                                                stroke="currentColor"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                                                />
-                                            </svg>
-                                        </div>
+                                    <div className="aspect-[16/9]">
+                                        <img
+                                            src="/images/blog-1.jpg"
+                                            alt="Pendaftaran Peserta Didik Baru"
+                                            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                                        />
                                     </div>
                                     <div className="absolute top-4 left-4">
                                         <span className="inline-flex items-center rounded-full bg-orange-500 px-3 py-1 text-xs font-semibold text-white">
@@ -1523,21 +1515,10 @@ export default function Welcome({
                                     destination:
                                         'Teknik Informatika, Universitas Indonesia',
                                     quote: 'Fondasi ilmu agama dan akademik yang kuat dari SDIT Al-Aziz membuat saya siap menghadapi tantangan di jenjang yang lebih tinggi.',
-                                    avatar: 'AF',
+                                    photo: '/images/alumni-1.jpg',
                                     blob: 'bg-yellow-300',
                                     ring: 'border-yellow-400',
                                     dot: 'bg-yellow-400',
-                                },
-                                {
-                                    name: 'Siti Aisyah N.',
-                                    batch: 'Angkatan ke-4 SDIT Al-Aziz',
-                                    destination:
-                                        'Kedokteran, Universitas Gadjah Mada',
-                                    quote: 'Tak hanya akademik, SDIT Al-Aziz memberikan support penuh secara mental dan emosional sehingga saya tumbuh percaya diri.',
-                                    avatar: 'SA',
-                                    blob: 'bg-emerald-300',
-                                    ring: 'border-emerald-400',
-                                    dot: 'bg-emerald-400',
                                 },
                                 {
                                     name: 'Muhammad Rizqi H.',
@@ -1545,7 +1526,18 @@ export default function Welcome({
                                     destination:
                                         'Hukum Islam, Universitas Al-Azhar Mesir',
                                     quote: 'Program Tahfidz dan bahasa Arab yang intensif membuka jalan saya menuju universitas impian di Timur Tengah.',
-                                    avatar: 'MR',
+                                    photo: '/images/alumni-2.jpg',
+                                    blob: 'bg-emerald-300',
+                                    ring: 'border-emerald-400',
+                                    dot: 'bg-emerald-400',
+                                },
+                                {
+                                    name: 'Siti Aisyah N.',
+                                    batch: 'Angkatan ke-4 SDIT Al-Aziz',
+                                    destination:
+                                        'Kedokteran, Universitas Gadjah Mada',
+                                    quote: 'Tak hanya akademik, SDIT Al-Aziz memberikan support penuh secara mental dan emosional sehingga saya tumbuh percaya diri.',
+                                    photo: '/images/alumni-3.jpg',
                                     blob: 'bg-orange-300',
                                     ring: 'border-orange-400',
                                     dot: 'bg-orange-400',
@@ -1556,7 +1548,7 @@ export default function Welcome({
                                     destination:
                                         'Akuntansi, Universitas Teknologi Malaysia',
                                     quote: 'Disiplin dan nilai-nilai keislaman yang ditanamkan sejak SD menjadi bekal paling berharga dalam kehidupan saya hingga hari ini.',
-                                    avatar: 'NF',
+                                    photo: '/images/alumni-4.jpg',
                                     blob: 'bg-teal-300',
                                     ring: 'border-teal-400',
                                     dot: 'bg-teal-400',
@@ -1597,12 +1589,14 @@ export default function Welcome({
                                             className={`absolute top-5 left-9 h-1 w-1 rounded-full ${alumni.dot} opacity-30`}
                                         />
 
-                                        {/* Photo / avatar */}
+                                        {/* Photo */}
                                         <div className="relative z-10 flex h-full items-end justify-center pt-6 pb-3 pl-3">
-                                            <div className="flex h-28 w-24 items-center justify-center overflow-hidden rounded-2xl bg-white/80 shadow-lg ring-2 ring-white/60 backdrop-blur-sm sm:h-36 sm:w-28 dark:bg-gray-900/80">
-                                                <span className="text-2xl font-extrabold text-emerald-600 dark:text-emerald-400">
-                                                    {alumni.avatar}
-                                                </span>
+                                            <div className="h-28 w-24 overflow-hidden rounded-2xl shadow-lg ring-2 ring-white/60 sm:h-36 sm:w-28">
+                                                <img
+                                                    src={alumni.photo}
+                                                    alt={alumni.name}
+                                                    className="h-full w-full object-cover object-top"
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -1662,45 +1656,45 @@ export default function Welcome({
                         }}
                     />
 
-                    {/* Student image — absolute to section, bottom-0 anchored, overflows top */}
-                    <img
-                        src="/images/cta-student.png"
-                        alt="Siswa SDIT Al-Aziz"
-                        className="pointer-events-none absolute bottom-0 left-4 z-20 hidden object-contain object-bottom drop-shadow-2xl sm:block lg:left-12"
-                        style={{ height: 'calc(100% + 160px)', width: '420px' }}
-                    />
+                    <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        {/* Student image — anchored inside container */}
+                        <img
+                            src="/images/cta-student.png"
+                            alt="Siswa SDIT Al-Aziz"
+                            className="pointer-events-none absolute bottom-0 left-4 z-20 hidden object-contain object-bottom drop-shadow-2xl sm:block sm:left-6 lg:left-8"
+                            style={{ height: 'calc(100% + 160px)', width: '420px' }}
+                        />
 
-                    <div className="relative mx-auto max-w-7xl">
-                        {/* Right: text + CTA — pushed to right to avoid image overlap */}
-                        <div className="flex flex-1 flex-col justify-center px-10 py-12 sm:pl-[420px] sm:pr-16 lg:pl-[460px] lg:py-14">
-                            <p className="max-w-lg text-lg leading-relaxed text-slate-500 dark:text-slate-400">
-                                Ayo jadi bagian dari generasi emas yang cerdas,
-                                berkarakter, dan berakhlak mulia.
-                            </p>
-                            <p className="mt-3 max-w-lg text-2xl leading-snug font-extrabold text-slate-800 sm:text-3xl dark:text-white">
-                                Mari bergabung bersama kami.
-                            </p>
-                            <div className="mt-8">
-                                <a
-                                    href="#kontak"
-                                    className="inline-flex items-center gap-2 rounded-xl bg-emerald-800 px-8 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-emerald-900 dark:bg-emerald-700 dark:hover:bg-emerald-600"
-                                >
-                                    Daftar Sekarang
-                                    <svg
-                                        className="h-4 w-4"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth={2.5}
-                                        stroke="currentColor"
+                        {/* Right: text + CTA */}
+                        <div className="flex flex-1 flex-col justify-center py-12 sm:py-14 sm:pl-[440px]">
+                                <p className="max-w-lg text-lg leading-relaxed text-slate-500 dark:text-slate-400">
+                                    Ayo jadi bagian dari generasi emas yang cerdas,
+                                    berkarakter, dan berakhlak mulia.
+                                </p>
+                                <p className="mt-3 max-w-lg text-2xl leading-snug font-extrabold text-slate-800 sm:text-3xl dark:text-white">
+                                    Mari bergabung bersama kami.
+                                </p>
+                                <div className="mt-8">
+                                    <a
+                                        href="#kontak"
+                                        className="inline-flex items-center gap-2 rounded-xl bg-emerald-800 px-8 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-emerald-900 dark:bg-emerald-700 dark:hover:bg-emerald-600"
                                     >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                                        />
-                                    </svg>
-                                </a>
-                            </div>
+                                        Daftar Sekarang
+                                        <svg
+                                            className="h-4 w-4"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth={2.5}
+                                            stroke="currentColor"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                                            />
+                                        </svg>
+                                    </a>
+                                </div>
                         </div>
                     </div>
                 </section>
