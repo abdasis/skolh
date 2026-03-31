@@ -40,4 +40,6 @@ export interface DataTableProps<TData> {
     onStateChange?: (state: DataTableState) => void
     isLoading?: boolean
     searchPlaceholder?: string
+    title?: string
+    description?: string
 }

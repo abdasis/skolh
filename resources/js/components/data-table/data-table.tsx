@@ -33,6 +33,8 @@ export function DataTable<TData>({
     isLoading = false,
     searchPlaceholder = "Cari...",
     onStateChange,
+    title,
+    description,
 }: DataTableProps<TData>) {
     const [globalFilter, setGlobalFilter] = React.useState("")
     const [sorting, setSorting] = React.useState<SortingState>([])
@@ -87,14 +89,22 @@ export function DataTable<TData>({
     const rows = table.getRowModel().rows
 
     return (
-        <div className="space-y-4">
-            <DataTableToolbar
-                table={table}
-                globalFilter={globalFilter}
-                onGlobalFilterChange={setGlobalFilter}
-                searchPlaceholder={searchPlaceholder}
-            />
-            <div className="rounded-md border overflow-x-auto">
+        <div className="overflow-hidden rounded-2xl bg-gradient-to-b from-muted/60 to-muted/30 p-1 ring-1 ring-foreground/8">
+            {(title || description) && (
+                <div className="px-4 py-3">
+                    {title && <p className="text-sm font-medium">{title}</p>}
+                    {description && <p className="text-xs text-muted-foreground">{description}</p>}
+                </div>
+            )}
+            <div className="overflow-x-auto rounded-xl bg-background/90 ring-1 ring-foreground/6">
+                <div className="px-2 py-3 border-b border-foreground/6">
+                    <DataTableToolbar
+                        table={table}
+                        globalFilter={globalFilter}
+                        onGlobalFilterChange={setGlobalFilter}
+                        searchPlaceholder={searchPlaceholder}
+                    />
+                </div>
                 <Table>
                     <TableHeader>
                         {headerGroups.map((headerGroup) => (
@@ -187,3 +197,4 @@ export function DataTable<TData>({
         </div>
     )
 }
+
