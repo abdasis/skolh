@@ -12,6 +12,7 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import { DataTable } from '@/components/data-table';
+import { ConfirmationDelete } from '@/components/confirmation-delete';
 import * as AgendaController from '@/actions/App/Http/Controllers/Admin/AgendaController';
 import { createAgendaColumns, type AgendaResource } from './columns';
 import { AgendaForm, type AgendaFormData } from './components/agenda-form';
@@ -176,55 +177,14 @@ export default function AdminAgendasIndex({ agendas }: Props) {
             </Dialog>
 
             {/* Delete Modal */}
-            <Dialog
+            <ConfirmationDelete
                 open={agendaToDelete !== null}
                 onOpenChange={(open) => {
-                    if (!open) {
-                        setAgendaToDelete(null);
-                    }
+                    if (!open) setAgendaToDelete(null);
                 }}
-            >
-                <DialogContent
-                    showCloseButton={false}
-                    className="w-full max-w-md overflow-hidden rounded-2xl border-0 bg-gradient-to-b from-destructive/10 to-destructive/5 p-2 shadow-xl ring-1 ring-destructive/20 backdrop-blur-sm"
-                >
-                    <div className="flex flex-col gap-0 overflow-hidden rounded-xl bg-red-50/90 ring-1 ring-destructive/10 dark:bg-red-950/40">
-                        <DialogHeader className="flex flex-row items-center justify-between gap-2 border-b border-destructive/15 bg-red-100/60 px-5 py-4 dark:bg-red-900/30">
-                            <div className="flex flex-col gap-0.5">
-                                <DialogTitle className="text-destructive dark:text-red-400">Hapus Agenda</DialogTitle>
-                                <DialogDescription className="text-destructive/70 dark:text-red-400/70">
-                                    Tindakan ini tidak dapat dibatalkan.
-                                </DialogDescription>
-                            </div>
-                            <DialogClose asChild>
-                                <Button variant="ghost" size="icon" className="size-7 shrink-0 text-destructive/70 hover:bg-destructive/10 hover:text-destructive">
-                                    <XIcon className="size-4" />
-                                    <span className="sr-only">Tutup</span>
-                                </Button>
-                            </DialogClose>
-                        </DialogHeader>
-
-                        <div className="p-5">
-                            <p className="text-sm text-red-700/80 dark:text-red-300/80">
-                                Apakah Anda yakin ingin menghapus agenda{' '}
-                                <span className="font-semibold text-red-800 dark:text-red-200">
-                                    {agendaToDelete?.title}
-                                </span>
-                                ? Data ini akan dihapus permanen.
-                            </p>
-                        </div>
-
-                        <DialogFooter className="rounded-b-xl border-t border-destructive/15 bg-red-100/60 px-5 py-4 dark:bg-red-900/30">
-                            <DialogClose asChild>
-                                <Button variant="outline">Batal</Button>
-                            </DialogClose>
-                            <Button variant="destructive" onClick={handleDeleteConfirm}>
-                                Hapus
-                            </Button>
-                        </DialogFooter>
-                    </div>
-                </DialogContent>
-            </Dialog>
+                onConfirm={handleDeleteConfirm}
+                itemName={agendaToDelete?.title}
+            />
         </>
     );
 }

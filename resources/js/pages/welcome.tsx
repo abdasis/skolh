@@ -1,5 +1,7 @@
+import { show as facilityShow } from '@/actions/App/Http/Controllers/FacilityController';
 import { dashboard, login, register } from '@/routes';
 import { Head, Link, usePage } from '@inertiajs/react';
+import * as Icons from 'lucide-react';
 import { type FormEvent, useState } from 'react';
 
 interface AgendaPreview {
@@ -9,12 +11,22 @@ interface AgendaPreview {
     description: string | null;
 }
 
+interface FacilityCard {
+    id: number;
+    icon: string;
+    title: string;
+    slug: string;
+    description: string;
+}
+
 export default function Welcome({
     canRegister = true,
     agendas = [],
+    facilities = [],
 }: {
     canRegister?: boolean;
     agendas?: AgendaPreview[];
+    facilities?: FacilityCard[];
 }) {
     const { auth } = usePage().props;
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -846,51 +858,14 @@ export default function Welcome({
                         </div>
 
                         {/* Cards */}
+                        {facilities.length === 0 ? null : (
                         <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                            {[
-                                {
-                                    name: 'Ruang Kelas Ber-AC',
-                                    desc: 'Kelas nyaman & kondusif',
-                                    icon: ClassroomIcon,
-                                },
-                                {
-                                    name: 'Lab Komputer',
-                                    desc: 'Teknologi terkini',
-                                    icon: ComputerIcon,
-                                },
-                                {
-                                    name: 'Perpustakaan',
-                                    desc: 'Ribuan koleksi buku',
-                                    icon: LibraryIcon,
-                                },
-                                {
-                                    name: 'Masjid',
-                                    desc: 'Sarana ibadah lengkap',
-                                    icon: MosqueIcon,
-                                },
-                                {
-                                    name: 'Lapangan Olahraga',
-                                    desc: 'Area bermain & olahraga',
-                                    icon: SportIcon,
-                                },
-                                {
-                                    name: 'Kantin Sehat',
-                                    desc: 'Menu halal & bergizi',
-                                    icon: FoodIcon,
-                                },
-                                {
-                                    name: 'UKS',
-                                    desc: 'Kesehatan siswa terjaga',
-                                    icon: HealthIcon,
-                                },
-                                {
-                                    name: 'Taman Bermain',
-                                    desc: 'Ruang kreativitas anak',
-                                    icon: PlaygroundIcon,
-                                },
-                            ].map((facility) => (
-                                <div
-                                    key={facility.name}
+                            {facilities.map((facility) => {
+                                const IconComponent = (Icons[facility.icon as keyof typeof Icons] ?? Icons.Building2) as React.ComponentType<{ className?: string }>;
+                                return (
+                                <Link
+                                    key={facility.id}
+                                    href={facilityShow.url({ facility: facility.slug })}
                                     className="group relative overflow-hidden rounded-2xl bg-emerald-600 p-5 text-white transition duration-300 hover:-translate-y-1 dark:bg-emerald-700"
                                 >
                                     {/* Decorative curved lines - top right */}
@@ -910,22 +885,24 @@ export default function Welcome({
                                     <div className="relative">
                                         {/* Icon */}
                                         <div className="inline-flex rounded-xl bg-white/15 p-3">
-                                            <facility.icon className="h-6 w-6 text-white" />
+                                            <IconComponent className="h-6 w-6 text-white" />
                                         </div>
 
                                         <h3 className="mt-4 text-sm font-bold text-white">
-                                            {facility.name}
+                                            {facility.title}
                                         </h3>
                                         <p className="mt-1 text-xs text-emerald-100/70">
-                                            {facility.desc}
+                                            {facility.description}
                                         </p>
 
                                         {/* Bottom accent line */}
                                         <div className="mt-4 h-px w-0 bg-gradient-to-r from-white/40 to-transparent transition-all duration-300 group-hover:w-full" />
                                     </div>
-                                </div>
-                            ))}
+                                </Link>
+                                );
+                            })}
                         </div>
+                        )}
                     </div>
                 </section>
 

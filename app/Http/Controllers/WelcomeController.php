@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agenda;
+use App\Models\Facility;
 use Inertia\Inertia;
 use Inertia\Response;
 use Laravel\Fortify\Features;
@@ -16,9 +17,14 @@ class WelcomeController extends Controller
             ->limit(6)
             ->get(['id', 'date', 'title', 'description']);
 
+        $facilities = Facility::published()
+            ->latest()
+            ->get(['id', 'icon', 'title', 'slug', 'description']);
+
         return Inertia::render('welcome', [
             'canRegister' => Features::enabled(Features::registration()),
             'agendas' => $agendas,
+            'facilities' => $facilities,
         ]);
     }
 }

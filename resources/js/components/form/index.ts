@@ -1,6 +1,8 @@
 export { FormCheckbox } from './form-checkbox';
 export { FormDatePicker, parseLocalDate, formatLocalDate } from './form-date-picker';
 export type { FormDatePickerProps, DatePreset, DateRangePreset } from './form-date-picker';
+export { FormIconPicker } from './form-icon-picker';
+export type { FormIconPickerProps } from './form-icon-picker';
 export { FormInput } from './form-input';
 export { FormMultiSelect } from './form-multi-select';
 export type { MultiSelectOption } from './form-multi-select';

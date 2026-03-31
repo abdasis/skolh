@@ -40,6 +40,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { index as facilitiesIndex } from '@/actions/App/Http/Controllers/Admin/FacilityController';
 import { dashboard } from '@/routes';
 import type { NavGroup } from '@/types';
 
@@ -74,7 +75,7 @@ const navGroups: NavGroup[] = [
             },
             {
                 title: 'Fasilitas',
-                href: '/profil/fasilitas',
+                href: facilitiesIndex.url(),
                 icon: MapPin,
             },
             {
