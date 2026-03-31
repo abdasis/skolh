@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Head, Link, router } from '@inertiajs/react';
-import { CalendarDays, XIcon } from 'lucide-react';
+import { Head, router, useForm } from '@inertiajs/react';
+import { XIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -11,28 +11,60 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
+import { DataTable } from '@/components/data-table';
 import * as AgendaController from '@/actions/App/Http/Controllers/Admin/AgendaController';
-
-interface AgendaResource {
-    id: number;
-    date: string;
-    title: string;
-    description: string | null;
-    created_at: string;
-    updated_at: string;
-}
+import { createAgendaColumns, type AgendaResource } from './columns';
+import { AgendaForm, type AgendaFormData } from './components/agenda-form';
 
 interface Props {
     agendas: AgendaResource[];
 }
 
-function formatDate(dateStr: string): string {
-    const d = new Date(dateStr);
-    return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
-}
-
 export default function AdminAgendasIndex({ agendas }: Props) {
     const [agendaToDelete, setAgendaToDelete] = useState<AgendaResource | null>(null);
+    const [showCreateModal, setShowCreateModal] = useState(false);
+    const [agendaToEdit, setAgendaToEdit] = useState<AgendaResource | null>(null);
+
+    const createForm = useForm<AgendaFormData>({
+        date: '',
+        title: '',
+        description: '',
+    });
+
+    const editForm = useForm<AgendaFormData>({
+        date: '',
+        title: '',
+        description: '',
+    });
+
+    function handleCreateSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        createForm.post(AgendaController.store.url(), {
+            onSuccess: () => {
+                setShowCreateModal(false);
+                createForm.reset();
+            },
+        });
+    }
+
+    function handleEditOpen(agenda: AgendaResource) {
+        editForm.setData({
+            date: agenda.date,
+            title: agenda.title,
+            description: agenda.description ?? '',
+        });
+        setAgendaToEdit(agenda);
+    }
+
+    function handleEditSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        if (!agendaToEdit) {
+            return;
+        }
+        editForm.put(AgendaController.update.url({ agenda: agendaToEdit.id }), {
+            onSuccess: () => setAgendaToEdit(null),
+        });
+    }
 
     function handleDeleteConfirm() {
         if (!agendaToDelete) {
@@ -44,6 +76,8 @@ export default function AdminAgendasIndex({ agendas }: Props) {
         });
     }
 
+    const columns = createAgendaColumns(setAgendaToDelete, handleEditOpen);
+
     return (
         <>
             <Head title="Manajemen Agenda" />
@@ -54,75 +88,94 @@ export default function AdminAgendasIndex({ agendas }: Props) {
                         <h1 className="text-xl font-semibold">Manajemen Agenda</h1>
                         <p className="text-sm text-muted-foreground">Kelola jadwal agenda dan kegiatan sekolah.</p>
                     </div>
-                    <Button asChild>
-                        <Link href={AgendaController.create.url()}>Tambah Agenda</Link>
-                    </Button>
+                    <Button onClick={() => setShowCreateModal(true)}>Tambah Agenda</Button>
                 </div>
 
                 <div className="px-2">
-                    <div className="overflow-hidden rounded-2xl bg-gradient-to-b from-muted/60 to-muted/30 p-1 ring-1 ring-foreground/8">
-                        <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
-                            {agendas.length === 0 ? (
-                                <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">
-                                    <CalendarDays className="h-10 w-10 text-muted-foreground/40" />
-                                    <p className="text-sm text-muted-foreground">Belum ada agenda. Tambahkan agenda pertama.</p>
-                                    <Button asChild variant="outline" size="sm">
-                                        <Link href={AgendaController.create.url()}>Tambah Agenda</Link>
-                                    </Button>
-                                </div>
-                            ) : (
-                                <table className="w-full text-sm">
-                                    <thead>
-                                        <tr className="border-b border-foreground/6 text-left text-xs font-medium text-muted-foreground">
-                                            <th className="px-4 py-3">Tanggal</th>
-                                            <th className="px-4 py-3">Judul</th>
-                                            <th className="hidden px-4 py-3 md:table-cell">Deskripsi</th>
-                                            <th className="px-4 py-3 text-right">Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-foreground/6">
-                                        {agendas.map((agenda) => (
-                                            <tr key={agenda.id} className="hover:bg-muted/30">
-                                                <td className="px-4 py-3 whitespace-nowrap font-medium">
-                                                    {formatDate(agenda.date)}
-                                                </td>
-                                                <td className="px-4 py-3 font-medium">
-                                                    {agenda.title}
-                                                </td>
-                                                <td className="hidden px-4 py-3 text-muted-foreground md:table-cell">
-                                                    {agenda.description
-                                                        ? agenda.description.length > 80
-                                                            ? agenda.description.slice(0, 80) + '…'
-                                                            : agenda.description
-                                                        : <span className="italic opacity-50">—</span>
-                                                    }
-                                                </td>
-                                                <td className="px-4 py-3 text-right">
-                                                    <div className="flex items-center justify-end gap-2">
-                                                        <Button asChild variant="outline" size="sm">
-                                                            <Link href={AgendaController.edit.url({ agenda: agenda.id })}>
-                                                                Edit
-                                                            </Link>
-                                                        </Button>
-                                                        <Button
-                                                            variant="destructive"
-                                                            size="sm"
-                                                            onClick={() => setAgendaToDelete(agenda)}
-                                                        >
-                                                            Hapus
-                                                        </Button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            )}
-                        </div>
-                    </div>
+                    <DataTable
+                        columns={columns}
+                        data={agendas}
+                        searchPlaceholder="Cari agenda..."
+                    />
                 </div>
             </div>
 
+            {/* Create Modal */}
+            <Dialog
+                open={showCreateModal}
+                onOpenChange={(open) => {
+                    if (!open) {
+                        setShowCreateModal(false);
+                        createForm.reset();
+                    }
+                }}
+            >
+                <DialogContent
+                    showCloseButton={false}
+                    className="w-full max-w-lg overflow-hidden rounded-2xl border-0 bg-gradient-to-b from-muted/60 to-muted/30 p-1 shadow-xl ring-1 ring-foreground/8"
+                >
+                    <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
+                        <DialogHeader className="flex flex-row items-center justify-between gap-2 border-b border-foreground/8 px-5 py-4">
+                            <div className="flex flex-col gap-0.5">
+                                <DialogTitle>Tambah Agenda</DialogTitle>
+                                <DialogDescription>Buat entri agenda baru.</DialogDescription>
+                            </div>
+                            <DialogClose asChild>
+                                <Button variant="ghost" size="icon" className="size-7 shrink-0">
+                                    <XIcon className="size-4" />
+                                    <span className="sr-only">Tutup</span>
+                                </Button>
+                            </DialogClose>
+                        </DialogHeader>
+                        <div className="p-5">
+                            <AgendaForm
+                                form={createForm}
+                                onSubmit={handleCreateSubmit}
+                                submitLabel="Buat Agenda"
+                            />
+                        </div>
+                    </div>
+                </DialogContent>
+            </Dialog>
+
+            {/* Edit Modal */}
+            <Dialog
+                open={agendaToEdit !== null}
+                onOpenChange={(open) => {
+                    if (!open) {
+                        setAgendaToEdit(null);
+                    }
+                }}
+            >
+                <DialogContent
+                    showCloseButton={false}
+                    className="w-full max-w-lg overflow-hidden rounded-2xl border-0 bg-gradient-to-b from-muted/60 to-muted/30 p-1 shadow-xl ring-1 ring-foreground/8"
+                >
+                    <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
+                        <DialogHeader className="flex flex-row items-center justify-between gap-2 border-b border-foreground/8 px-5 py-4">
+                            <div className="flex flex-col gap-0.5">
+                                <DialogTitle>Edit Agenda</DialogTitle>
+                                <DialogDescription>Ubah data agenda.</DialogDescription>
+                            </div>
+                            <DialogClose asChild>
+                                <Button variant="ghost" size="icon" className="size-7 shrink-0">
+                                    <XIcon className="size-4" />
+                                    <span className="sr-only">Tutup</span>
+                                </Button>
+                            </DialogClose>
+                        </DialogHeader>
+                        <div className="p-5">
+                            <AgendaForm
+                                form={editForm}
+                                onSubmit={handleEditSubmit}
+                                submitLabel="Simpan Perubahan"
+                            />
+                        </div>
+                    </div>
+                </DialogContent>
+            </Dialog>
+
+            {/* Delete Modal */}
             <Dialog
                 open={agendaToDelete !== null}
                 onOpenChange={(open) => {
@@ -161,7 +214,7 @@ export default function AdminAgendasIndex({ agendas }: Props) {
                             </p>
                         </div>
 
-                        <DialogFooter className="-mx-0 -mb-0 rounded-b-xl border-t border-destructive/15 bg-red-100/60 px-5 py-4 dark:bg-red-900/30">
+                        <DialogFooter className="rounded-b-xl border-t border-destructive/15 bg-red-100/60 px-5 py-4 dark:bg-red-900/30">
                             <DialogClose asChild>
                                 <Button variant="outline">Batal</Button>
                             </DialogClose>
