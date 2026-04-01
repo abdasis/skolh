@@ -209,9 +209,37 @@ export function DataTable<TData>({
                             <TableRow>
                                 <TableCell
                                     colSpan={columns.length}
-                                    className="h-24 text-center text-muted-foreground"
+                                    className="py-16"
                                 >
-                                    Tidak ada data ditemukan.
+                                    <div className="flex flex-col items-center justify-center gap-3 text-center">
+                                        <div className="rounded-2xl bg-muted/60 p-4 ring-1 ring-foreground/8">
+                                            <svg
+                                                className="h-10 w-10 text-muted-foreground/40"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            >
+                                                <path d="M3 6h18" />
+                                                <path d="M3 10h18" />
+                                                <path d="M3 14h9" />
+                                                <path d="M3 18h6" />
+                                                <circle cx="18" cy="17" r="3" />
+                                                <path d="m21 20-1.5-1.5" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-medium text-foreground">
+                                                Belum ada data
+                                            </p>
+                                            <p className="mt-0.5 text-xs text-muted-foreground">
+                                                Data akan muncul di sini setelah
+                                                ditambahkan.
+                                            </p>
+                                        </div>
+                                    </div>
                                 </TableCell>
                             </TableRow>
                         )}
