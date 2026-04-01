@@ -4,6 +4,12 @@ Platform web profil sekolah modern dengan sistem Penerimaan Peserta Didik Baru (
 
 ![Dashboard Skolh](docs/dashboard-preview.png)
 
+## Screenshots
+
+![Alumni Section](docs/alumni-preview.png)
+
+![Login Page](docs/login-preview.png)
+
 ## Fitur
 
 **Profil Sekolah**
