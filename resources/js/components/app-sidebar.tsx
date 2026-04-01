@@ -43,6 +43,7 @@ import {
 } from '@/components/ui/sidebar';
 import { index as facilitiesIndex } from '@/actions/App/Http/Controllers/Admin/FacilityController';
 import { index as announcementsIndex } from '@/actions/App/Http/Controllers/Admin/AnnouncementController';
+import { index as articlesIndex } from '@/actions/App/Http/Controllers/Admin/ArticleController';
 import { index as categoriesIndex } from '@/actions/App/Http/Controllers/Admin/CategoryController';
 import { index as curriculaIndex } from '@/actions/App/Http/Controllers/Admin/CurriculumController';
 import { dashboard } from '@/routes';
@@ -99,7 +100,7 @@ const navGroups: NavGroup[] = [
         items: [
             {
                 title: 'Artikel',
-                href: '/admin/articles',
+                href: articlesIndex.url(),
                 icon: Newspaper,
             },
             {
