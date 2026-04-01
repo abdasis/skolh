@@ -10,9 +10,9 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'Academic', 'description' => 'Academic announcements and information.'],
-            ['name' => 'General', 'description' => 'General school announcements.'],
-            ['name' => 'Activity', 'description' => 'School activities and events.'],
+            ['name' => 'Akademik', 'description' => 'Pengumuman seputar kegiatan akademik dan pembelajaran.'],
+            ['name' => 'Umum', 'description' => 'Pengumuman umum dari pihak sekolah.'],
+            ['name' => 'Kegiatan', 'description' => 'Kegiatan dan acara sekolah.'],
         ];
 
         foreach ($categories as $category) {
