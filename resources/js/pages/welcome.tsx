@@ -1,7 +1,9 @@
 import { show as facilityShow } from '@/actions/App/Http/Controllers/FacilityController';
+import { show as curriculumShow } from '@/actions/App/Http/Controllers/CurriculumController';
 import { Head, Link } from '@inertiajs/react';
 import * as Icons from 'lucide-react';
 import { type FormEvent } from 'react';
+import { type CurriculumCardResource } from '@/types';
 
 interface AgendaPreview {
     id: number;
@@ -35,12 +37,14 @@ const Welcome = ({
     facilities = [],
     facilitiesTotal = 0,
     articles = [],
+    curricula = [],
 }: {
     canRegister?: boolean;
     agendas?: AgendaPreview[];
     facilities?: FacilityCard[];
     facilitiesTotal?: number;
     articles?: ArticlePreview[];
+    curricula?: CurriculumCardResource[];
 }) => {
     return (
         <>
@@ -624,6 +628,71 @@ const Welcome = ({
                     )}
                 </div>
             </section>
+
+            {/* Kurikulum */}
+            {curricula.length > 0 && (
+                <section id="kurikulum" className="py-20 sm:py-28">
+                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        <div className="mb-12">
+                            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold tracking-widest text-emerald-700 uppercase dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
+                                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
+                                Kurikulum
+                            </span>
+                            <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
+                                Kurikulum Kami
+                            </h2>
+                            <p className="mt-4 max-w-xl text-base text-gray-600 dark:text-gray-400">
+                                Kami menerapkan kurikulum yang komprehensif
+                                untuk membentuk generasi unggul berakhlak mulia.
+                            </p>
+                        </div>
+
+                        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                            {curricula.map((curriculum) => {
+                                const IconComponent = (Icons[
+                                    curriculum.icon as keyof typeof Icons
+                                ] ?? Icons.BookOpen) as React.ComponentType<{
+                                    className?: string;
+                                }>;
+                                return (
+                                    <Link
+                                        key={curriculum.id}
+                                        href={curriculumShow.url({
+                                            curriculum: curriculum.slug,
+                                        })}
+                                        className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-gray-200 transition hover:shadow-md hover:ring-emerald-200 dark:bg-gray-900 dark:ring-gray-800 dark:hover:ring-emerald-800"
+                                    >
+                                        <div className="flex items-start gap-4 p-6">
+                                            <div className="shrink-0 rounded-xl bg-emerald-600 p-3 text-white transition group-hover:bg-emerald-700">
+                                                <IconComponent className="h-6 w-6" />
+                                            </div>
+                                            <div className="min-w-0 flex-1">
+                                                <h3 className="font-semibold text-gray-900 dark:text-white">
+                                                    {curriculum.name}
+                                                </h3>
+                                                <p className="mt-1 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
+                                                    {curriculum.description
+                                                        .length > 100
+                                                        ? curriculum.description.slice(
+                                                              0,
+                                                              100,
+                                                          ) + '…'
+                                                        : curriculum.description}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="border-t border-gray-100 px-6 py-3 dark:border-gray-800">
+                                            <span className="text-xs font-medium text-emerald-600 transition group-hover:text-emerald-700 dark:text-emerald-400">
+                                                Lihat detail &rarr;
+                                            </span>
+                                        </div>
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </section>
+            )}
 
             {/* Berita Terbaru */}
             <section
