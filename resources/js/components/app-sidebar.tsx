@@ -44,6 +44,7 @@ import {
 import { index as facilitiesIndex } from '@/actions/App/Http/Controllers/Admin/FacilityController';
 import { index as announcementsIndex } from '@/actions/App/Http/Controllers/Admin/AnnouncementController';
 import { index as categoriesIndex } from '@/actions/App/Http/Controllers/Admin/CategoryController';
+import { index as curriculaIndex } from '@/actions/App/Http/Controllers/Admin/CurriculumController';
 import { dashboard } from '@/routes';
 import type { NavGroup } from '@/types';
 
@@ -143,7 +144,7 @@ const navGroups: NavGroup[] = [
             },
             {
                 title: 'Kurikulum',
-                href: '/akademik/kurikulum',
+                href: curriculaIndex.url(),
                 icon: BookOpen,
             },
         ],
