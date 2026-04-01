@@ -26,6 +26,22 @@ class AnnouncementRepository implements AnnouncementRepositoryInterface
             ->first();
     }
 
+    public function getLatest(int $limit = 5): Collection
+    {
+        return Announcement::active()->with('categories')->latest()->limit($limit)->get();
+    }
+
+    public function getRelated(int $announcementId, array $categoryIds, int $limit = 4): Collection
+    {
+        return Announcement::active()
+            ->with('categories')
+            ->where('id', '!=', $announcementId)
+            ->whereHas('categories', fn ($q) => $q->whereIn('categories.id', $categoryIds))
+            ->latest()
+            ->limit($limit)
+            ->get();
+    }
+
     /**
      * @return array{total: int, published: int, draft: int, with_attachments: int}
      */
