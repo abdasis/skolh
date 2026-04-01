@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             CategorySeeder::class,
             AnnouncementSeeder::class,
+            FacilitySeeder::class,
+            AgendaSeeder::class,
         ]);
 
         // User::factory(10)->create();
