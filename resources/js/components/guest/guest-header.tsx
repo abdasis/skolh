@@ -1,4 +1,6 @@
-import { dashboard, login, register } from '@/routes';
+import * as AnnouncementController from '@/actions/App/Http/Controllers/AnnouncementController';
+import * as ArticleController from '@/actions/App/Http/Controllers/ArticleController';
+import { dashboard, home, login, register } from '@/routes';
 import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
@@ -7,11 +9,12 @@ const GuestHeader = ({ canRegister = true }: { canRegister?: boolean }) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     const navLinks = [
-        { href: '#beranda', label: 'Beranda' },
+        { href: home().url, label: 'Beranda' },
         { href: '#tentang', label: 'Tentang' },
         { href: '#program', label: 'Program' },
         { href: '#fasilitas', label: 'Fasilitas' },
-        { href: '#berita', label: 'Berita' },
+        { href: ArticleController.index().url, label: 'Berita' },
+        { href: AnnouncementController.index().url, label: 'Pengumuman' },
         { href: '#kontak', label: 'Kontak' },
     ];
 
@@ -42,13 +45,29 @@ const GuestHeader = ({ canRegister = true }: { canRegister?: boolean }) => {
                     {/* Left: info */}
                     <div className="hidden items-center divide-x divide-white/20 md:flex">
                         <div className="flex items-center gap-2 pr-5 text-xs text-white/90">
-                            <svg className="h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            <svg
+                                className="h-3.5 w-3.5 shrink-0"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.8}
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                />
                             </svg>
                             <span>07.00 - 15.00 Sen - Jum</span>
                         </div>
                         <div className="flex items-center gap-2 px-5 text-xs text-white/90">
-                            <svg className="h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
+                            <svg
+                                className="h-3.5 w-3.5 shrink-0"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.8}
+                                stroke="currentColor"
+                            >
                                 <path
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
@@ -58,16 +77,36 @@ const GuestHeader = ({ canRegister = true }: { canRegister?: boolean }) => {
                             <span>(021) 1234-5678</span>
                         </div>
                         <div className="flex items-center gap-2 pl-5 text-xs text-white/90">
-                            <svg className="h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                            <svg
+                                className="h-3.5 w-3.5 shrink-0"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.8}
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                                />
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+                                />
                             </svg>
                             <span>Jl. Pendidikan No. 1, Kota Contoh</span>
                         </div>
                     </div>
                     {/* Mobile: just phone */}
                     <div className="flex items-center gap-2 text-xs text-white/90 md:hidden">
-                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
+                        <svg
+                            className="h-3.5 w-3.5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.8}
+                            stroke="currentColor"
+                        >
                             <path
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
@@ -84,7 +123,11 @@ const GuestHeader = ({ canRegister = true }: { canRegister?: boolean }) => {
                                 href="#"
                                 className="flex h-7 w-7 items-center justify-center rounded text-white/80 transition hover:bg-white/10 hover:text-white"
                             >
-                                <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24">
+                                <svg
+                                    className="h-3.5 w-3.5"
+                                    fill="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
                                     <path d={social.path} />
                                 </svg>
                             </a>
@@ -114,13 +157,13 @@ const GuestHeader = ({ canRegister = true }: { canRegister?: boolean }) => {
                     {/* Desktop Nav Links */}
                     <div className="hidden items-center gap-1 md:flex">
                         {navLinks.map((link) => (
-                            <a
+                            <Link
                                 key={link.href}
                                 href={link.href}
                                 className="rounded-lg px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 hover:text-emerald-600 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-emerald-400"
                             >
                                 {link.label}
-                            </a>
+                            </Link>
                         ))}
                     </div>
 
@@ -159,11 +202,25 @@ const GuestHeader = ({ canRegister = true }: { canRegister?: boolean }) => {
                         className="rounded-lg p-2 text-gray-600 md:hidden dark:text-gray-300"
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                     >
-                        <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                        <svg
+                            className="h-6 w-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                        >
                             {mobileMenuOpen ? (
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M6 18L18 6M6 6l12 12"
+                                />
                             ) : (
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                                />
                             )}
                         </svg>
                     </button>
@@ -174,13 +231,13 @@ const GuestHeader = ({ canRegister = true }: { canRegister?: boolean }) => {
                     <div className="border-t border-gray-100 bg-white px-4 py-4 md:hidden dark:border-gray-800 dark:bg-gray-950">
                         <div className="flex flex-col gap-1">
                             {navLinks.map((link) => (
-                                <a
+                                <Link
                                     key={link.href}
                                     href={link.href}
                                     className="rounded-lg px-3 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:text-emerald-600 dark:text-gray-300 dark:hover:bg-gray-800"
                                 >
                                     {link.label}
-                                </a>
+                                </Link>
                             ))}
                             <div className="mt-3 flex flex-col gap-2 border-t border-gray-100 pt-4 dark:border-gray-800">
                                 {auth.user ? (
