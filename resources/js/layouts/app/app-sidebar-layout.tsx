@@ -12,7 +12,9 @@ export default function AppSidebarLayout({
     children,
     breadcrumbs = [],
 }: AppLayoutProps) {
-    const { flash } = usePage().props as { flash?: { success?: string; error?: string } };
+    const { flash } = usePage().props as {
+        flash?: { success?: string; error?: string };
+    };
 
     useEffect(() => {
         if (flash?.success) {
@@ -26,9 +28,11 @@ export default function AppSidebarLayout({
     return (
         <AppShell variant="sidebar">
             <AppSidebar />
-            <AppContent variant="sidebar" className="overflow-x-hidden">
+            <AppContent variant="sidebar" className="overflow-hidden">
                 <AppSidebarHeader breadcrumbs={breadcrumbs} />
-                {children}
+                <main className="flex-1 overflow-x-hidden overflow-y-auto">
+                    {children}
+                </main>
             </AppContent>
             <Toaster />
         </AppShell>
