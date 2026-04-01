@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, setLayoutProps } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { ConfirmationDelete } from '@/components/confirmation-delete';
 import { DataTable } from '@/components/data-table';
@@ -14,6 +14,13 @@ interface Props {
 }
 
 const AdminAnnouncementsIndex = ({ announcements, stats }: Props) => {
+    setLayoutProps({
+        breadcrumbs: [
+            { title: 'Dashboard', href: '/dashboard' },
+            { title: 'Pengumuman', href: AnnouncementController.index.url() },
+        ],
+    });
+
     const [toDelete, setToDelete] = useState<AnnouncementResource | null>(null);
 
     const handleDeleteConfirm = () => {
@@ -75,9 +82,3 @@ const AdminAnnouncementsIndex = ({ announcements, stats }: Props) => {
 
 export default AdminAnnouncementsIndex;
 
-AdminAnnouncementsIndex.layout = {
-    breadcrumbs: [
-        { title: 'Dashboard', href: '/dashboard' },
-        { title: 'Pengumuman', href: AnnouncementController.index.url() },
-    ],
-};

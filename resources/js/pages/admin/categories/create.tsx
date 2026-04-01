@@ -1,8 +1,16 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, setLayoutProps, useForm } from '@inertiajs/react';
 import * as CategoryController from '@/actions/App/Http/Controllers/Admin/CategoryController';
 import { CategoryForm, type CategoryFormData } from './components/category-form';
 
 const AdminCategoriesCreate = () => {
+    setLayoutProps({
+        breadcrumbs: [
+            { title: 'Dashboard', href: '/dashboard' },
+            { title: 'Kategori', href: CategoryController.index.url() },
+            { title: 'Tambah Kategori', href: CategoryController.create.url() },
+        ],
+    });
+
     const form = useForm<CategoryFormData>({
         name: '',
         description: '',
@@ -36,10 +44,3 @@ const AdminCategoriesCreate = () => {
 
 export default AdminCategoriesCreate;
 
-AdminCategoriesCreate.layout = {
-    breadcrumbs: [
-        { title: 'Dashboard', href: '/dashboard' },
-        { title: 'Kategori', href: CategoryController.index.url() },
-        { title: 'Tambah Kategori', href: CategoryController.create.url() },
-    ],
-};

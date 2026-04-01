@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, setLayoutProps } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { ConfirmationDelete } from '@/components/confirmation-delete';
 import { DataTable } from '@/components/data-table';
@@ -14,6 +14,13 @@ interface Props {
 }
 
 const AdminCategoriesIndex = ({ categories, stats }: Props) => {
+    setLayoutProps({
+        breadcrumbs: [
+            { title: 'Dashboard', href: '/dashboard' },
+            { title: 'Kategori', href: CategoryController.index.url() },
+        ],
+    });
+
     const [categoryToDelete, setCategoryToDelete] = useState<CategoryResource | null>(null);
 
     const handleDeleteConfirm = () => {
@@ -80,9 +87,3 @@ const AdminCategoriesIndex = ({ categories, stats }: Props) => {
 
 export default AdminCategoriesIndex;
 
-AdminCategoriesIndex.layout = {
-    breadcrumbs: [
-        { title: 'Dashboard', href: '/dashboard' },
-        { title: 'Kategori', href: CategoryController.index.url() },
-    ],
-};

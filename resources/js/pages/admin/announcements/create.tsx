@@ -1,4 +1,4 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, setLayoutProps, useForm } from '@inertiajs/react';
 import * as AnnouncementController from '@/actions/App/Http/Controllers/Admin/AnnouncementController';
 import { AnnouncementForm, type AnnouncementFormData } from './components/announcement-form';
 import { type CategoryResource } from '@/types';
@@ -8,6 +8,14 @@ interface Props {
 }
 
 const AdminAnnouncementsCreate = ({ categories }: Props) => {
+    setLayoutProps({
+        breadcrumbs: [
+            { title: 'Dashboard', href: '/dashboard' },
+            { title: 'Pengumuman', href: AnnouncementController.index.url() },
+            { title: 'Tambah Pengumuman', href: AnnouncementController.create.url() },
+        ],
+    });
+
     const form = useForm<AnnouncementFormData>({
         title: '',
         excerpt: '',
@@ -49,10 +57,3 @@ const AdminAnnouncementsCreate = ({ categories }: Props) => {
 
 export default AdminAnnouncementsCreate;
 
-AdminAnnouncementsCreate.layout = {
-    breadcrumbs: [
-        { title: 'Dashboard', href: '/dashboard' },
-        { title: 'Pengumuman', href: AnnouncementController.index.url() },
-        { title: 'Tambah Pengumuman', href: AnnouncementController.create.url() },
-    ],
-};

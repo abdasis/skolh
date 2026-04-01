@@ -1,4 +1,4 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, setLayoutProps, useForm } from '@inertiajs/react';
 import * as AnnouncementController from '@/actions/App/Http/Controllers/Admin/AnnouncementController';
 import { AnnouncementForm, type AnnouncementFormData } from './components/announcement-form';
 import { type AnnouncementResource, type CategoryResource } from '@/types';
@@ -9,6 +9,14 @@ interface Props {
 }
 
 const AdminAnnouncementsEdit = ({ announcement, categories }: Props) => {
+    setLayoutProps({
+        breadcrumbs: [
+            { title: 'Dashboard', href: '/dashboard' },
+            { title: 'Pengumuman', href: AnnouncementController.index.url() },
+            { title: 'Edit Pengumuman' },
+        ],
+    });
+
     const form = useForm<AnnouncementFormData & { _method: string }>({
         _method: 'PUT',
         title: announcement.title,
@@ -52,10 +60,3 @@ const AdminAnnouncementsEdit = ({ announcement, categories }: Props) => {
 
 export default AdminAnnouncementsEdit;
 
-AdminAnnouncementsEdit.layout = {
-    breadcrumbs: [
-        { title: 'Dashboard', href: '/dashboard' },
-        { title: 'Pengumuman', href: AnnouncementController.index.url() },
-        { title: 'Edit Pengumuman' },
-    ],
-};

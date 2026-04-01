@@ -1,4 +1,4 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, setLayoutProps, useForm } from '@inertiajs/react';
 import * as CategoryController from '@/actions/App/Http/Controllers/Admin/CategoryController';
 import { CategoryForm, type CategoryFormData } from './components/category-form';
 import { type CategoryResource } from '@/types';
@@ -8,6 +8,14 @@ interface Props {
 }
 
 const AdminCategoriesEdit = ({ category }: Props) => {
+    setLayoutProps({
+        breadcrumbs: [
+            { title: 'Dashboard', href: '/dashboard' },
+            { title: 'Kategori', href: CategoryController.index.url() },
+            { title: 'Edit Kategori' },
+        ],
+    });
+
     const form = useForm<CategoryFormData & { _method: string }>({
         _method: 'PUT',
         name: category.name,
@@ -42,10 +50,3 @@ const AdminCategoriesEdit = ({ category }: Props) => {
 
 export default AdminCategoriesEdit;
 
-AdminCategoriesEdit.layout = {
-    breadcrumbs: [
-        { title: 'Dashboard', href: '/dashboard' },
-        { title: 'Kategori', href: CategoryController.index.url() },
-        { title: 'Edit Kategori' },
-    ],
-};
