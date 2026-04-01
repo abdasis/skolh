@@ -18,8 +18,11 @@ class WelcomeController extends Controller
             ->limit(6)
             ->get(['id', 'date', 'title', 'description']);
 
+        $facilitiesTotal = Facility::published()->count();
+
         $facilities = Facility::published()
             ->latest()
+            ->limit(8)
             ->get(['id', 'icon', 'title', 'slug', 'description']);
 
         $articles = Article::published()
@@ -32,6 +35,7 @@ class WelcomeController extends Controller
             'canRegister' => Features::enabled(Features::registration()),
             'agendas' => $agendas,
             'facilities' => $facilities,
+            'facilitiesTotal' => $facilitiesTotal,
             'articles' => $articles,
         ]);
     }

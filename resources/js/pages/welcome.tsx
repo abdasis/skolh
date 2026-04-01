@@ -33,11 +33,13 @@ const Welcome = ({
     canRegister = true,
     agendas = [],
     facilities = [],
+    facilitiesTotal = 0,
     articles = [],
 }: {
     canRegister?: boolean;
     agendas?: AgendaPreview[];
     facilities?: FacilityCard[];
+    facilitiesTotal?: number;
     articles?: ArticlePreview[];
 }) => {
     return (
@@ -547,61 +549,78 @@ const Welcome = ({
 
                     {/* Cards */}
                     {facilities.length === 0 ? null : (
-                        <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                            {facilities.map((facility) => {
-                                const IconComponent = (Icons[
-                                    facility.icon as keyof typeof Icons
-                                ] ?? Icons.Building2) as React.ComponentType<{
-                                    className?: string;
-                                }>;
-                                return (
-                                    <Link
-                                        key={facility.id}
-                                        href={facilityShow.url({
-                                            facility: facility.slug,
-                                        })}
-                                        className="group relative overflow-hidden rounded-2xl bg-emerald-600 p-5 text-white transition duration-300 hover:-translate-y-1 dark:bg-emerald-700"
-                                    >
-                                        {/* Decorative curved lines - top right */}
-                                        <svg
-                                            className="pointer-events-none absolute -top-3 -right-3 h-20 w-20 text-emerald-500/30"
-                                            fill="none"
-                                            viewBox="0 0 80 80"
-                                            strokeWidth={1.5}
-                                            stroke="currentColor"
+                        <>
+                            <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                                {facilities.map((facility) => {
+                                    const IconComponent = (Icons[
+                                        facility.icon as keyof typeof Icons
+                                    ] ??
+                                        Icons.Building2) as React.ComponentType<{
+                                        className?: string;
+                                    }>;
+                                    return (
+                                        <Link
+                                            key={facility.id}
+                                            href={facilityShow.url({
+                                                facility: facility.slug,
+                                            })}
+                                            className="group relative overflow-hidden rounded-2xl bg-emerald-600 p-5 text-white transition duration-300 hover:-translate-y-1 dark:bg-emerald-700"
                                         >
-                                            <path d="M80 0 C80 44.18 44.18 80 0 80" />
-                                            <path d="M80 12 C80 49.56 49.56 80 12 80" />
-                                            <path d="M80 24 C80 54.93 54.93 80 24 80" />
-                                        </svg>
+                                            {/* Decorative curved lines - top right */}
+                                            <svg
+                                                className="pointer-events-none absolute -top-3 -right-3 h-20 w-20 text-emerald-500/30"
+                                                fill="none"
+                                                viewBox="0 0 80 80"
+                                                strokeWidth={1.5}
+                                                stroke="currentColor"
+                                            >
+                                                <path d="M80 0 C80 44.18 44.18 80 0 80" />
+                                                <path d="M80 12 C80 49.56 49.56 80 12 80" />
+                                                <path d="M80 24 C80 54.93 54.93 80 24 80" />
+                                            </svg>
 
-                                        {/* Decorative circle - bottom left */}
-                                        <div className="pointer-events-none absolute -bottom-6 -left-6 h-20 w-20 rounded-full border-2 border-emerald-500/20" />
-                                        <div className="pointer-events-none absolute -bottom-3 -left-3 h-14 w-14 rounded-full border-2 border-emerald-500/15" />
+                                            {/* Decorative circle - bottom left */}
+                                            <div className="pointer-events-none absolute -bottom-6 -left-6 h-20 w-20 rounded-full border-2 border-emerald-500/20" />
+                                            <div className="pointer-events-none absolute -bottom-3 -left-3 h-14 w-14 rounded-full border-2 border-emerald-500/15" />
 
-                                        {/* Diagonal accent line */}
-                                        <div className="pointer-events-none absolute top-0 right-12 h-full w-px origin-top rotate-12 bg-gradient-to-b from-emerald-400/20 via-emerald-400/10 to-transparent" />
+                                            {/* Diagonal accent line */}
+                                            <div className="pointer-events-none absolute top-0 right-12 h-full w-px origin-top rotate-12 bg-gradient-to-b from-emerald-400/20 via-emerald-400/10 to-transparent" />
 
-                                        <div className="relative">
-                                            {/* Icon */}
-                                            <div className="inline-flex rounded-xl bg-white/15 p-3">
-                                                <IconComponent className="h-6 w-6 text-white" />
+                                            <div className="relative">
+                                                {/* Icon */}
+                                                <div className="inline-flex rounded-xl bg-white/15 p-3">
+                                                    <IconComponent className="h-6 w-6 text-white" />
+                                                </div>
+
+                                                <h3 className="mt-4 text-sm font-bold text-white">
+                                                    {facility.title}
+                                                </h3>
+                                                <p className="mt-1 text-xs text-emerald-100/70">
+                                                    {facility.description}
+                                                </p>
+
+                                                {/* Bottom accent line */}
+                                                <div className="mt-4 h-px w-0 bg-gradient-to-r from-white/40 to-transparent transition-all duration-300 group-hover:w-full" />
                                             </div>
+                                        </Link>
+                                    );
+                                })}
+                            </div>
 
-                                            <h3 className="mt-4 text-sm font-bold text-white">
-                                                {facility.title}
-                                            </h3>
-                                            <p className="mt-1 text-xs text-emerald-100/70">
-                                                {facility.description}
-                                            </p>
-
-                                            {/* Bottom accent line */}
-                                            <div className="mt-4 h-px w-0 bg-gradient-to-r from-white/40 to-transparent transition-all duration-300 group-hover:w-full" />
-                                        </div>
+                            {facilitiesTotal > facilities.length && (
+                                <div className="mt-10 text-center">
+                                    <Link
+                                        href="/facilities"
+                                        className="group inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-b from-white/60 to-white/30 p-0.5 ring-1 ring-black/8 transition-all duration-300 hover:ring-black/14 dark:from-white/8 dark:to-white/4 dark:ring-white/10 dark:hover:ring-white/18"
+                                    >
+                                        <span className="inline-flex items-center gap-2 rounded-full bg-white/80 px-6 py-2.5 text-sm font-semibold text-emerald-700 transition-all duration-300 group-hover:bg-white/95 dark:bg-white/6 dark:text-emerald-400 dark:group-hover:bg-white/10">
+                                            Lihat Semua Fasilitas
+                                            <Icons.ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                                        </span>
                                     </Link>
-                                );
-                            })}
-                        </div>
+                                </div>
+                            )}
+                        </>
                     )}
                 </div>
             </section>
