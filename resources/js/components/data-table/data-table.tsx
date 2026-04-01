@@ -25,11 +25,13 @@ import {
 import { Skeleton } from "@/components/ui/skeleton"
 import type { DataTableProps, DataTableState } from "./types"
 import { DataTableToolbar } from "./data-table-toolbar"
+import { DataTableFooter } from "./data-table-footer"
 
 export function DataTable<TData>({
     columns,
     data,
     mode = "client",
+    totalRows,
     isLoading = false,
     searchPlaceholder = "Cari...",
     onStateChange,
@@ -194,6 +196,7 @@ export function DataTable<TData>({
                     </TableBody>
                 </Table>
             </div>
+            <DataTableFooter table={table} totalRows={totalRows} />
         </div>
     )
 }
