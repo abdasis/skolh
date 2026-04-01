@@ -24,6 +24,7 @@ import {
     Settings2,
     ShieldCheck,
     Star,
+    Tag,
     Users,
     Users2,
 } from 'lucide-react';
@@ -41,6 +42,8 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { index as facilitiesIndex } from '@/actions/App/Http/Controllers/Admin/FacilityController';
+import { index as announcementsIndex } from '@/actions/App/Http/Controllers/Admin/AnnouncementController';
+import { index as categoriesIndex } from '@/actions/App/Http/Controllers/Admin/CategoryController';
 import { dashboard } from '@/routes';
 import type { NavGroup } from '@/types';
 
@@ -100,8 +103,13 @@ const navGroups: NavGroup[] = [
             },
             {
                 title: 'Pengumuman',
-                href: '/pengumuman',
+                href: announcementsIndex.url(),
                 icon: Megaphone,
+            },
+            {
+                title: 'Kategori',
+                href: categoriesIndex.url(),
+                icon: Tag,
             },
             {
                 title: 'Agenda',

@@ -18,10 +18,9 @@ class AnnouncementAttachmentFactory extends Factory
     {
         return [
             'announcement_id' => Announcement::factory(),
-            'file_path' => 'announcements/attachments/'.fake()->uuid().'.pdf',
-            'file_name' => fake()->word().'.pdf',
+            'path' => 'announcements/attachments/'.fake()->uuid().'.pdf',
+            'original_name' => fake()->word().'.pdf',
             'mime_type' => 'application/pdf',
-            'file_size' => fake()->numberBetween(10240, 5242880),
         ];
     }
 }

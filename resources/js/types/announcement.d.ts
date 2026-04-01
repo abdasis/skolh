@@ -11,11 +11,10 @@ export interface AnnouncementStats {
 
 export interface AnnouncementAttachmentResource {
     id: number;
-    file_name: string;
-    file_path: string;
-    file_url: string;
-    mime_type: string | null;
-    file_size: number | null;
+    path: string;
+    original_name: string;
+    url: string;
+    mime_type: string;
     created_at: string;
 }
 
@@ -23,7 +22,8 @@ export interface AnnouncementResource {
     id: number;
     title: string;
     slug: string;
-    content: string;
+    excerpt: string;
+    content: string | null;
     status: AnnouncementStatus;
     published_at: string | null;
     expired_at: string | null;
@@ -31,4 +31,13 @@ export interface AnnouncementResource {
     attachments: AnnouncementAttachmentResource[];
     created_at: string;
     updated_at: string;
+}
+
+export interface AnnouncementCardResource {
+    id: number;
+    title: string;
+    slug: string;
+    excerpt: string;
+    categories: CategoryResource[];
+    published_at: string | null;
 }

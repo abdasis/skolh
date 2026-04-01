@@ -17,7 +17,7 @@ const AnnouncementShow = ({ announcement }: Props) => {
         : null;
 
     const stripHtml = (html: string) => html.replace(/<[^>]*>/g, '');
-    const excerpt = stripHtml(announcement.content).slice(0, 160);
+    const excerpt = stripHtml(announcement.content ?? '').slice(0, 160);
 
     return (
         <>
@@ -74,7 +74,7 @@ const AnnouncementShow = ({ announcement }: Props) => {
 
                     <div
                         className="prose prose-emerald max-w-none dark:prose-invert"
-                        dangerouslySetInnerHTML={{ __html: announcement.content }}
+                        dangerouslySetInnerHTML={{ __html: announcement.content ?? '' }}
                     />
 
                     {announcement.attachments.length > 0 && (
@@ -84,13 +84,13 @@ const AnnouncementShow = ({ announcement }: Props) => {
                                 {announcement.attachments.map((att) => (
                                     <li key={att.id}>
                                         <a
-                                            href={att.file_url}
+                                            href={att.url}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="inline-flex items-center gap-2 text-sm text-emerald-600 transition hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300"
                                         >
                                             <Paperclip className="h-4 w-4" />
-                                            {att.file_name}
+                                            {att.original_name}
                                         </a>
                                     </li>
                                 ))}

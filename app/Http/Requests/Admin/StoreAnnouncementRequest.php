@@ -19,7 +19,8 @@ class StoreAnnouncementRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:255'],
-            'content' => ['required', 'string'],
+            'excerpt' => ['required', 'string', 'max:500'],
+            'content' => ['nullable', 'string'],
             'status' => ['required', 'in:published,draft'],
             'published_at' => ['nullable', 'date'],
             'expired_at' => ['nullable', 'date', 'after_or_equal:published_at'],

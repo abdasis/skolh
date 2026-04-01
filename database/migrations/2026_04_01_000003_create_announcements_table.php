@@ -12,10 +12,11 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug')->unique();
-            $table->longText('content');
-            $table->string('status')->default('draft');
-            $table->date('published_at')->nullable();
-            $table->date('expired_at')->nullable();
+            $table->string('excerpt', 500);
+            $table->longText('content')->nullable();
+            $table->string('status')->default('draft')->index();
+            $table->timestamp('published_at')->nullable();
+            $table->timestamp('expired_at')->nullable()->index();
             $table->timestamps();
         });
     }

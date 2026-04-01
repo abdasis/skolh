@@ -13,10 +13,9 @@ class StoreAttachmentAction
         $path = $file->store('announcements/attachments', 'public');
 
         return $announcement->attachments()->create([
-            'file_path' => $path,
-            'file_name' => $file->getClientOriginalName(),
+            'path' => $path,
+            'original_name' => $file->getClientOriginalName(),
             'mime_type' => $file->getMimeType(),
-            'file_size' => $file->getSize(),
         ]);
     }
 }

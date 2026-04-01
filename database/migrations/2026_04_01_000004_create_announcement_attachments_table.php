@@ -11,10 +11,9 @@ return new class extends Migration
         Schema::create('announcement_attachments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('announcement_id')->constrained()->cascadeOnDelete();
-            $table->string('file_path');
-            $table->string('file_name');
-            $table->string('mime_type')->nullable();
-            $table->unsignedBigInteger('file_size')->nullable();
+            $table->string('path');
+            $table->string('original_name');
+            $table->string('mime_type', 100);
             $table->timestamps();
         });
     }

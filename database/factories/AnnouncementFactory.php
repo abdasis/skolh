@@ -18,9 +18,10 @@ class AnnouncementFactory extends Factory
     {
         return [
             'title' => fake()->unique()->sentence(5),
+            'excerpt' => fake()->sentence(15),
             'content' => fake()->paragraphs(3, true),
             'status' => fake()->randomElement(AnnouncementStatus::cases()),
-            'published_at' => fake()->date(),
+            'published_at' => fake()->dateTime(),
             'expired_at' => null,
         ];
     }

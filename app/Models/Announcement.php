@@ -18,6 +18,7 @@ class Announcement extends Model
     protected $fillable = [
         'title',
         'slug',
+        'excerpt',
         'content',
         'status',
         'published_at',
@@ -26,8 +27,8 @@ class Announcement extends Model
 
     protected $casts = [
         'status' => AnnouncementStatus::class,
-        'published_at' => 'date',
-        'expired_at' => 'date',
+        'published_at' => 'datetime',
+        'expired_at' => 'datetime',
     ];
 
     protected static function booted(): void

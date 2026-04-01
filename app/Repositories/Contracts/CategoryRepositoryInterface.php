@@ -9,10 +9,10 @@ interface CategoryRepositoryInterface
 {
     public function getAll(): Collection;
 
-    public function findById(int $id): ?Category;
+    public function getForSelect(): Collection;
 
     /**
-     * @return array{total: int}
+     * @return array{total: int, in_use: int}
      */
     public function getStats(): array;
 }

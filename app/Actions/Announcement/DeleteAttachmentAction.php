@@ -9,7 +9,7 @@ class DeleteAttachmentAction
 {
     public function handle(AnnouncementAttachment $attachment): void
     {
-        Storage::disk('public')->delete($attachment->file_path);
+        Storage::disk('public')->delete($attachment->path);
 
         $attachment->delete();
     }

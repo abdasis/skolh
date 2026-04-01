@@ -13,14 +13,9 @@ class AnnouncementAttachment extends Model
 
     protected $fillable = [
         'announcement_id',
-        'file_path',
-        'file_name',
+        'path',
+        'original_name',
         'mime_type',
-        'file_size',
-    ];
-
-    protected $casts = [
-        'file_size' => 'integer',
     ];
 
     /**

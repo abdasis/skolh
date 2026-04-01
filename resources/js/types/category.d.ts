@@ -1,5 +1,6 @@
 export interface CategoryStats {
     total: number;
+    in_use: number;
 }
 
 export interface CategoryResource {
