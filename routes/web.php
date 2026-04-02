@@ -5,11 +5,13 @@ use App\Http\Controllers\Admin\AnnouncementAttachmentController;
 use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementController;
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ContactMessageController as AdminContactMessageController;
 use App\Http\Controllers\Admin\CurriculumController as AdminCurriculumController;
 use App\Http\Controllers\Admin\FacilityController as AdminFacilityController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\SitemapController;
@@ -24,6 +26,7 @@ Route::get('/announcements', [AnnouncementController::class, 'index'])->name('an
 Route::get('/announcements/{announcement:slug}', [AnnouncementController::class, 'show'])->name('announcements.show');
 Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
 Route::get('/articles/{article:slug}', [ArticleController::class, 'show'])->name('articles.show');
+Route::post('/contact-messages', [ContactMessageController::class, 'store'])->middleware('throttle:contact-form')->name('contact-messages.store');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
@@ -37,6 +40,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::resource('categories', CategoryController::class);
     Route::resource('announcements', AdminAnnouncementController::class);
     Route::resource('articles', AdminArticleController::class);
+    Route::resource('contact-messages', AdminContactMessageController::class)->only(['index', 'show', 'destroy']);
     Route::delete('announcement-attachments/{attachment}', [AnnouncementAttachmentController::class, 'destroy'])
         ->name('announcement-attachments.destroy');
 });

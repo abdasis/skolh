@@ -1,8 +1,8 @@
 import { show as facilityShow } from '@/actions/App/Http/Controllers/FacilityController';
 import { show as curriculumShow } from '@/actions/App/Http/Controllers/CurriculumController';
-import { Head, Link } from '@inertiajs/react';
+import { store as contactMessageStore } from '@/actions/App/Http/Controllers/ContactMessageController';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import * as Icons from 'lucide-react';
-import { type FormEvent } from 'react';
 import { type CurriculumCardResource } from '@/types';
 
 interface AgendaPreview {
@@ -46,6 +46,23 @@ const Welcome = ({
     articles?: ArticlePreview[];
     curricula?: CurriculumCardResource[];
 }) => {
+    const { flash } = usePage<{ flash: { success: string | null; error: string | null } }>().props;
+
+    const { data, setData, post, processing, errors, reset, wasSuccessful } = useForm({
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+    });
+
+    const handleContactSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        post(contactMessageStore.url(), {
+            preserveScroll: true,
+            onSuccess: () => reset(),
+        });
+    };
+
     return (
         <>
             <Head title="SDIT Al-Aziz - Sekolah Dasar Islam Terpadu">
@@ -1626,9 +1643,15 @@ const Welcome = ({
                                 menghubungi Anda.
                             </p>
 
+                            {(wasSuccessful || flash?.success) && (
+                                <div className="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
+                                    {flash?.success ?? 'Pesan Anda berhasil dikirim!'}
+                                </div>
+                            )}
+
                             <form
                                 className="mt-6 space-y-4"
-                                onSubmit={(e: FormEvent) => e.preventDefault()}
+                                onSubmit={handleContactSubmit}
                             >
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -1636,9 +1659,12 @@ const Welcome = ({
                                     </label>
                                     <input
                                         type="text"
+                                        value={data.name}
+                                        onChange={(e) => setData('name', e.target.value)}
                                         className="mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 transition outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:border-emerald-400"
                                         placeholder="Masukkan nama lengkap"
                                     />
+                                    {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name}</p>}
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -1646,19 +1672,25 @@ const Welcome = ({
                                     </label>
                                     <input
                                         type="email"
+                                        value={data.email}
+                                        onChange={(e) => setData('email', e.target.value)}
                                         className="mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 transition outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:border-emerald-400"
                                         placeholder="contoh@email.com"
                                     />
+                                    {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                        No. Telepon
+                                        Subjek
                                     </label>
                                     <input
-                                        type="tel"
+                                        type="text"
+                                        value={data.subject}
+                                        onChange={(e) => setData('subject', e.target.value)}
                                         className="mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 transition outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:border-emerald-400"
-                                        placeholder="08xxxxxxxxxx"
+                                        placeholder="Subjek pesan"
                                     />
+                                    {errors.subject && <p className="mt-1 text-xs text-red-500">{errors.subject}</p>}
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -1666,15 +1698,19 @@ const Welcome = ({
                                     </label>
                                     <textarea
                                         rows={4}
+                                        value={data.message}
+                                        onChange={(e) => setData('message', e.target.value)}
                                         className="mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 transition outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:border-emerald-400"
                                         placeholder="Tulis pesan Anda..."
                                     />
+                                    {errors.message && <p className="mt-1 text-xs text-red-500">{errors.message}</p>}
                                 </div>
                                 <button
                                     type="submit"
-                                    className="w-full rounded-lg bg-emerald-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700"
+                                    disabled={processing}
+                                    className="w-full rounded-lg bg-emerald-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-60"
                                 >
-                                    Kirim Pesan
+                                    {processing ? 'Mengirim...' : 'Kirim Pesan'}
                                 </button>
                             </form>
                         </div>

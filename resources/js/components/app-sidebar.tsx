@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import SimpleBar from 'simplebar-react';
 import 'simplebar-react/dist/simplebar.min.css';
 import {
@@ -46,151 +46,9 @@ import { index as announcementsIndex } from '@/actions/App/Http/Controllers/Admi
 import { index as articlesIndex } from '@/actions/App/Http/Controllers/Admin/ArticleController';
 import { index as categoriesIndex } from '@/actions/App/Http/Controllers/Admin/CategoryController';
 import { index as curriculaIndex } from '@/actions/App/Http/Controllers/Admin/CurriculumController';
+import { index as contactMessagesIndex } from '@/actions/App/Http/Controllers/Admin/ContactMessageController';
 import { dashboard } from '@/routes';
 import type { NavGroup } from '@/types';
-
-const navGroups: NavGroup[] = [
-    {
-        label: 'Umum',
-        items: [
-            {
-                title: 'Dashboard',
-                href: dashboard(),
-                icon: LayoutGrid,
-            },
-        ],
-    },
-    {
-        label: 'Profil Sekolah',
-        items: [
-            {
-                title: 'Tentang Sekolah',
-                href: '/profil/tentang',
-                icon: Home,
-            },
-            {
-                title: 'Visi & Misi',
-                href: '/profil/visi-misi',
-                icon: Star,
-            },
-            {
-                title: 'Struktur Organisasi',
-                href: '/profil/struktur',
-                icon: Users2,
-            },
-            {
-                title: 'Fasilitas',
-                href: facilitiesIndex.url(),
-                icon: MapPin,
-            },
-            {
-                title: 'Prestasi',
-                href: '/profil/prestasi',
-                icon: Award,
-            },
-            {
-                title: 'Ekstrakulikuler',
-                href: '/profil/ekstrakulikuler',
-                icon: BookOpenCheck,
-            },
-        ],
-    },
-    {
-        label: 'Konten',
-        items: [
-            {
-                title: 'Artikel',
-                href: articlesIndex.url(),
-                icon: Newspaper,
-            },
-            {
-                title: 'Pengumuman',
-                href: announcementsIndex.url(),
-                icon: Megaphone,
-            },
-            {
-                title: 'Kategori',
-                href: categoriesIndex.url(),
-                icon: Tag,
-            },
-            {
-                title: 'Agenda',
-                href: '/admin/agendas',
-                icon: CalendarDays,
-            },
-            {
-                title: 'Galeri',
-                href: '/galeri',
-                icon: Image,
-            },
-        ],
-    },
-    {
-        label: 'Akademik',
-        items: [
-            {
-                title: 'SPMB',
-                href: '/spmb',
-                icon: ClipboardList,
-            },
-            {
-                title: 'Data Siswa',
-                href: '/akademik/siswa',
-                icon: Users,
-            },
-            {
-                title: 'Alumni',
-                href: '/alumni',
-                icon: GraduationCap,
-            },
-            {
-                title: 'Kurikulum',
-                href: curriculaIndex.url(),
-                icon: BookOpen,
-            },
-        ],
-    },
-    {
-        label: 'Komunikasi',
-        items: [
-            {
-                title: 'Pesan Masuk',
-                href: '/pesan',
-                icon: MailOpen,
-            },
-            {
-                title: 'Testimoni',
-                href: '/testimoni',
-                icon: MessageSquare,
-            },
-            {
-                title: 'Laporan',
-                href: '/laporan',
-                icon: FileText,
-            },
-        ],
-    },
-    {
-        label: 'Pengaturan',
-        items: [
-            {
-                title: 'Preferensi Situs',
-                href: '/preferensi',
-                icon: Settings2,
-            },
-            {
-                title: 'Manajemen User',
-                href: '/admin/users',
-                icon: ShieldCheck,
-            },
-            {
-                title: 'Pengaturan Akun',
-                href: '/settings/profile',
-                icon: Settings,
-            },
-        ],
-    },
-];
 
 const footerNavItems = [
     {
@@ -211,6 +69,152 @@ const footerNavItems = [
 ];
 
 export function AppSidebar() {
+    const { unreadContactMessagesCount } = usePage<{ unreadContactMessagesCount: number }>().props;
+
+    const navGroups: NavGroup[] = [
+        {
+            label: 'Umum',
+            items: [
+                {
+                    title: 'Dashboard',
+                    href: dashboard(),
+                    icon: LayoutGrid,
+                },
+            ],
+        },
+        {
+            label: 'Profil Sekolah',
+            items: [
+                {
+                    title: 'Tentang Sekolah',
+                    href: '/profil/tentang',
+                    icon: Home,
+                },
+                {
+                    title: 'Visi & Misi',
+                    href: '/profil/visi-misi',
+                    icon: Star,
+                },
+                {
+                    title: 'Struktur Organisasi',
+                    href: '/profil/struktur',
+                    icon: Users2,
+                },
+                {
+                    title: 'Fasilitas',
+                    href: facilitiesIndex.url(),
+                    icon: MapPin,
+                },
+                {
+                    title: 'Prestasi',
+                    href: '/profil/prestasi',
+                    icon: Award,
+                },
+                {
+                    title: 'Ekstrakulikuler',
+                    href: '/profil/ekstrakulikuler',
+                    icon: BookOpenCheck,
+                },
+            ],
+        },
+        {
+            label: 'Konten',
+            items: [
+                {
+                    title: 'Artikel',
+                    href: articlesIndex.url(),
+                    icon: Newspaper,
+                },
+                {
+                    title: 'Pengumuman',
+                    href: announcementsIndex.url(),
+                    icon: Megaphone,
+                },
+                {
+                    title: 'Kategori',
+                    href: categoriesIndex.url(),
+                    icon: Tag,
+                },
+                {
+                    title: 'Agenda',
+                    href: '/admin/agendas',
+                    icon: CalendarDays,
+                },
+                {
+                    title: 'Galeri',
+                    href: '/galeri',
+                    icon: Image,
+                },
+            ],
+        },
+        {
+            label: 'Akademik',
+            items: [
+                {
+                    title: 'SPMB',
+                    href: '/spmb',
+                    icon: ClipboardList,
+                },
+                {
+                    title: 'Data Siswa',
+                    href: '/akademik/siswa',
+                    icon: Users,
+                },
+                {
+                    title: 'Alumni',
+                    href: '/alumni',
+                    icon: GraduationCap,
+                },
+                {
+                    title: 'Kurikulum',
+                    href: curriculaIndex.url(),
+                    icon: BookOpen,
+                },
+            ],
+        },
+        {
+            label: 'Komunikasi',
+            items: [
+                {
+                    title: 'Pesan Masuk',
+                    href: contactMessagesIndex.url(),
+                    icon: MailOpen,
+                    badge: unreadContactMessagesCount,
+                },
+                {
+                    title: 'Testimoni',
+                    href: '/testimoni',
+                    icon: MessageSquare,
+                },
+                {
+                    title: 'Laporan',
+                    href: '/laporan',
+                    icon: FileText,
+                },
+            ],
+        },
+        {
+            label: 'Pengaturan',
+            items: [
+                {
+                    title: 'Preferensi Situs',
+                    href: '/preferensi',
+                    icon: Settings2,
+                },
+                {
+                    title: 'Manajemen User',
+                    href: '/admin/users',
+                    icon: ShieldCheck,
+                },
+                {
+                    title: 'Pengaturan Akun',
+                    href: '/settings/profile',
+                    icon: Settings,
+                },
+            ],
+        },
+    ];
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>

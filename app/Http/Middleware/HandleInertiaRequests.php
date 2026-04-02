@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\ContactMessage;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -46,6 +47,7 @@ class HandleInertiaRequests extends Middleware
                 'success' => $request->session()->get('success'),
                 'error' => $request->session()->get('error'),
             ],
+            'unreadContactMessagesCount' => $request->user() ? ContactMessage::unread()->count() : 0,
         ];
     }
 }

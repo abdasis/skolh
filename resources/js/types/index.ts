@@ -1,5 +1,6 @@
 export type * from './announcement';
 export type * from './article';
+export type * from './contact-message';
 export type * from './auth';
 export type * from './category';
 export type * from './curriculum';
