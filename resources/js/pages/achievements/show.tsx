@@ -13,9 +13,17 @@ const AchievementsShow = ({ achievement }: Props) => {
         ? /\.(jpg|jpeg|png|webp)$/i.test(achievement.attachment)
         : false;
 
+    const excerpt = (achievement.description ?? '').slice(0, 160);
+
     return (
         <>
-            <Head title={achievement.title} />
+            <Head title={achievement.title}>
+                <meta name="description" content={excerpt} />
+                <meta property="og:title" content={achievement.title} />
+                <meta property="og:description" content={excerpt} />
+                <meta property="og:type" content="article" />
+                <link rel="canonical" href={window.location.href.split('?')[0]} />
+            </Head>
 
             <div className="container mx-auto px-4 py-10">
                 <div className="mb-6">
