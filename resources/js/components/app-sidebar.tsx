@@ -42,6 +42,7 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { index as achievementsIndex } from '@/actions/App/Http/Controllers/Admin/AchievementController';
+import { index as extracurricularsIndex } from '@/actions/App/Http/Controllers/Admin/ExtracurricularController';
 import { index as facilitiesIndex } from '@/actions/App/Http/Controllers/Admin/FacilityController';
 import { index as announcementsIndex } from '@/actions/App/Http/Controllers/Admin/AnnouncementController';
 import { index as articlesIndex } from '@/actions/App/Http/Controllers/Admin/ArticleController';
@@ -112,8 +113,8 @@ export function AppSidebar() {
                     icon: Award,
                 },
                 {
-                    title: 'Ekstrakulikuler',
-                    href: '/profil/ekstrakulikuler',
+                    title: 'Ekstrakurikuler',
+                    href: extracurricularsIndex.url(),
                     icon: BookOpenCheck,
                 },
             ],

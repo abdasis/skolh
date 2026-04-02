@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\Admin\AchievementController as AdminAchievementController;
+use App\Http\Controllers\Admin\ExtracurricularController as AdminExtracurricularController;
+use App\Http\Controllers\ExtracurricularController;
 use App\Http\Controllers\Admin\AgendaController;
 use App\Http\Controllers\Admin\AnnouncementAttachmentController;
 use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementController;
@@ -31,6 +33,8 @@ Route::get('/articles/{article:slug}', [ArticleController::class, 'show'])->name
 Route::post('/contact-messages', [ContactMessageController::class, 'store'])->middleware('throttle:contact-form')->name('contact-messages.store');
 Route::get('/achievements', [AchievementController::class, 'index'])->name('achievements.index');
 Route::get('/achievements/{achievement}', [AchievementController::class, 'show'])->name('achievements.show');
+Route::get('/extracurriculars', [ExtracurricularController::class, 'index'])->name('extracurriculars.index');
+Route::get('/extracurriculars/{extracurricular:slug}', [ExtracurricularController::class, 'show'])->name('extracurriculars.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
@@ -46,6 +50,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::resource('articles', AdminArticleController::class);
     Route::resource('contact-messages', AdminContactMessageController::class)->only(['index', 'show', 'destroy']);
     Route::resource('achievements', AdminAchievementController::class);
+    Route::resource('extracurriculars', AdminExtracurricularController::class);
     Route::delete('announcement-attachments/{attachment}', [AnnouncementAttachmentController::class, 'destroy'])
         ->name('announcement-attachments.destroy');
 });
