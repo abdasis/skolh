@@ -10,3 +10,4 @@ export type * from './navigation';
 export type * from './seo';
 export type * from './ui';
 export type * from './extracurricular';
+export type * from './teacher';

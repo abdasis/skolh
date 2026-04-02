@@ -14,8 +14,10 @@ use App\Repositories\Contracts\CategoryRepositoryInterface;
 use App\Repositories\Contracts\ContactMessageRepositoryInterface;
 use App\Repositories\Contracts\CurriculumRepositoryInterface;
 use App\Repositories\Contracts\ExtracurricularRepositoryInterface;
+use App\Repositories\Contracts\TeacherRepositoryInterface;
 use App\Repositories\CurriculumRepository;
 use App\Repositories\ExtracurricularRepository;
+use App\Repositories\TeacherRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -40,6 +42,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ArticleRepositoryInterface::class, ArticleRepository::class);
         $this->app->bind(ContactMessageRepositoryInterface::class, ContactMessageRepository::class);
         $this->app->bind(ExtracurricularRepositoryInterface::class, ExtracurricularRepository::class);
+        $this->app->bind(TeacherRepositoryInterface::class, TeacherRepository::class);
     }
 
     /**

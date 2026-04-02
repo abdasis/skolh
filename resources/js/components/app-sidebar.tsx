@@ -43,6 +43,7 @@ import {
 } from '@/components/ui/sidebar';
 import { index as achievementsIndex } from '@/actions/App/Http/Controllers/Admin/AchievementController';
 import { index as extracurricularsIndex } from '@/actions/App/Http/Controllers/Admin/ExtracurricularController';
+import { index as teachersIndex } from '@/actions/App/Http/Controllers/Admin/TeacherController';
 import { index as facilitiesIndex } from '@/actions/App/Http/Controllers/Admin/FacilityController';
 import { index as announcementsIndex } from '@/actions/App/Http/Controllers/Admin/AnnouncementController';
 import { index as articlesIndex } from '@/actions/App/Http/Controllers/Admin/ArticleController';
@@ -158,9 +159,14 @@ export function AppSidebar() {
                     icon: ClipboardList,
                 },
                 {
+                    title: 'Data Guru',
+                    href: teachersIndex.url(),
+                    icon: Users,
+                },
+                {
                     title: 'Data Siswa',
                     href: '/akademik/siswa',
-                    icon: Users,
+                    icon: Users2,
                 },
                 {
                     title: 'Alumni',

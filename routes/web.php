@@ -3,6 +3,7 @@
 use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\Admin\AchievementController as AdminAchievementController;
 use App\Http\Controllers\Admin\ExtracurricularController as AdminExtracurricularController;
+use App\Http\Controllers\Admin\TeacherController as AdminTeacherController;
 use App\Http\Controllers\ExtracurricularController;
 use App\Http\Controllers\Admin\AgendaController;
 use App\Http\Controllers\Admin\AnnouncementAttachmentController;
@@ -51,6 +52,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::resource('contact-messages', AdminContactMessageController::class)->only(['index', 'show', 'destroy']);
     Route::resource('achievements', AdminAchievementController::class);
     Route::resource('extracurriculars', AdminExtracurricularController::class);
+    Route::resource('teachers', AdminTeacherController::class);
     Route::delete('announcement-attachments/{attachment}', [AnnouncementAttachmentController::class, 'destroy'])
         ->name('announcement-attachments.destroy');
 });
