@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Repositories\AchievementRepository;
 use App\Repositories\AnnouncementRepository;
 use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\ContactMessageRepository;
+use App\Repositories\Contracts\AchievementRepositoryInterface;
 use App\Repositories\Contracts\AnnouncementRepositoryInterface;
 use App\Repositories\Contracts\ArticleRepositoryInterface;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
@@ -29,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->bind(AchievementRepositoryInterface::class, AchievementRepository::class);
         $this->app->bind(CurriculumRepositoryInterface::class, CurriculumRepository::class);
         $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
         $this->app->bind(AnnouncementRepositoryInterface::class, AnnouncementRepository::class);

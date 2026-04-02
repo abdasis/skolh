@@ -33,6 +33,35 @@ declare module '@tanstack/react-table' {
     }
 }
 
+export interface DataTableFilterSelect {
+    type: 'select';
+    key: string;
+    label: string;
+    placeholder?: string;
+    options: FilterOption[];
+    className?: string;
+}
+
+export interface DataTableFilterText {
+    type: 'text';
+    key: string;
+    label: string;
+    placeholder?: string;
+    className?: string;
+}
+
+export interface DataTableFilterYearRange {
+    type: 'year-range';
+    key: string;
+    label: string;
+    placeholder?: string;
+    from?: number;
+    to?: number;
+    className?: string;
+}
+
+export type DataTableFilter = DataTableFilterSelect | DataTableFilterText | DataTableFilterYearRange;
+
 export interface DataTableProps<TData> {
     columns: ColumnDef<TData>[];
     data: TData[];
@@ -43,4 +72,7 @@ export interface DataTableProps<TData> {
     searchPlaceholder?: string;
     title?: string;
     description?: string;
+    filters?: DataTableFilter[];
+    filterValues?: Record<string, string | undefined>;
+    onFilterChange?: (key: string, value: string) => void;
 }

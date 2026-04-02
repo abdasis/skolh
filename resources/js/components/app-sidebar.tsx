@@ -41,6 +41,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { index as achievementsIndex } from '@/actions/App/Http/Controllers/Admin/AchievementController';
 import { index as facilitiesIndex } from '@/actions/App/Http/Controllers/Admin/FacilityController';
 import { index as announcementsIndex } from '@/actions/App/Http/Controllers/Admin/AnnouncementController';
 import { index as articlesIndex } from '@/actions/App/Http/Controllers/Admin/ArticleController';
@@ -107,7 +108,7 @@ export function AppSidebar() {
                 },
                 {
                     title: 'Prestasi',
-                    href: '/profil/prestasi',
+                    href: achievementsIndex.url(),
                     icon: Award,
                 },
                 {

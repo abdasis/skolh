@@ -38,6 +38,9 @@ export function DataTable<TData>({
     onStateChange,
     title,
     description,
+    filters,
+    filterValues,
+    onFilterChange,
 }: DataTableProps<TData>) {
     const [globalFilter, setGlobalFilter] = React.useState('');
     const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -116,6 +119,9 @@ export function DataTable<TData>({
                         globalFilter={globalFilter}
                         onGlobalFilterChange={setGlobalFilter}
                         searchPlaceholder={searchPlaceholder}
+                        filters={filters}
+                        filterValues={filterValues}
+                        onFilterChange={onFilterChange}
                     />
                 </div>
                 <Table>
