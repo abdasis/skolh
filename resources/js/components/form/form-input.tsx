@@ -5,17 +5,17 @@ import React from 'react';
 import { FormLabel } from './form-label';
 
 interface FormInputProps extends React.ComponentProps<'input'> {
-    label: string;
+    label?: string;
     error?: string;
     description?: string;
 }
 
 const FormInput = ({ label, error, description, id, required, className, ...props }: FormInputProps) => {
-    const inputId = id ?? label.toLowerCase().replace(/\s+/g, '-');
+    const inputId = id ?? label?.toLowerCase().replace(/\s+/g, '-');
 
     return (
         <div className="grid gap-2">
-            <FormLabel htmlFor={inputId} required={required}>{label}</FormLabel>
+            {label && <FormLabel htmlFor={inputId} required={required}>{label}</FormLabel>}
             <Input
                 id={inputId}
                 required={required}

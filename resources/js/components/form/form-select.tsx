@@ -9,7 +9,7 @@ interface SelectOption {
 }
 
 interface FormSelectProps {
-    label: string;
+    label?: string;
     value: string;
     onValueChange: (value: string) => void;
     options: SelectOption[];
@@ -23,11 +23,11 @@ interface FormSelectProps {
 }
 
 const FormSelect = ({ label, value, onValueChange, options, placeholder, error, description, id, disabled, required, className }: FormSelectProps) => {
-    const inputId = id ?? label.toLowerCase().replace(/\s+/g, '-');
+    const inputId = id ?? label?.toLowerCase().replace(/\s+/g, '-');
 
     return (
         <div className="grid gap-2">
-            <FormLabel htmlFor={inputId} required={required}>{label}</FormLabel>
+            {label && <FormLabel htmlFor={inputId} required={required}>{label}</FormLabel>}
             <Select value={value} onValueChange={onValueChange} disabled={disabled}>
                 <SelectTrigger
                     id={inputId}

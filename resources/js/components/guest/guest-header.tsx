@@ -1,5 +1,6 @@
 import * as AnnouncementController from '@/actions/App/Http/Controllers/AnnouncementController';
 import * as ArticleController from '@/actions/App/Http/Controllers/ArticleController';
+import OrganizationController from '@/actions/App/Http/Controllers/OrganizationController';
 import { dashboard, home, login, register } from '@/routes';
 import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
@@ -15,6 +16,7 @@ const GuestHeader = ({ canRegister = true }: { canRegister?: boolean }) => {
         { href: '#fasilitas', label: 'Fasilitas' },
         { href: ArticleController.index().url, label: 'Berita' },
         { href: AnnouncementController.index().url, label: 'Pengumuman' },
+        { href: OrganizationController.url(), label: 'Organisasi' },
         { href: '#kontak', label: 'Kontak' },
     ];
 
