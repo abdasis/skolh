@@ -54,6 +54,7 @@ import { index as articlesIndex } from '@/actions/App/Http/Controllers/Admin/Art
 import { index as categoriesIndex } from '@/actions/App/Http/Controllers/Admin/CategoryController';
 import { index as curriculaIndex } from '@/actions/App/Http/Controllers/Admin/CurriculumController';
 import { index as contactMessagesIndex } from '@/actions/App/Http/Controllers/Admin/ContactMessageController';
+import { index as testimonialsIndex } from '@/actions/App/Http/Controllers/Admin/TestimonialController';
 import { dashboard } from '@/routes';
 import type { NavGroup } from '@/types';
 
@@ -195,7 +196,7 @@ export function AppSidebar() {
                 },
                 {
                     title: 'Testimoni',
-                    href: '/testimoni',
+                    href: testimonialsIndex.url(),
                     icon: MessageSquare,
                 },
                 {

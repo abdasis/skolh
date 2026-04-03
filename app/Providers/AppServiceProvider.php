@@ -17,12 +17,14 @@ use App\Repositories\Contracts\ExtracurricularRepositoryInterface;
 use App\Repositories\Contracts\GalleryAlbumRepositoryInterface;
 use App\Repositories\Contracts\OrganizationNodeRepositoryInterface;
 use App\Repositories\Contracts\TeacherRepositoryInterface;
+use App\Repositories\Contracts\TestimonialRepositoryInterface;
 use App\Repositories\CurriculumRepository;
 use App\Repositories\ExtracurricularRepository;
 use App\Repositories\GalleryAlbumRepository;
 use App\Services\ThemeRegistryService;
 use App\Repositories\OrganizationNodeRepository;
 use App\Repositories\TeacherRepository;
+use App\Repositories\TestimonialRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -50,6 +52,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(TeacherRepositoryInterface::class, TeacherRepository::class);
         $this->app->bind(OrganizationNodeRepositoryInterface::class, OrganizationNodeRepository::class);
         $this->app->bind(GalleryAlbumRepositoryInterface::class, GalleryAlbumRepository::class);
+        $this->app->bind(TestimonialRepositoryInterface::class, TestimonialRepository::class);
         $this->app->singleton(ThemeRegistryService::class);
     }
 

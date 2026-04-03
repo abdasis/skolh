@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\AchievementController as AdminAchievementControll
 use App\Http\Controllers\Admin\ExtracurricularController as AdminExtracurricularController;
 use App\Http\Controllers\Admin\OrganizationNodeController as AdminOrganizationNodeController;
 use App\Http\Controllers\Admin\TeacherController as AdminTeacherController;
+use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialController;
 use App\Http\Controllers\ExtracurricularController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\Admin\AgendaController;
@@ -79,6 +80,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::post('media', [AdminMediaController::class, 'store'])->name('media.store');
     Route::get('themes', [AdminThemeController::class, 'index'])->name('themes.index');
     Route::post('themes/{slug}/activate', [AdminThemeController::class, 'activate'])->name('themes.activate');
+    Route::post('testimonials/reorder', [AdminTestimonialController::class, 'reorder'])->name('testimonials.reorder');
+    Route::resource('testimonials', AdminTestimonialController::class)->except(['show']);
 });
 
 require __DIR__.'/settings.php';

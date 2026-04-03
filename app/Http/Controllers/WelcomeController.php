@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\TestimonialResource;
 use App\Models\Agenda;
 use App\Models\Article;
 use App\Models\Facility;
+use App\Models\Testimonial;
 use App\Repositories\Contracts\CurriculumRepositoryInterface;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -36,6 +38,12 @@ class WelcomeController extends Controller
 
         $curricula = $this->curriculumRepository->getActive();
 
+        $testimonials = Testimonial::query()
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->limit(6)
+            ->get();
+
         return Inertia::render('welcome', [
             'canRegister' => Features::enabled(Features::registration()),
             'agendas' => $agendas,
@@ -43,6 +51,7 @@ class WelcomeController extends Controller
             'facilitiesTotal' => $facilitiesTotal,
             'articles' => $articles,
             'curricula' => $curricula,
+            'testimonials' => TestimonialResource::collection($testimonials),
         ]);
     }
 }

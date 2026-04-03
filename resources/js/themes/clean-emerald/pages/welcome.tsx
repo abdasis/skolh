@@ -3,7 +3,7 @@ import { show as curriculumShow } from '@/actions/App/Http/Controllers/Curriculu
 import { store as contactMessageStore } from '@/actions/App/Http/Controllers/ContactMessageController';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import * as Icons from 'lucide-react';
-import { type CurriculumCardResource } from '@/types';
+import { type CurriculumCardResource, type Testimonial } from '@/types';
 
 interface AgendaPreview {
     id: number;
@@ -31,6 +31,13 @@ interface ArticlePreview {
     categories: { id: number; name: string; slug: string }[];
 }
 
+const getInitials = (name: string): string => {
+    const parts = name.trim().split(/\s+/);
+    const first = parts[0]?.[0] ?? '';
+    const last = parts.length > 1 ? (parts[parts.length - 1]?.[0] ?? '') : '';
+    return (first + last).toUpperCase();
+};
+
 const Welcome = ({
     canRegister = true,
     agendas = [],
@@ -38,6 +45,7 @@ const Welcome = ({
     facilitiesTotal = 0,
     articles = [],
     curricula = [],
+    testimonials = [],
 }: {
     canRegister?: boolean;
     agendas?: AgendaPreview[];
@@ -45,6 +53,7 @@ const Welcome = ({
     facilitiesTotal?: number;
     articles?: ArticlePreview[];
     curricula?: CurriculumCardResource[];
+    testimonials?: Testimonial[];
 }) => {
     const { flash } = usePage<{ flash: { success: string | null; error: string | null } }>().props;
 
@@ -1165,52 +1174,9 @@ const Welcome = ({
 
                     {/* Testimonial grid */}
                     <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        {[
-                            {
-                                name: 'Bpk. Ahmad Fauzi',
-                                role: 'Orang Tua Siswa Kelas 4',
-                                avatar: 'AF',
-                                quote: 'Alhamdulillah, anak saya sangat berkembang sejak bersekolah di sini. Bukan hanya nilai akademiknya yang meningkat, tapi akhlak dan hafalan Quran-nya pun luar biasa. Gurunya sabar dan profesional.',
-                                highlight: 'Akhlak & Hafalan Quran',
-                            },
-                            {
-                                name: 'Ibu Siti Rahmawati',
-                                role: 'Orang Tua Siswa Kelas 6',
-                                avatar: 'SR',
-                                quote: 'SDIT Al-Aziz benar-benar menjawab harapan saya sebagai orang tua. Anak saya diajarkan kemandirian, disiplin, dan nilai-nilai Islam sejak dini. Saya bangga dengan perkembangan mereka.',
-                                highlight: 'Kemandirian & Disiplin',
-                            },
-                            {
-                                name: 'Bpk. Hendra Wijaya',
-                                role: 'Orang Tua Siswa Kelas 2',
-                                avatar: 'HW',
-                                quote: 'Fasilitas lengkap, guru-guru yang peduli, dan lingkungan yang islami. Anak saya betah dan semangat berangkat sekolah setiap hari. Komunitas orang tua di sini juga sangat supportif.',
-                                highlight: 'Lingkungan Islami',
-                            },
-                            {
-                                name: 'Ibu Nurul Hidayah',
-                                role: 'Orang Tua Siswa Kelas 3',
-                                avatar: 'NH',
-                                quote: 'Program Tahfidz yang terstruktur membuat anak saya berhasil menghafal 2 juz hanya dalam setahun. Metode pengajarannya menyenangkan sehingga anak tidak merasa terbebani.',
-                                highlight: 'Program Tahfidz',
-                            },
-                            {
-                                name: 'Bpk. Rizky Pratama',
-                                role: 'Orang Tua Siswa Kelas 5',
-                                avatar: 'RP',
-                                quote: 'Komunikasi antara sekolah dan orang tua sangat baik. Kami selalu diinformasikan perkembangan anak secara berkala. Kepala sekolah dan guru sangat terbuka untuk berdiskusi.',
-                                highlight: 'Komunikasi Aktif',
-                            },
-                            {
-                                name: 'Ibu Dewi Kusuma',
-                                role: 'Orang Tua Siswa Kelas 1',
-                                avatar: 'DK',
-                                quote: 'Sejak hari pertama, anak saya langsung nyaman. Guru kelasnya sangat perhatian dan sabar menghadapi anak-anak. Pendekatan pembelajaran yang fun membuat anak cepat beradaptasi.',
-                                highlight: 'Guru yang Perhatian',
-                            },
-                        ].map((item) => (
+                        {testimonials.map((item) => (
                             <div
-                                key={item.name}
+                                key={item.id}
                                 className="group relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.1),0_20px_25px_-5px_rgba(0,0,0,0.05)] dark:bg-gray-900 dark:shadow-[0_2px_15px_-3px_rgba(0,0,0,0.3),0_10px_20px_-2px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.4),0_20px_25px_-5px_rgba(0,0,0,0.3)]"
                             >
                                 {/* Top accent bar */}
@@ -1259,9 +1225,17 @@ const Welcome = ({
                                     <div className="mt-5 border-t border-gray-100 pt-5 dark:border-gray-800">
                                         {/* Avatar + identity */}
                                         <div className="flex items-center gap-3">
-                                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xs font-extrabold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
-                                                {item.avatar}
-                                            </div>
+                                            {item.avatar_url ? (
+                                                <img
+                                                    src={item.avatar_url}
+                                                    alt={item.name}
+                                                    className="h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-emerald-200 dark:ring-emerald-800"
+                                                />
+                                            ) : (
+                                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xs font-extrabold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
+                                                    {getInitials(item.name)}
+                                                </div>
+                                            )}
                                             <div>
                                                 <p className="text-sm font-semibold text-gray-900 dark:text-white">
                                                     {item.name}

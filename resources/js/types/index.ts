@@ -15,3 +15,4 @@ export type * from './organization-node';
 export type * from './gallery';
 export type * from './media';
 export type * from './theme';
+export type * from './testimonial';
