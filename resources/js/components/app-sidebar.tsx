@@ -24,6 +24,7 @@ import {
     Settings2,
     ShieldCheck,
     Star,
+    Palette,
     Tag,
     Users,
     Users2,
@@ -45,6 +46,7 @@ import { index as achievementsIndex } from '@/actions/App/Http/Controllers/Admin
 import { index as extracurricularsIndex } from '@/actions/App/Http/Controllers/Admin/ExtracurricularController';
 import { index as teachersIndex } from '@/actions/App/Http/Controllers/Admin/TeacherController';
 import { index as galleryAlbumsIndex } from '@/actions/App/Http/Controllers/Admin/GalleryAlbumController';
+import { index as themesIndex } from '@/actions/App/Http/Controllers/Admin/ThemeController';
 import { index as organizationNodesIndex } from '@/actions/App/Http/Controllers/Admin/OrganizationNodeController';
 import { index as facilitiesIndex } from '@/actions/App/Http/Controllers/Admin/FacilityController';
 import { index as announcementsIndex } from '@/actions/App/Http/Controllers/Admin/AnnouncementController';
@@ -206,6 +208,11 @@ export function AppSidebar() {
         {
             label: 'Pengaturan',
             items: [
+                {
+                    title: 'Manajemen Tema',
+                    href: themesIndex.url(),
+                    icon: Palette,
+                },
                 {
                     title: 'Preferensi Situs',
                     href: '/preferensi',

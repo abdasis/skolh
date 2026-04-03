@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\ContactMessage;
+use App\Services\ThemeRegistryService;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -48,6 +49,7 @@ class HandleInertiaRequests extends Middleware
                 'error' => $request->session()->get('error'),
             ],
             'unreadContactMessagesCount' => $request->user() ? ContactMessage::unread()->count() : 0,
+            'activeTheme' => app(ThemeRegistryService::class)->getActiveSlug(),
         ];
     }
 }

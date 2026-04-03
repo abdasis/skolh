@@ -20,6 +20,7 @@ use App\Repositories\Contracts\TeacherRepositoryInterface;
 use App\Repositories\CurriculumRepository;
 use App\Repositories\ExtracurricularRepository;
 use App\Repositories\GalleryAlbumRepository;
+use App\Services\ThemeRegistryService;
 use App\Repositories\OrganizationNodeRepository;
 use App\Repositories\TeacherRepository;
 use Carbon\CarbonImmutable;
@@ -49,6 +50,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(TeacherRepositoryInterface::class, TeacherRepository::class);
         $this->app->bind(OrganizationNodeRepositoryInterface::class, OrganizationNodeRepository::class);
         $this->app->bind(GalleryAlbumRepositoryInterface::class, GalleryAlbumRepository::class);
+        $this->app->singleton(ThemeRegistryService::class);
     }
 
     /**

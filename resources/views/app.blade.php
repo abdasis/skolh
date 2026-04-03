@@ -54,7 +54,18 @@
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
         @viteReactRefresh
-        @vite(['resources/css/app.css', 'resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
+        @php
+            $component = $page['component'];
+            $isThemePage = !str_starts_with($component, 'auth/')
+                && !str_starts_with($component, 'settings/')
+                && $component !== 'dashboard'
+                && !str_starts_with($component, 'admin/');
+            $activeTheme = $page['props']['activeTheme'] ?? config('themes.default', 'clean-emerald');
+            $componentPath = $isThemePage
+                ? "resources/js/themes/{$activeTheme}/pages/{$component}.tsx"
+                : "resources/js/pages/{$component}.tsx";
+        @endphp
+        @vite(['resources/css/app.css', 'resources/js/app.tsx', $componentPath])
         <x-inertia::head>
             <title>{{ config('app.name', 'Laravel') }}</title>
         </x-inertia::head>
