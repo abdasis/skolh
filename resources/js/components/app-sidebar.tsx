@@ -56,6 +56,9 @@ import { index as curriculaIndex } from '@/actions/App/Http/Controllers/Admin/Cu
 import { index as contactMessagesIndex } from '@/actions/App/Http/Controllers/Admin/ContactMessageController';
 import { index as testimonialsIndex } from '@/actions/App/Http/Controllers/Admin/TestimonialController';
 import { index as alumniIndex } from '@/actions/App/Http/Controllers/Admin/AlumniController';
+import { index as admissionPeriodsIndex } from '@/actions/App/Http/Controllers/Admin/AdmissionPeriodController';
+import { index as customFieldsIndex } from '@/actions/App/Http/Controllers/Admin/CustomFieldController';
+import { index as registrationsIndex } from '@/actions/App/Http/Controllers/Admin/RegistrationController';
 import { dashboard } from '@/routes';
 import type { NavGroup } from '@/types';
 
@@ -160,9 +163,19 @@ export function AppSidebar() {
             label: 'Akademik',
             items: [
                 {
-                    title: 'SPMB',
-                    href: '/spmb',
+                    title: 'Pengaturan SPMB',
+                    href: admissionPeriodsIndex.url(),
+                    icon: Settings2,
+                },
+                {
+                    title: 'Custom Fields SPMB',
+                    href: customFieldsIndex.url(),
                     icon: ClipboardList,
+                },
+                {
+                    title: 'Data Pendaftaran',
+                    href: registrationsIndex.url(),
+                    icon: FileText,
                 },
                 {
                     title: 'Data Guru',

@@ -1,4 +1,5 @@
 import { index as announcementIndex } from '@/actions/App/Http/Controllers/AnnouncementController';
+import { index as admissionIndex, check as admissionCheck } from '@/actions/App/Http/Controllers/Public/AdmissionController';
 import { Link } from '@inertiajs/react';
 import { Clock, Mail, MapPin, Phone } from 'lucide-react';
 
@@ -59,13 +60,29 @@ const GuestFooter = () => {
                                 Akademik
                             </p>
                             <ul className="space-y-2">
-                                {['Program Unggulan', 'Ekstrakurikuler', 'Prestasi', 'Kalender Akademik', 'PPDB', 'Berita'].map((item) => (
+                                {['Program Unggulan', 'Ekstrakurikuler', 'Prestasi', 'Kalender Akademik', 'Berita'].map((item) => (
                                     <li key={item}>
                                         <a href="#" className="text-sm text-gray-400 transition hover:text-emerald-600 dark:text-gray-500 dark:hover:text-emerald-400">
                                             {item}
                                         </a>
                                     </li>
                                 ))}
+                                <li>
+                                    <Link
+                                        href={admissionIndex.url()}
+                                        className="text-sm text-gray-400 transition hover:text-emerald-600 dark:text-gray-500 dark:hover:text-emerald-400"
+                                    >
+                                        Pendaftaran SPMB
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        href={admissionCheck.url()}
+                                        className="text-sm text-gray-400 transition hover:text-emerald-600 dark:text-gray-500 dark:hover:text-emerald-400"
+                                    >
+                                        Cek Status Pendaftaran
+                                    </Link>
+                                </li>
                             </ul>
                         </div>
                         <div>

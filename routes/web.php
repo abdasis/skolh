@@ -11,6 +11,10 @@ use App\Http\Controllers\Admin\ExtracurricularController as AdminExtracurricular
 use App\Http\Controllers\Admin\OrganizationNodeController as AdminOrganizationNodeController;
 use App\Http\Controllers\Admin\TeacherController as AdminTeacherController;
 use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialController;
+use App\Http\Controllers\Admin\AdmissionPeriodController as AdminAdmissionPeriodController;
+use App\Http\Controllers\Public\AdmissionController;
+use App\Http\Controllers\Admin\CustomFieldController as AdminCustomFieldController;
+use App\Http\Controllers\Admin\RegistrationController as AdminRegistrationController;
 use App\Http\Controllers\Admin\AlumniController as AdminAlumniController;
 use App\Http\Controllers\ExtracurricularController;
 use App\Http\Controllers\OrganizationController;
@@ -49,6 +53,16 @@ Route::get('/organization', OrganizationController::class)->name('organization.i
 Route::get('/gallery', [GalleryAlbumController::class, 'index'])->name('gallery.index');
 Route::get('/gallery/{galleryAlbum:slug}', [GalleryAlbumController::class, 'show'])->name('gallery.show');
 
+// Pendaftaran publik (SPMB)
+Route::prefix('admission')->name('admission.')->group(function () {
+    Route::get('/', [AdmissionController::class, 'index'])->name('index');
+    Route::post('/register', [AdmissionController::class, 'store'])->name('store');
+    Route::get('/success/{registration:registration_number}', [AdmissionController::class, 'success'])->name('success');
+    Route::get('/success/{registration:registration_number}/pdf', [AdmissionController::class, 'downloadPdf'])->name('pdf');
+    Route::get('/check', [AdmissionController::class, 'check'])->name('check');
+    Route::post('/check', [AdmissionController::class, 'checkStatus'])->name('check-status');
+});
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
 });
@@ -85,6 +99,13 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::resource('testimonials', AdminTestimonialController::class)->except(['show']);
     Route::post('alumni/reorder', [AdminAlumniController::class, 'reorder'])->name('alumni.reorder');
     Route::resource('alumni', AdminAlumniController::class)->except(['show']);
+    Route::resource('admission-periods', AdminAdmissionPeriodController::class)->only(['index', 'store', 'update']);
+    Route::post('custom-fields/reorder', [AdminCustomFieldController::class, 'reorder'])->name('custom-fields.reorder');
+    Route::resource('custom-fields', AdminCustomFieldController::class)->except(['show']);
+    Route::get('registrations/export', [AdminRegistrationController::class, 'export'])->name('registrations.export');
+    Route::patch('registrations/{registration}/status', [AdminRegistrationController::class, 'updateStatus'])->name('registrations.update-status');
+    Route::get('registrations/{registration}/pdf', [AdminRegistrationController::class, 'downloadPdf'])->name('registrations.pdf');
+    Route::resource('registrations', AdminRegistrationController::class)->only(['index', 'show']);
 });
 
 require __DIR__.'/settings.php';

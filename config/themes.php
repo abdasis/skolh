@@ -24,5 +24,9 @@ return [
         'gallery/index',
         'gallery/show',
         'public/organization',
+        'admission/register',
+        'admission/closed',
+        'admission/success',
+        'admission/check',
     ],
 ];

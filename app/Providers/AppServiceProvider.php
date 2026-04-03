@@ -18,7 +18,13 @@ use App\Repositories\Contracts\GalleryAlbumRepositoryInterface;
 use App\Repositories\Contracts\OrganizationNodeRepositoryInterface;
 use App\Repositories\Contracts\TeacherRepositoryInterface;
 use App\Repositories\Contracts\TestimonialRepositoryInterface;
+use App\Repositories\Contracts\AdmissionPeriodRepositoryInterface;
 use App\Repositories\Contracts\AlumniRepositoryInterface;
+use App\Repositories\Contracts\CustomFieldRepositoryInterface;
+use App\Repositories\Contracts\RegistrationRepositoryInterface;
+use App\Repositories\AdmissionPeriodRepository;
+use App\Repositories\CustomFieldRepository;
+use App\Repositories\RegistrationRepository;
 use App\Repositories\CurriculumRepository;
 use App\Repositories\ExtracurricularRepository;
 use App\Repositories\GalleryAlbumRepository;
@@ -56,6 +62,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(GalleryAlbumRepositoryInterface::class, GalleryAlbumRepository::class);
         $this->app->bind(TestimonialRepositoryInterface::class, TestimonialRepository::class);
         $this->app->bind(AlumniRepositoryInterface::class, AlumniRepository::class);
+        $this->app->bind(AdmissionPeriodRepositoryInterface::class, AdmissionPeriodRepository::class);
+        $this->app->bind(CustomFieldRepositoryInterface::class, CustomFieldRepository::class);
+        $this->app->bind(RegistrationRepositoryInterface::class, RegistrationRepository::class);
         $this->app->singleton(ThemeRegistryService::class);
     }
 

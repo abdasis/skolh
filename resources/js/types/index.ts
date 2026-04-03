@@ -17,3 +17,6 @@ export type * from './media';
 export type * from './theme';
 export type * from './testimonial';
 export type * from './alumni';
+export type * from './admission-period';
+export type * from './custom-field';
+export type * from './registration';
