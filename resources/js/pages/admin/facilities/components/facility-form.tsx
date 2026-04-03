@@ -3,6 +3,8 @@ import { type InertiaFormProps } from '@inertiajs/react';
 import { FormIconPicker, FormInput, FormTextarea, FormSelect, FormSubmit, FormLabel, type SelectOption } from '@/components/form';
 import { TiptapEditor } from '@/components/tiptap-editor';
 import InputError from '@/components/ui/input-error';
+import { Button } from '@/components/ui/button';
+import { Link } from '@inertiajs/react';
 
 export interface FacilityFormData {
     icon: string;
@@ -18,6 +20,7 @@ interface Props {
     onSubmit: FormEventHandler<HTMLFormElement>;
     submitLabel?: string;
     existingImageUrl?: string | null;
+    cancelHref: string;
 }
 
 const statusOptions: SelectOption[] = [
@@ -25,7 +28,7 @@ const statusOptions: SelectOption[] = [
     { value: 'public', label: 'Publik' },
 ];
 
-export function FacilityForm({ form, onSubmit, submitLabel = 'Simpan', existingImageUrl }: Props) {
+export function FacilityForm({ form, onSubmit, submitLabel = 'Simpan', existingImageUrl, cancelHref }: Props) {
     const { data, setData, errors, processing, recentlySuccessful } = form;
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(existingImageUrl ?? null);
@@ -105,9 +108,14 @@ export function FacilityForm({ form, onSubmit, submitLabel = 'Simpan', existingI
                 required
             />
 
-            <FormSubmit processing={processing} successful={recentlySuccessful}>
-                {submitLabel}
-            </FormSubmit>
+            <div className="flex justify-end gap-2">
+                <Button type="button" variant="outline" asChild>
+                    <Link href={cancelHref}>Batal</Link>
+                </Button>
+                <FormSubmit processing={processing} successful={recentlySuccessful}>
+                    {submitLabel}
+                </FormSubmit>
+            </div>
         </form>
     );
 }

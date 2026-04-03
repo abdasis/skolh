@@ -20,10 +20,10 @@ class UpdateGalleryAlbumRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
-            'cover_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'cover_image_path' => ['nullable', 'string', 'max:500'],
             'status' => ['required', 'string', 'in:published,draft'],
-            'images' => ['nullable', 'array'],
-            'images.*' => ['image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'image_paths' => ['nullable', 'array'],
+            'image_paths.*' => ['string', 'max:500'],
         ];
     }
 }

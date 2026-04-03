@@ -44,6 +44,7 @@ const AdminFacilitiesEdit = ({ facility }: Props) => {
                                 onSubmit={handleSubmit}
                                 submitLabel="Simpan Perubahan"
                                 existingImageUrl={facility.featured_image}
+                                cancelHref={FacilityController.index.url()}
                             />
                         </div>
                     </div>

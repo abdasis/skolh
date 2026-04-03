@@ -13,3 +13,4 @@ export type * from './extracurricular';
 export type * from './teacher';
 export type * from './organization-node';
 export type * from './gallery';
+export type * from './media';

@@ -23,16 +23,14 @@ const AdminGalleryAlbumsCreate = ({ statuses }: Props) => {
     const form = useForm<GalleryAlbumFormData>({
         title: '',
         description: '',
-        cover_image: null,
+        cover_image_path: null,
         status: 'draft',
-        images: [],
+        image_paths: [],
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        form.post(GalleryAlbumController.store.url(), {
-            forceFormData: true,
-        });
+        form.post(GalleryAlbumController.store.url());
     };
 
     return (

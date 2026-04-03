@@ -32,6 +32,7 @@ interface Props {
     days: EnumOption[];
     statuses: EnumOption[];
     existingImageUrl?: string | null;
+    cancelHref: string;
 }
 
 const ExtracurricularForm = ({
@@ -42,6 +43,7 @@ const ExtracurricularForm = ({
     days,
     statuses,
     existingImageUrl,
+    cancelHref,
 }: Props) => {
     const { data, setData, errors, processing, recentlySuccessful } = form;
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -159,9 +161,14 @@ const ExtracurricularForm = ({
                 required
             />
 
-            <FormSubmit processing={processing} successful={recentlySuccessful}>
-                {submitLabel}
-            </FormSubmit>
+            <div className="flex justify-end gap-2">
+                <Button type="button" variant="outline" asChild>
+                    <Link href={cancelHref}>Batal</Link>
+                </Button>
+                <FormSubmit processing={processing} successful={recentlySuccessful}>
+                    {submitLabel}
+                </FormSubmit>
+            </div>
         </form>
     );
 };

@@ -26,16 +26,14 @@ const AdminGalleryAlbumsEdit = ({ album, statuses }: Props) => {
         _method: 'PUT',
         title: album.title,
         description: album.description ?? '',
-        cover_image: null,
+        cover_image_path: album.cover_image ?? null,
         status: album.status,
-        images: [],
+        image_paths: [],
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        form.post(GalleryAlbumController.update.url({ gallery_album: album.id }), {
-            forceFormData: true,
-        });
+        form.post(GalleryAlbumController.update.url({ gallery_album: album.id }));
     };
 
     return (
@@ -58,7 +56,6 @@ const AdminGalleryAlbumsEdit = ({ album, statuses }: Props) => {
                                 onSubmit={handleSubmit}
                                 statuses={statuses}
                                 submitLabel="Simpan Perubahan"
-                                existingCoverUrl={album.cover_image_url}
                                 existingImages={album.images}
                                 albumId={album.id}
                             />

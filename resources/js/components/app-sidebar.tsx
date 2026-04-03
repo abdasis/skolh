@@ -44,6 +44,7 @@ import {
 import { index as achievementsIndex } from '@/actions/App/Http/Controllers/Admin/AchievementController';
 import { index as extracurricularsIndex } from '@/actions/App/Http/Controllers/Admin/ExtracurricularController';
 import { index as teachersIndex } from '@/actions/App/Http/Controllers/Admin/TeacherController';
+import { index as galleryAlbumsIndex } from '@/actions/App/Http/Controllers/Admin/GalleryAlbumController';
 import { index as organizationNodesIndex } from '@/actions/App/Http/Controllers/Admin/OrganizationNodeController';
 import { index as facilitiesIndex } from '@/actions/App/Http/Controllers/Admin/FacilityController';
 import { index as announcementsIndex } from '@/actions/App/Http/Controllers/Admin/AnnouncementController';
@@ -146,7 +147,7 @@ export function AppSidebar() {
                 },
                 {
                     title: 'Galeri',
-                    href: '/galeri',
+                    href: galleryAlbumsIndex.url(),
                     icon: Image,
                 },
             ],

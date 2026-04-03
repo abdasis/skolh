@@ -1,6 +1,6 @@
-import { type FormEventHandler, useRef, useState } from 'react';
+import { type FormEventHandler } from 'react';
 import { type InertiaFormProps } from '@inertiajs/react';
-import { FormInput, FormTextarea, FormSelect, FormSubmit, FormLabel, type SelectOption } from '@/components/form';
+import { FormInput, FormTextarea, FormSelect, FormSubmit, FormLabel, type SelectOption, FormImagePicker, FormMultiImagePicker } from '@/components/form';
 import InputError from '@/components/ui/input-error';
 import { Button } from '@/components/ui/button';
 import { Link } from '@inertiajs/react';
@@ -16,9 +16,9 @@ export interface GalleryAlbumFormData {
     _method?: string;
     title: string;
     description: string;
-    cover_image: File | null;
+    cover_image_path: string | null;
     status: string;
-    images: File[];
+    image_paths: string[];
 }
 
 interface ExistingImage {
@@ -32,7 +32,6 @@ interface Props {
     onSubmit: FormEventHandler<HTMLFormElement>;
     submitLabel?: string;
     statuses: EnumOption[];
-    existingCoverUrl?: string | null;
     existingImages?: ExistingImage[];
     albumId?: number;
 }
@@ -42,34 +41,15 @@ const GalleryAlbumForm = ({
     onSubmit,
     submitLabel = 'Simpan',
     statuses,
-    existingCoverUrl,
     existingImages = [],
     albumId,
 }: Props) => {
     const { data, setData, errors, processing, recentlySuccessful } = form;
-    const coverInputRef = useRef<HTMLInputElement>(null);
-    const imagesInputRef = useRef<HTMLInputElement>(null);
-    const [coverPreviewUrl, setCoverPreviewUrl] = useState<string | null>(existingCoverUrl ?? null);
-    const [newImagePreviews, setNewImagePreviews] = useState<string[]>([]);
 
     const statusOptions: SelectOption[] = statuses.map((s) => ({ value: s.value, label: s.label }));
 
-    const handleCoverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0] ?? null;
-        setData('cover_image', file);
-        if (file) {
-            setCoverPreviewUrl(URL.createObjectURL(file));
-        }
-    };
-
-    const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files ? Array.from(e.target.files) : [];
-        setData('images', files);
-        setNewImagePreviews(files.map((f) => URL.createObjectURL(f)));
-    };
-
     return (
-        <form onSubmit={onSubmit} className="flex flex-col gap-4" encType="multipart/form-data">
+        <form onSubmit={onSubmit} className="flex flex-col gap-4">
             <FormInput
                 label="Judul Album"
                 value={data.title}
@@ -88,51 +68,21 @@ const GalleryAlbumForm = ({
                 error={errors.description}
             />
 
-            <div className="grid gap-2">
-                <FormLabel htmlFor="cover_image">Foto Sampul</FormLabel>
-                <input
-                    ref={coverInputRef}
-                    id="cover_image"
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp"
-                    onChange={handleCoverChange}
-                    className="text-sm file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-muted file:px-3 file:py-1.5 file:text-sm file:font-medium"
-                />
-                {coverPreviewUrl && (
-                    <img
-                        src={coverPreviewUrl}
-                        alt="Preview sampul"
-                        className="mt-1 h-32 w-auto rounded-md object-cover"
-                    />
-                )}
-                <InputError message={errors.cover_image} />
-            </div>
+            <FormImagePicker
+                label="Foto Sampul"
+                value={data.cover_image_path}
+                onChange={(url) => setData('cover_image_path', url)}
+                folder="gallery-albums/covers"
+                error={errors.cover_image_path}
+            />
 
-            <div className="grid gap-2">
-                <FormLabel htmlFor="images">Tambah Foto</FormLabel>
-                <input
-                    ref={imagesInputRef}
-                    id="images"
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp"
-                    multiple
-                    onChange={handleImagesChange}
-                    className="text-sm file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-muted file:px-3 file:py-1.5 file:text-sm file:font-medium"
-                />
-                {newImagePreviews.length > 0 && (
-                    <div className="mt-1 flex flex-wrap gap-2">
-                        {newImagePreviews.map((url, i) => (
-                            <img
-                                key={i}
-                                src={url}
-                                alt={`Preview ${i + 1}`}
-                                className="h-20 w-20 rounded-md object-cover ring-1 ring-foreground/10"
-                            />
-                        ))}
-                    </div>
-                )}
-                <InputError message={errors['images']} />
-            </div>
+            <FormMultiImagePicker
+                label="Tambah Foto"
+                value={data.image_paths}
+                onChange={(urls) => setData('image_paths', urls)}
+                folder={albumId ? `gallery-albums/${albumId}` : 'gallery-albums/temp'}
+                error={errors['image_paths']}
+            />
 
             {existingImages.length > 0 && albumId && (
                 <div className="grid gap-2">
@@ -174,9 +124,14 @@ const GalleryAlbumForm = ({
                 required
             />
 
-            <FormSubmit processing={processing} successful={recentlySuccessful}>
-                {submitLabel}
-            </FormSubmit>
+            <div className="flex justify-end gap-2">
+                <Button type="button" variant="outline" asChild>
+                    <Link href={GalleryAlbumController.index.url()}>Batal</Link>
+                </Button>
+                <FormSubmit processing={processing} successful={recentlySuccessful}>
+                    {submitLabel}
+                </FormSubmit>
+            </div>
         </form>
     );
 };

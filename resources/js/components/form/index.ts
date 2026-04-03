@@ -12,3 +12,7 @@ export { FormSelect } from './form-select';
 export type { SelectOption } from './form-select';
 export { FormSubmit } from './form-submit';
 export { FormTextarea } from './form-textarea';
+export { FormImagePicker } from './form-image-picker';
+export type { FormImagePickerProps } from './form-image-picker';
+export { FormMultiImagePicker } from './form-multi-image-picker';
+export type { FormMultiImagePickerProps } from './form-multi-image-picker';

@@ -67,6 +67,7 @@ const AdminExtracurricularsEdit = ({ extracurricular, categories, days, statuses
                                 statuses={statuses}
                                 submitLabel="Simpan Perubahan"
                                 existingImageUrl={extracurricular.featured_image_url}
+                                cancelHref={ExtracurricularController.index.url()}
                             />
                         </div>
                     </div>

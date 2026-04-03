@@ -38,6 +38,7 @@ export default function AdminFacilitiesCreate() {
                                 form={form}
                                 onSubmit={handleSubmit}
                                 submitLabel="Buat Fasilitas"
+                                cancelHref={FacilityController.index.url()}
                             />
                         </div>
                     </div>

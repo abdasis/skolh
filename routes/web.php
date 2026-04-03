@@ -3,6 +3,7 @@
 use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\Admin\GalleryAlbumController as AdminGalleryAlbumController;
 use App\Http\Controllers\Admin\GalleryImageController;
+use App\Http\Controllers\Admin\MediaController as AdminMediaController;
 use App\Http\Controllers\GalleryAlbumController;
 use App\Http\Controllers\Admin\AchievementController as AdminAchievementController;
 use App\Http\Controllers\Admin\ExtracurricularController as AdminExtracurricularController;
@@ -73,6 +74,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::resource('gallery-albums', AdminGalleryAlbumController::class);
     Route::delete('gallery-images/{galleryImage}', [GalleryImageController::class, 'destroy'])
         ->name('gallery-images.destroy');
+    Route::get('media', [AdminMediaController::class, 'index'])->name('media.index');
+    Route::post('media', [AdminMediaController::class, 'store'])->name('media.store');
 });
 
 require __DIR__.'/settings.php';

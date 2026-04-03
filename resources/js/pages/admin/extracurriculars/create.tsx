@@ -63,6 +63,7 @@ const AdminExtracurricularsCreate = ({ categories, days, statuses }: Props) => {
                                 days={days}
                                 statuses={statuses}
                                 submitLabel="Tambah Ekskul"
+                                cancelHref={ExtracurricularController.index.url()}
                             />
                         </div>
                     </div>

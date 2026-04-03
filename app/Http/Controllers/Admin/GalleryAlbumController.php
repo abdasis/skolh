@@ -51,8 +51,8 @@ class GalleryAlbumController extends Controller
     {
         $album = $this->createAction->handle($request->validated());
 
-        foreach ($request->file('images', []) as $file) {
-            $this->storeGalleryImageAction->handle($album, $file);
+        foreach ($request->validated('image_paths', []) as $path) {
+            $this->storeGalleryImageAction->handle($album, $path);
         }
 
         return redirect()->route('admin.gallery-albums.index')
@@ -71,8 +71,8 @@ class GalleryAlbumController extends Controller
     {
         $this->updateAction->handle($galleryAlbum, $request->validated());
 
-        foreach ($request->file('images', []) as $file) {
-            $this->storeGalleryImageAction->handle($galleryAlbum, $file);
+        foreach ($request->validated('image_paths', []) as $path) {
+            $this->storeGalleryImageAction->handle($galleryAlbum, $path);
         }
 
         return redirect()->route('admin.gallery-albums.index')
