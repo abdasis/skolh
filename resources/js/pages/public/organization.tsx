@@ -12,14 +12,11 @@ const PublicOrganizationPage = ({ nodes }: Props) => {
             <Head title="Struktur Organisasi" />
 
             <div className="mx-auto mt-[calc(1.75rem+3.75rem)] max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-                {/* Page header */}
                 <div className="relative">
-                    {/* Decorative background shapes */}
                     <div className="absolute -top-4 -left-4 h-24 w-24 rounded-full bg-emerald-100/60 blur-2xl dark:bg-emerald-900/30" />
                     <div className="absolute top-2 left-32 h-12 w-12 rounded-full bg-teal-100/50 blur-xl dark:bg-teal-900/20" />
 
                     <div className="relative">
-                        {/* Badge */}
                         <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold tracking-widest text-emerald-700 uppercase dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
                             <span className="relative flex h-1.5 w-1.5">
                                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
@@ -28,7 +25,6 @@ const PublicOrganizationPage = ({ nodes }: Props) => {
                             Organisasi
                         </span>
 
-                        {/* Heading with vertical accent line */}
                         <div className="mt-3 flex items-start gap-4">
                             <div className="mt-1 flex shrink-0 flex-col items-center gap-1">
                                 <div className="h-6 w-0.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
@@ -46,7 +42,6 @@ const PublicOrganizationPage = ({ nodes }: Props) => {
                             </h1>
                         </div>
 
-                        {/* Description */}
                         <div className="mt-3 flex items-start gap-3">
                             <div className="mt-1 h-4 w-px shrink-0 bg-gray-200 dark:bg-gray-700" />
                             <p className="text-base text-gray-500 dark:text-gray-400">

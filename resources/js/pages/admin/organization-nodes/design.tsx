@@ -57,11 +57,11 @@ const autoLayout = (nodes: OrganizationNodeResource[]): DesignNode[] => {
 
     const roots = childrenMap.get(null) ?? [];
 
-    // Separate children by direction.
-    // branch_side on child = which side of child the connection enters from.
-    // 'left'  → connection enters child from its left  → child is to the RIGHT of parent
-    // 'right' → connection enters child from its right → child is to the LEFT of parent
-    // 'center'→ connection enters child from its top   → child is BELOW parent
+    // Pisahkan anak berdasarkan arah percabangan.
+    // branch_side pada anak = sisi anak tempat koneksi masuk.
+    // 'left'  → koneksi masuk dari kiri anak  → anak berada di KANAN parent
+    // 'right' → koneksi masuk dari kanan anak → anak berada di KIRI parent
+    // 'center'→ koneksi masuk dari atas anak  → anak berada di BAWAH parent
     const childrenByDir = (parentId: number): { vertical: number[]; right: number[]; left: number[] } => {
         const all = childrenMap.get(parentId) ?? [];
         const vertical: number[] = [];
@@ -70,9 +70,9 @@ const autoLayout = (nodes: OrganizationNodeResource[]): DesignNode[] => {
         for (const cid of all) {
             const child = nodeMap.get(cid)!;
             const toSide = child.branch_side ?? 'center';
-            if (toSide === 'left') right.push(cid);       // enters from left → child is right of parent
-            else if (toSide === 'right') left.push(cid);  // enters from right → child is left of parent
-            else vertical.push(cid);                       // enters from top (center) → child is below
+            if (toSide === 'left') right.push(cid);       // masuk dari kiri → anak di kanan parent
+            else if (toSide === 'right') left.push(cid);  // masuk dari kanan → anak di kiri parent
+            else vertical.push(cid);                       // masuk dari atas (center) → anak di bawah
         }
         return { vertical, right, left };
     };

@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('nip', 30)->nullable();
             $table->unsignedInteger('sort_order')->default(0);
+            $table->string('branch_side', 10)->default('center');
+            $table->string('connector_from', 10)->default('bottom');
+            $table->float('position_x')->nullable();
+            $table->float('position_y')->nullable();
             $table->timestamps();
 
             $table->index('parent_id');
