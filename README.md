@@ -112,4 +112,6 @@ Kontribusi sangat disambut. Silakan buka issue terlebih dahulu untuk mendiskusik
 
 ## Lisensi
 
-[MIT](LICENSE)
+[MIT + Commons Clause](LICENSE)
+
+Bebas digunakan dan dimodifikasi, namun **tidak boleh dijual atau dikomersialisasi** oleh pihak lain selain pemilik asli.
