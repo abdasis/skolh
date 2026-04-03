@@ -3,7 +3,14 @@ import { show as curriculumShow } from '@/actions/App/Http/Controllers/Curriculu
 import { store as contactMessageStore } from '@/actions/App/Http/Controllers/ContactMessageController';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import * as Icons from 'lucide-react';
-import { type CurriculumCardResource, type Testimonial } from '@/types';
+import { type Alumni, type CurriculumCardResource, type Testimonial } from '@/types';
+
+const COLOR_PRESETS = [
+    { blob: 'bg-yellow-300', ring: 'border-yellow-400', dot: 'bg-yellow-400' },
+    { blob: 'bg-emerald-300', ring: 'border-emerald-400', dot: 'bg-emerald-400' },
+    { blob: 'bg-orange-300', ring: 'border-orange-400', dot: 'bg-orange-400' },
+    { blob: 'bg-teal-300', ring: 'border-teal-400', dot: 'bg-teal-400' },
+];
 
 interface AgendaPreview {
     id: number;
@@ -46,6 +53,7 @@ const Welcome = ({
     articles = [],
     curricula = [],
     testimonials = [],
+    alumni = [],
 }: {
     canRegister?: boolean;
     agendas?: AgendaPreview[];
@@ -54,6 +62,7 @@ const Welcome = ({
     articles?: ArticlePreview[];
     curricula?: CurriculumCardResource[];
     testimonials?: Testimonial[];
+    alumni?: Alumni[];
 }) => {
     const { flash } = usePage<{ flash: { success: string | null; error: string | null } }>().props;
 
@@ -1254,167 +1263,151 @@ const Welcome = ({
             </section>
 
             {/* Alumni */}
-            <section
-                id="alumni"
-                className="bg-gray-50 py-20 sm:py-28 dark:bg-gray-900/50"
-            >
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    {/* Header */}
-                    <div className="text-center">
-                        <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold tracking-widest text-emerald-700 uppercase dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
-                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
-                            Alumni
-                        </span>
-                        <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
-                            Jejak Prestasi{' '}
-                            <span className="text-emerald-600 dark:text-emerald-400">
-                                Alumni Kami
+            {alumni.length > 0 && (
+                <section
+                    id="alumni"
+                    className="bg-gray-50 py-20 sm:py-28 dark:bg-gray-900/50"
+                >
+                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        {/* Header */}
+                        <div className="text-center">
+                            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold tracking-widest text-emerald-700 uppercase dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
+                                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
+                                Alumni
                             </span>
-                        </h2>
-                        <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-gray-600 dark:text-gray-400">
-                            Lulusan SDIT Al-Aziz telah menapaki berbagai bidang
-                            dan melanjutkan ke sekolah-sekolah terbaik di dalam
-                            dan luar negeri.
-                        </p>
-                    </div>
+                            <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
+                                Jejak Prestasi{' '}
+                                <span className="text-emerald-600 dark:text-emerald-400">
+                                    Alumni Kami
+                                </span>
+                            </h2>
+                            <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-gray-600 dark:text-gray-400">
+                                Lulusan SDIT Al-Aziz telah menapaki berbagai bidang
+                                dan melanjutkan ke sekolah-sekolah terbaik di dalam
+                                dan luar negeri.
+                            </p>
+                        </div>
 
-                    {/* Alumni cards grid - 2 columns */}
-                    <div className="mt-16 grid gap-6 sm:grid-cols-2">
-                        {[
-                            {
-                                name: 'Ahmad Fauzan R.',
-                                batch: 'Angkatan ke-5 SDIT Al-Aziz',
-                                destination:
-                                    'Teknik Informatika, Universitas Indonesia',
-                                quote: 'Fondasi ilmu agama dan akademik yang kuat dari SDIT Al-Aziz membuat saya siap menghadapi tantangan di jenjang yang lebih tinggi.',
-                                photo: '/images/alumni-1.jpg',
-                                blob: 'bg-yellow-300',
-                                ring: 'border-yellow-400',
-                                dot: 'bg-yellow-400',
-                            },
-                            {
-                                name: 'Muhammad Rizqi H.',
-                                batch: 'Angkatan ke-6 SDIT Al-Aziz',
-                                destination:
-                                    'Hukum Islam, Universitas Al-Azhar Mesir',
-                                quote: 'Program Tahfidz dan bahasa Arab yang intensif membuka jalan saya menuju universitas impian di Timur Tengah.',
-                                photo: '/images/alumni-2.jpg',
-                                blob: 'bg-emerald-300',
-                                ring: 'border-emerald-400',
-                                dot: 'bg-emerald-400',
-                            },
-                            {
-                                name: 'Siti Aisyah N.',
-                                batch: 'Angkatan ke-4 SDIT Al-Aziz',
-                                destination:
-                                    'Kedokteran, Universitas Gadjah Mada',
-                                quote: 'Tak hanya akademik, SDIT Al-Aziz memberikan support penuh secara mental dan emosional sehingga saya tumbuh percaya diri.',
-                                photo: '/images/alumni-3.jpg',
-                                blob: 'bg-orange-300',
-                                ring: 'border-orange-400',
-                                dot: 'bg-orange-400',
-                            },
-                            {
-                                name: 'Nurul Fadhilah S.',
-                                batch: 'Angkatan ke-3 SDIT Al-Aziz',
-                                destination:
-                                    'Akuntansi, Universitas Teknologi Malaysia',
-                                quote: 'Disiplin dan nilai-nilai keislaman yang ditanamkan sejak SD menjadi bekal paling berharga dalam kehidupan saya hingga hari ini.',
-                                photo: '/images/alumni-4.jpg',
-                                blob: 'bg-teal-300',
-                                ring: 'border-teal-400',
-                                dot: 'bg-teal-400',
-                            },
-                        ].map((alumni) => (
-                            <div
-                                key={alumni.name}
-                                className="group relative flex overflow-hidden rounded-2xl bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-600/5 dark:bg-gray-900"
-                            >
-                                {/* Left: photo area with layered decorative shapes */}
-                                <div className="relative w-36 shrink-0 overflow-hidden sm:w-44">
-                                    {/* Base fill */}
-                                    <div className="absolute inset-0 bg-gray-50 dark:bg-gray-800" />
+                        {/* Alumni cards grid - 2 columns */}
+                        <div className="mt-16 grid gap-6 sm:grid-cols-2">
+                            {alumni.map((alumniItem, index) => {
+                                const preset = COLOR_PRESETS[index % COLOR_PRESETS.length]!;
+                                return (
+                                    <div
+                                        key={alumniItem.id}
+                                        className="group relative flex overflow-hidden rounded-2xl bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-600/5 dark:bg-gray-900"
+                                    >
+                                        {/* Left: photo area with layered decorative shapes */}
+                                        <div className="relative w-36 shrink-0 overflow-hidden sm:w-44">
+                                            {/* Base fill */}
+                                            <div className="absolute inset-0 bg-gray-50 dark:bg-gray-800" />
 
-                                    {/* Large organic blob — bottom-left anchor */}
-                                    <div
-                                        className={`absolute -bottom-8 -left-8 h-40 w-40 rounded-[40%_60%_55%_45%/45%_55%_60%_40%] ${alumni.blob} opacity-90`}
-                                    />
-
-                                    {/* Secondary smaller blob — top-right accent */}
-                                    <div
-                                        className={`absolute -top-6 -right-6 h-20 w-20 rounded-[60%_40%_45%_55%/50%_60%_40%_50%] ${alumni.blob} opacity-40`}
-                                    />
-
-                                    {/* Ring circle — mid overlay */}
-                                    <div
-                                        className={`absolute bottom-6 left-1/2 h-28 w-28 -translate-x-1/2 rounded-full border-4 ${alumni.ring} opacity-30`}
-                                    />
-
-                                    {/* Small dot cluster */}
-                                    <div
-                                        className={`absolute top-4 left-4 h-2.5 w-2.5 rounded-full ${alumni.dot} opacity-60`}
-                                    />
-                                    <div
-                                        className={`absolute top-8 left-7 h-1.5 w-1.5 rounded-full ${alumni.dot} opacity-40`}
-                                    />
-                                    <div
-                                        className={`absolute top-5 left-9 h-1 w-1 rounded-full ${alumni.dot} opacity-30`}
-                                    />
-
-                                    {/* Photo */}
-                                    <div className="relative z-10 flex h-full items-end justify-center pt-6 pb-3 pl-3">
-                                        <div className="h-28 w-24 overflow-hidden rounded-2xl shadow-lg ring-2 ring-white/60 sm:h-36 sm:w-28">
-                                            <img
-                                                src={alumni.photo}
-                                                alt={alumni.name}
-                                                className="h-full w-full object-cover object-top"
+                                            {/* Large organic blob — bottom-left anchor */}
+                                            <div
+                                                className={`absolute -bottom-8 -left-8 h-40 w-40 rounded-[40%_60%_55%_45%/45%_55%_60%_40%] ${preset.blob} opacity-90`}
                                             />
+
+                                            {/* Secondary smaller blob — top-right accent */}
+                                            <div
+                                                className={`absolute -top-6 -right-6 h-20 w-20 rounded-[60%_40%_45%_55%/50%_60%_40%_50%] ${preset.blob} opacity-40`}
+                                            />
+
+                                            {/* Ring circle — mid overlay */}
+                                            <div
+                                                className={`absolute bottom-6 left-1/2 h-28 w-28 -translate-x-1/2 rounded-full border-4 ${preset.ring} opacity-30`}
+                                            />
+
+                                            {/* Small dot cluster */}
+                                            <div
+                                                className={`absolute top-4 left-4 h-2.5 w-2.5 rounded-full ${preset.dot} opacity-60`}
+                                            />
+                                            <div
+                                                className={`absolute top-8 left-7 h-1.5 w-1.5 rounded-full ${preset.dot} opacity-40`}
+                                            />
+                                            <div
+                                                className={`absolute top-5 left-9 h-1 w-1 rounded-full ${preset.dot} opacity-30`}
+                                            />
+
+                                            {/* Photo */}
+                                            <div className="relative z-10 flex h-full items-end justify-center pt-6 pb-3 pl-3">
+                                                <div className="h-28 w-24 overflow-hidden rounded-2xl shadow-lg ring-2 ring-white/60 sm:h-36 sm:w-28">
+                                                    {alumniItem.avatar_url ? (
+                                                        <img
+                                                            src={alumniItem.avatar_url}
+                                                            alt={alumniItem.name}
+                                                            className="h-full w-full object-cover object-top"
+                                                        />
+                                                    ) : (
+                                                        <div className="flex h-full w-full items-center justify-center bg-gray-200 dark:bg-gray-700">
+                                                            <Icons.User className="h-10 w-10 text-gray-400" />
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Right: content */}
+                                        <div className="flex flex-1 flex-col justify-between p-6 pl-5">
+                                            {/* Quote */}
+                                            <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+                                                {alumniItem.quote}
+                                            </p>
+
+                                            {/* Name + batch */}
+                                            <div className="mt-4">
+                                                <p className="inline rounded bg-emerald-600 px-2 py-0.5 text-sm font-bold text-white">
+                                                    {alumniItem.name}
+                                                </p>
+                                                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                                    {alumniItem.batch}
+                                                </p>
+                                            </div>
+
+                                            {/* Destination badge */}
+                                            <div className="mt-4">
+                                                <div className="inline-flex items-center gap-2 rounded-lg bg-emerald-900 px-4 py-2 text-xs font-semibold text-white dark:bg-emerald-800">
+                                                    <svg
+                                                        className="h-3.5 w-3.5 shrink-0 text-emerald-300"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        strokeWidth={2}
+                                                        stroke="currentColor"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5"
+                                                        />
+                                                    </svg>
+                                                    {alumniItem.destination}
+                                                </div>
+                                            </div>
+
+                                            {/* Social links */}
+                                            {alumniItem.socials.length > 0 && (
+                                                <div className="mt-3 flex items-center gap-2">
+                                                    {alumniItem.socials.map((social) => (
+                                                        <a
+                                                            key={social.id}
+                                                            href={social.url}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="rounded-md p-1 text-gray-400 transition hover:text-emerald-600 dark:hover:text-emerald-400"
+                                                            aria-label={social.platform}
+                                                        >
+                                                            <Icons.Link2 className="h-4 w-4" />
+                                                        </a>
+                                                    ))}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
-                                </div>
-
-                                {/* Right: content */}
-                                <div className="flex flex-1 flex-col justify-between p-6 pl-5">
-                                    {/* Quote */}
-                                    <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
-                                        {alumni.quote}
-                                    </p>
-
-                                    {/* Name + batch */}
-                                    <div className="mt-4">
-                                        <p className="inline rounded bg-emerald-600 px-2 py-0.5 text-sm font-bold text-white">
-                                            {alumni.name}
-                                        </p>
-                                        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                            {alumni.batch}
-                                        </p>
-                                    </div>
-
-                                    {/* Destination badge */}
-                                    <div className="mt-4">
-                                        <div className="inline-flex items-center gap-2 rounded-lg bg-emerald-900 px-4 py-2 text-xs font-semibold text-white dark:bg-emerald-800">
-                                            <svg
-                                                className="h-3.5 w-3.5 shrink-0 text-emerald-300"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                strokeWidth={2}
-                                                stroke="currentColor"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5"
-                                                />
-                                            </svg>
-                                            {alumni.destination}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
+                                );
+                            })}
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            )}
 
             {/* CTA Banner */}
             <section className="relative bg-slate-100 dark:bg-slate-900">

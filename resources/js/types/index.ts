@@ -16,3 +16,4 @@ export type * from './gallery';
 export type * from './media';
 export type * from './theme';
 export type * from './testimonial';
+export type * from './alumni';

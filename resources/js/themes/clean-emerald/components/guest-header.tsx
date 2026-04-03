@@ -142,7 +142,7 @@ const GuestHeader = ({ canRegister = true }: { canRegister?: boolean }) => {
             <nav className="border-b border-gray-100 bg-white/95 shadow-sm backdrop-blur-lg dark:border-gray-800 dark:bg-gray-950/95">
                 <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
                     {/* Logo */}
-                    <div className="flex items-center gap-3">
+                    <Link href={home().url} className="flex items-center gap-3">
                         <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-600 text-sm font-bold text-white shadow-sm">
                             SA
                         </div>
@@ -154,7 +154,7 @@ const GuestHeader = ({ canRegister = true }: { canRegister?: boolean }) => {
                                 Sekolah Dasar Islam Terpadu
                             </p>
                         </div>
-                    </div>
+                    </Link>
 
                     {/* Desktop Nav Links */}
                     <div className="hidden items-center gap-1 md:flex">

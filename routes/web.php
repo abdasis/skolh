@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ExtracurricularController as AdminExtracurricular
 use App\Http\Controllers\Admin\OrganizationNodeController as AdminOrganizationNodeController;
 use App\Http\Controllers\Admin\TeacherController as AdminTeacherController;
 use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialController;
+use App\Http\Controllers\Admin\AlumniController as AdminAlumniController;
 use App\Http\Controllers\ExtracurricularController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\Admin\AgendaController;
@@ -82,6 +83,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::post('themes/{slug}/activate', [AdminThemeController::class, 'activate'])->name('themes.activate');
     Route::post('testimonials/reorder', [AdminTestimonialController::class, 'reorder'])->name('testimonials.reorder');
     Route::resource('testimonials', AdminTestimonialController::class)->except(['show']);
+    Route::post('alumni/reorder', [AdminAlumniController::class, 'reorder'])->name('alumni.reorder');
+    Route::resource('alumni', AdminAlumniController::class)->except(['show']);
 });
 
 require __DIR__.'/settings.php';

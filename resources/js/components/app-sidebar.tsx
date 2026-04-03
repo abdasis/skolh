@@ -55,6 +55,7 @@ import { index as categoriesIndex } from '@/actions/App/Http/Controllers/Admin/C
 import { index as curriculaIndex } from '@/actions/App/Http/Controllers/Admin/CurriculumController';
 import { index as contactMessagesIndex } from '@/actions/App/Http/Controllers/Admin/ContactMessageController';
 import { index as testimonialsIndex } from '@/actions/App/Http/Controllers/Admin/TestimonialController';
+import { index as alumniIndex } from '@/actions/App/Http/Controllers/Admin/AlumniController';
 import { dashboard } from '@/routes';
 import type { NavGroup } from '@/types';
 
@@ -175,7 +176,7 @@ export function AppSidebar() {
                 },
                 {
                     title: 'Alumni',
-                    href: '/alumni',
+                    href: alumniIndex.url(),
                     icon: GraduationCap,
                 },
                 {

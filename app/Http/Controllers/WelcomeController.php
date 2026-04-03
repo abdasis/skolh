@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AlumniResource;
 use App\Http\Resources\TestimonialResource;
 use App\Models\Agenda;
 use App\Models\Article;
 use App\Models\Facility;
 use App\Models\Testimonial;
+use App\Repositories\Contracts\AlumniRepositoryInterface;
 use App\Repositories\Contracts\CurriculumRepositoryInterface;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -14,7 +16,10 @@ use Laravel\Fortify\Features;
 
 class WelcomeController extends Controller
 {
-    public function __construct(private CurriculumRepositoryInterface $curriculumRepository) {}
+    public function __construct(
+        private CurriculumRepositoryInterface $curriculumRepository,
+        private AlumniRepositoryInterface $alumniRepository,
+    ) {}
 
     public function __invoke(): Response
     {
@@ -44,6 +49,8 @@ class WelcomeController extends Controller
             ->limit(6)
             ->get();
 
+        $alumni = $this->alumniRepository->forWelcomePage();
+
         return Inertia::render('welcome', [
             'canRegister' => Features::enabled(Features::registration()),
             'agendas' => $agendas,
@@ -52,6 +59,7 @@ class WelcomeController extends Controller
             'articles' => $articles,
             'curricula' => $curricula,
             'testimonials' => TestimonialResource::collection($testimonials),
+            'alumni' => AlumniResource::collection($alumni),
         ]);
     }
 }
