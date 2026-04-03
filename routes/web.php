@@ -1,10 +1,15 @@
 <?php
 
 use App\Http\Controllers\AchievementController;
+use App\Http\Controllers\Admin\GalleryAlbumController as AdminGalleryAlbumController;
+use App\Http\Controllers\Admin\GalleryImageController;
+use App\Http\Controllers\GalleryAlbumController;
 use App\Http\Controllers\Admin\AchievementController as AdminAchievementController;
 use App\Http\Controllers\Admin\ExtracurricularController as AdminExtracurricularController;
+use App\Http\Controllers\Admin\OrganizationNodeController as AdminOrganizationNodeController;
 use App\Http\Controllers\Admin\TeacherController as AdminTeacherController;
 use App\Http\Controllers\ExtracurricularController;
+use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\Admin\AgendaController;
 use App\Http\Controllers\Admin\AnnouncementAttachmentController;
 use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementController;
@@ -36,6 +41,9 @@ Route::get('/achievements', [AchievementController::class, 'index'])->name('achi
 Route::get('/achievements/{achievement}', [AchievementController::class, 'show'])->name('achievements.show');
 Route::get('/extracurriculars', [ExtracurricularController::class, 'index'])->name('extracurriculars.index');
 Route::get('/extracurriculars/{extracurricular:slug}', [ExtracurricularController::class, 'show'])->name('extracurriculars.show');
+Route::get('/organization', OrganizationController::class)->name('organization.index');
+Route::get('/gallery', [GalleryAlbumController::class, 'index'])->name('gallery.index');
+Route::get('/gallery/{galleryAlbum:slug}', [GalleryAlbumController::class, 'show'])->name('gallery.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
@@ -53,8 +61,18 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::resource('achievements', AdminAchievementController::class);
     Route::resource('extracurriculars', AdminExtracurricularController::class);
     Route::resource('teachers', AdminTeacherController::class);
+    Route::get('organization-nodes/design', [AdminOrganizationNodeController::class, 'design'])
+        ->name('organization-nodes.design');
+    Route::post('organization-nodes/design', [AdminOrganizationNodeController::class, 'saveDesign'])
+        ->name('organization-nodes.save-design');
+    Route::post('organization-nodes/store-from-design', [AdminOrganizationNodeController::class, 'storeFromDesign'])
+        ->name('organization-nodes.store-from-design');
+    Route::resource('organization-nodes', AdminOrganizationNodeController::class);
     Route::delete('announcement-attachments/{attachment}', [AnnouncementAttachmentController::class, 'destroy'])
         ->name('announcement-attachments.destroy');
+    Route::resource('gallery-albums', AdminGalleryAlbumController::class);
+    Route::delete('gallery-images/{galleryImage}', [GalleryImageController::class, 'destroy'])
+        ->name('gallery-images.destroy');
 });
 
 require __DIR__.'/settings.php';

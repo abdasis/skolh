@@ -26,6 +26,11 @@ final class TeacherResource extends JsonResource
             'status' => $this->status->value,
             'status_label' => $this->status->name,
             'avatar_url' => $this->getFirstMediaUrl('avatar') ?: null,
+            'socials' => $this->whenLoaded('socials', fn () => $this->socials->map(fn ($s) => [
+                'id' => $s->id,
+                'platform' => $s->platform->value,
+                'url' => $s->url,
+            ])),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

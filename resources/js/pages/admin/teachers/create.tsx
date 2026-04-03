@@ -10,9 +10,10 @@ interface EnumOption {
 interface Props {
     statusOptions: EnumOption[];
     genderOptions: EnumOption[];
+    socialPlatformOptions: EnumOption[];
 }
 
-const AdminTeachersCreate = ({ statusOptions, genderOptions }: Props) => {
+const AdminTeachersCreate = ({ statusOptions, genderOptions, socialPlatformOptions }: Props) => {
     setLayoutProps({
         breadcrumbs: [
             { title: 'Dashboard', href: '/dashboard' },
@@ -33,6 +34,7 @@ const AdminTeachersCreate = ({ statusOptions, genderOptions }: Props) => {
         joined_at: '',
         status: 'active',
         avatar: null,
+        socials: [],
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -62,6 +64,7 @@ const AdminTeachersCreate = ({ statusOptions, genderOptions }: Props) => {
                                 onSubmit={handleSubmit}
                                 statusOptions={statusOptions}
                                 genderOptions={genderOptions}
+                                socialPlatformOptions={socialPlatformOptions}
                                 submitLabel="Tambah Guru"
                                 cancelUrl={TeacherController.index.url()}
                             />

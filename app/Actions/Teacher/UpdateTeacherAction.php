@@ -34,6 +34,12 @@ final class UpdateTeacherAction
             $teacher->addMedia($avatar)->toMediaCollection('avatar');
         }
 
+        $teacher->socials()->delete();
+
+        if (! empty($data['socials'])) {
+            $teacher->socials()->createMany($data['socials']);
+        }
+
         return $teacher->refresh();
     }
 }

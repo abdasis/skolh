@@ -6,6 +6,7 @@ use App\Actions\Teacher\CreateTeacherAction;
 use App\Actions\Teacher\DeleteTeacherAction;
 use App\Actions\Teacher\UpdateTeacherAction;
 use App\Enums\Gender;
+use App\Enums\SocialPlatform;
 use App\Enums\TeacherStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreTeacherRequest;
@@ -42,6 +43,7 @@ class TeacherController extends Controller
         return Inertia::render('admin/teachers/create', [
             'statusOptions' => collect(TeacherStatus::cases())->map(fn ($s) => ['value' => $s->value, 'label' => $s->name]),
             'genderOptions' => collect(Gender::cases())->map(fn ($g) => ['value' => $g->value, 'label' => $g->name]),
+            'socialPlatformOptions' => collect(SocialPlatform::cases())->map(fn ($p) => ['value' => $p->value, 'label' => $p->name]),
         ]);
     }
 
@@ -55,12 +57,13 @@ class TeacherController extends Controller
 
     public function edit(Teacher $teacher): Response
     {
-        $teacher->load('media');
+        $teacher->load(['media', 'socials']);
 
         return Inertia::render('admin/teachers/edit', [
             'teacher' => new TeacherResource($teacher),
             'statusOptions' => collect(TeacherStatus::cases())->map(fn ($s) => ['value' => $s->value, 'label' => $s->name]),
             'genderOptions' => collect(Gender::cases())->map(fn ($g) => ['value' => $g->value, 'label' => $g->name]),
+            'socialPlatformOptions' => collect(SocialPlatform::cases())->map(fn ($p) => ['value' => $p->value, 'label' => $p->name]),
         ]);
     }
 

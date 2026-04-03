@@ -14,9 +14,13 @@ use App\Repositories\Contracts\CategoryRepositoryInterface;
 use App\Repositories\Contracts\ContactMessageRepositoryInterface;
 use App\Repositories\Contracts\CurriculumRepositoryInterface;
 use App\Repositories\Contracts\ExtracurricularRepositoryInterface;
+use App\Repositories\Contracts\GalleryAlbumRepositoryInterface;
+use App\Repositories\Contracts\OrganizationNodeRepositoryInterface;
 use App\Repositories\Contracts\TeacherRepositoryInterface;
 use App\Repositories\CurriculumRepository;
 use App\Repositories\ExtracurricularRepository;
+use App\Repositories\GalleryAlbumRepository;
+use App\Repositories\OrganizationNodeRepository;
 use App\Repositories\TeacherRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -43,6 +47,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ContactMessageRepositoryInterface::class, ContactMessageRepository::class);
         $this->app->bind(ExtracurricularRepositoryInterface::class, ExtracurricularRepository::class);
         $this->app->bind(TeacherRepositoryInterface::class, TeacherRepository::class);
+        $this->app->bind(OrganizationNodeRepositoryInterface::class, OrganizationNodeRepository::class);
+        $this->app->bind(GalleryAlbumRepositoryInterface::class, GalleryAlbumRepository::class);
     }
 
     /**

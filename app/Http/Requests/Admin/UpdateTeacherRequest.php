@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Admin;
 
 use App\Enums\Gender;
+use App\Enums\SocialPlatform;
 use App\Enums\TeacherStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -33,6 +34,9 @@ final class UpdateTeacherRequest extends FormRequest
             'joined_at' => ['nullable', 'date'],
             'status' => ['required', new Enum(TeacherStatus::class)],
             'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'socials' => ['nullable', 'array'],
+            'socials.*.platform' => ['required', 'string', new Enum(SocialPlatform::class)],
+            'socials.*.url' => ['required', 'string', 'url', 'max:500'],
         ];
     }
 }

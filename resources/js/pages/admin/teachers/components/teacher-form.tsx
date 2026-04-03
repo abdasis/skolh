@@ -9,6 +9,11 @@ interface EnumOption {
     label: string;
 }
 
+interface SocialEntry {
+    platform: string;
+    url: string;
+}
+
 export interface TeacherFormData {
     _method?: string;
     name: string;
@@ -22,6 +27,7 @@ export interface TeacherFormData {
     joined_at: string;
     status: string;
     avatar: File | null;
+    socials: SocialEntry[];
 }
 
 interface Props {
@@ -31,6 +37,7 @@ interface Props {
     cancelUrl: string;
     statusOptions: EnumOption[];
     genderOptions: EnumOption[];
+    socialPlatformOptions: EnumOption[];
     existingAvatarUrl?: string | null;
 }
 
@@ -41,6 +48,7 @@ const TeacherForm = ({
     cancelUrl,
     statusOptions,
     genderOptions,
+    socialPlatformOptions,
     existingAvatarUrl,
 }: Props) => {
     const { data, setData, errors, processing, recentlySuccessful } = form;
@@ -49,6 +57,7 @@ const TeacherForm = ({
 
     const statusSelectOptions: SelectOption[] = statusOptions.map((s) => ({ value: s.value, label: s.label }));
     const genderSelectOptions: SelectOption[] = genderOptions.map((g) => ({ value: g.value, label: g.label }));
+    const platformSelectOptions: SelectOption[] = socialPlatformOptions.map((p) => ({ value: p.value, label: p.label }));
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0] ?? null;
@@ -56,6 +65,19 @@ const TeacherForm = ({
         if (file) {
             setPreviewUrl(URL.createObjectURL(file));
         }
+    };
+
+    const addSocial = () => {
+        setData('socials', [...data.socials, { platform: '', url: '' }]);
+    };
+
+    const removeSocial = (index: number) => {
+        setData('socials', data.socials.filter((_, i) => i !== index));
+    };
+
+    const updateSocial = (index: number, field: keyof SocialEntry, value: string) => {
+        const updated = data.socials.map((s, i) => (i === index ? { ...s, [field]: value } : s));
+        setData('socials', updated);
     };
 
     return (
@@ -175,6 +197,50 @@ const TeacherForm = ({
                 error={errors.status}
                 required
             />
+
+            <div className="flex flex-col gap-3">
+                <div className="flex items-center justify-between">
+                    <FormLabel>Media Sosial</FormLabel>
+                    <Button type="button" variant="outline" size="sm" onClick={addSocial}>
+                        + Tambah Sosmed
+                    </Button>
+                </div>
+
+                {data.socials.length > 0 && (
+                    <div className="flex flex-col gap-2">
+                        {data.socials.map((social, index) => (
+                            <div key={index} className="flex gap-2 items-start">
+                                <div className="w-40 shrink-0">
+                                    <FormSelect
+                                        value={social.platform}
+                                        onValueChange={(value) => updateSocial(index, 'platform', value)}
+                                        options={platformSelectOptions}
+                                        placeholder="Platform"
+                                        error={(errors as Record<string, string>)[`socials.${index}.platform`]}
+                                    />
+                                </div>
+                                <div className="flex-1">
+                                    <FormInput
+                                        value={social.url}
+                                        onChange={(e) => updateSocial(index, 'url', e.target.value)}
+                                        placeholder="https://..."
+                                        error={(errors as Record<string, string>)[`socials.${index}.url`]}
+                                    />
+                                </div>
+                                <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => removeSocial(index)}
+                                    className="mt-0.5 text-muted-foreground hover:text-destructive"
+                                >
+                                    Hapus
+                                </Button>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
 
             <div className="flex justify-end gap-3">
                 <Button type="button" variant="outline" asChild>

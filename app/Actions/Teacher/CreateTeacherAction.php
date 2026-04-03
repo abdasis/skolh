@@ -34,6 +34,10 @@ final class CreateTeacherAction
             $teacher->addMedia($avatar)->toMediaCollection('avatar');
         }
 
+        if (! empty($data['socials'])) {
+            $teacher->socials()->createMany($data['socials']);
+        }
+
         return $teacher;
     }
 }
