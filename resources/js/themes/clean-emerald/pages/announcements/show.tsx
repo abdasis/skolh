@@ -127,10 +127,10 @@ const AnnouncementShow = ({ announcement, latest, related }: Props) => {
                         <div className="mb-8">
                             {/* Section header */}
                             <div>
-                                <span className="bg-gray-900 px-3 py-1.5 text-[11px] font-bold tracking-widest text-white uppercase dark:bg-gray-100 dark:text-gray-900">
+                                <span className="bg-emerald-600 px-3 py-1.5 text-[11px] font-bold tracking-widest text-white uppercase dark:bg-emerald-500">
                                     Terbaru
                                 </span>
-                                <div className="h-0.5 w-full bg-gray-900 dark:bg-gray-100" />
+                                <div className="h-0.5 w-full bg-emerald-600 dark:bg-emerald-500" />
                             </div>
                             <ul className="mt-4 space-y-4">
                                 {latest.map((item) => (
@@ -165,10 +165,10 @@ const AnnouncementShow = ({ announcement, latest, related }: Props) => {
                             <div>
                                 {/* Section header */}
                                 <div className="flex items-center gap-0">
-                                    <span className="bg-gray-900 px-3 py-1.5 text-[11px] font-bold tracking-widest text-white uppercase dark:bg-gray-100 dark:text-gray-900">
+                                    <span className="bg-emerald-600 px-3 py-1.5 text-[11px] font-bold tracking-widest text-white uppercase dark:bg-emerald-500">
                                         Terkait
                                     </span>
-                                    <div className="h-px flex-1 bg-gray-200 dark:bg-gray-700" />
+                                    <div className="h-px flex-1 bg-emerald-200 dark:bg-emerald-800" />
                                 </div>
                                 <ul className="mt-4 space-y-4">
                                     {related.map((item) => (
