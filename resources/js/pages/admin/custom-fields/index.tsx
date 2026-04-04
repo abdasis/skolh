@@ -61,7 +61,7 @@ const AdminCustomFieldIndex = ({ activePeriod, fields, periods }: Props) => {
         ],
     });
 
-    const [fieldList, setFieldList] = useState<CustomField[]>(fields.data);
+    const [fieldList, setFieldList] = useState<CustomField[]>(fields?.data ?? []);
     const [toDelete, setToDelete] = useState<CustomField | null>(null);
 
     const handleDragEnd = (event: { operation: { source: { id: number | string } | null; target: { id: number | string } | null } }) => {
