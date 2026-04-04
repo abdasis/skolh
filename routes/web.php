@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\ContactMessageController as AdminContactMessageCo
 use App\Http\Controllers\Admin\CurriculumController as AdminCurriculumController;
 use App\Http\Controllers\Admin\FacilityController as AdminFacilityController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\SchoolHistoryController as AdminSchoolHistoryController;
 use App\Http\Controllers\Admin\VisiMisiController as AdminVisiMisiController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\ArticleController;
@@ -113,6 +114,9 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('visi-misi', [AdminVisiMisiController::class, 'show'])->name('visi-misi.show');
     Route::get('visi-misi/edit', [AdminVisiMisiController::class, 'edit'])->name('visi-misi.edit');
     Route::put('visi-misi', [AdminVisiMisiController::class, 'update'])->name('visi-misi.update');
+    Route::get('school-history', [AdminSchoolHistoryController::class, 'show'])->name('school-history.show');
+    Route::get('school-history/edit', [AdminSchoolHistoryController::class, 'edit'])->name('school-history.edit');
+    Route::put('school-history', [AdminSchoolHistoryController::class, 'update'])->name('school-history.update');
 
     Route::get('settings/site-identity', [AdminSiteSettingController::class, 'identity'])->name('settings.site-identity');
     Route::put('settings/site-identity', [AdminSiteSettingController::class, 'updateIdentity'])->name('settings.site-identity.update');

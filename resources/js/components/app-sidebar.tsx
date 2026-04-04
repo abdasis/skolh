@@ -21,6 +21,7 @@ import {
     Newspaper,
     Phone,
     Settings,
+    Scroll,
     Settings2,
     ShieldCheck,
     Star,
@@ -60,6 +61,7 @@ import { index as admissionPeriodsIndex } from '@/actions/App/Http/Controllers/A
 import { index as customFieldsIndex } from '@/actions/App/Http/Controllers/Admin/CustomFieldController';
 import { index as registrationsIndex } from '@/actions/App/Http/Controllers/Admin/RegistrationController';
 import { show as visiMisiShow } from '@/actions/App/Http/Controllers/Admin/VisiMisiController';
+import { show as schoolHistoryShow } from '@/actions/App/Http/Controllers/Admin/SchoolHistoryController';
 import { dashboard } from '@/routes';
 import type { NavGroup } from '@/types';
 
@@ -101,14 +103,14 @@ export function AppSidebar() {
             label: 'Profil Sekolah',
             items: [
                 {
-                    title: 'Tentang Sekolah',
-                    href: '/profil/tentang',
-                    icon: Home,
-                },
-                {
                     title: 'Visi & Misi',
                     href: visiMisiShow.url(),
                     icon: Star,
+                },
+                {
+                    title: 'Sejarah Sekolah',
+                    href: schoolHistoryShow.url(),
+                    icon: Scroll,
                 },
                 {
                     title: 'Struktur Organisasi',

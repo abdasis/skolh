@@ -9,6 +9,8 @@ class SiteSettingSeeder extends Seeder
 {
     public function run(): void
     {
+        SiteSetting::set('school_history', '');
+
         SiteSetting::set('vision', 'Menjadi sekolah dasar Islam terpadu yang unggul dalam membentuk generasi beriman, berilmu, dan berakhlak mulia.');
         SiteSetting::set('mission', "1. Menyelenggarakan pendidikan berkualitas yang mengintegrasikan nilai-nilai Islam.\n2. Membentuk karakter siswa yang bertakwa, mandiri, dan berprestasi.\n3. Mengembangkan potensi akademik dan non-akademik setiap siswa.\n4. Menciptakan lingkungan belajar yang kondusif dan menyenangkan.\n5. Menjalin kerjasama yang harmonis antara sekolah, orang tua, dan masyarakat.");
 
