@@ -23,3 +23,4 @@ export type * from './registration';
 export type * from './site-config';
 export type * from './contact';
 export type * from './site-setting';
+export type * from './student';

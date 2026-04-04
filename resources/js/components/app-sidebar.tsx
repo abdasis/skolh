@@ -60,6 +60,7 @@ import { index as alumniIndex } from '@/actions/App/Http/Controllers/Admin/Alumn
 import { index as admissionPeriodsIndex } from '@/actions/App/Http/Controllers/Admin/AdmissionPeriodController';
 import { index as customFieldsIndex } from '@/actions/App/Http/Controllers/Admin/CustomFieldController';
 import { index as registrationsIndex } from '@/actions/App/Http/Controllers/Admin/RegistrationController';
+import { index as studentsIndex } from '@/actions/App/Http/Controllers/Admin/StudentController';
 import { show as visiMisiShow } from '@/actions/App/Http/Controllers/Admin/VisiMisiController';
 import { show as schoolHistoryShow } from '@/actions/App/Http/Controllers/Admin/SchoolHistoryController';
 import { dashboard } from '@/routes';
@@ -189,7 +190,7 @@ export function AppSidebar() {
                 },
                 {
                     title: 'Data Siswa',
-                    href: '/akademik/siswa',
+                    href: studentsIndex.url(),
                     icon: Users2,
                 },
                 {

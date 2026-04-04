@@ -16,6 +16,7 @@ use App\Http\Controllers\Public\AdmissionController;
 use App\Http\Controllers\Admin\CustomFieldController as AdminCustomFieldController;
 use App\Http\Controllers\Admin\RegistrationController as AdminRegistrationController;
 use App\Http\Controllers\Admin\AlumniController as AdminAlumniController;
+use App\Http\Controllers\Admin\StudentController as AdminStudentController;
 use App\Http\Controllers\Admin\SiteSettingController as AdminSiteSettingController;
 use App\Http\Controllers\ExtracurricularController;
 use App\Http\Controllers\OrganizationController;
@@ -104,6 +105,9 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::resource('testimonials', AdminTestimonialController::class)->except(['show']);
     Route::post('alumni/reorder', [AdminAlumniController::class, 'reorder'])->name('alumni.reorder');
     Route::resource('alumni', AdminAlumniController::class)->except(['show']);
+    Route::get('students/accepted-registrations', [AdminStudentController::class, 'acceptedRegistrations'])->name('students.accepted-registrations');
+    Route::post('students/convert-from-spmb', [AdminStudentController::class, 'convertFromSpmb'])->name('students.convert-from-spmb');
+    Route::resource('students', AdminStudentController::class)->except(['show']);
     Route::resource('admission-periods', AdminAdmissionPeriodController::class)->only(['index', 'store', 'update']);
     Route::post('custom-fields/reorder', [AdminCustomFieldController::class, 'reorder'])->name('custom-fields.reorder');
     Route::resource('custom-fields', AdminCustomFieldController::class)->except(['show']);

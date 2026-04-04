@@ -1,0 +1,34 @@
+export interface Student {
+    id: number;
+    registration_id: number | null;
+    nis: string | null;
+    nisn: string | null;
+    nik: string | null;
+    full_name: string;
+    gender: string;
+    religion: string | null;
+    citizenship: string | null;
+    birth_place: string | null;
+    birth_date: string | null;
+    address: string | null;
+    phone: string | null;
+    email: string | null;
+    special_needs: string | null;
+    enrollment_year: number;
+    status: string;
+    status_label: string;
+    status_color: string;
+    notes: string | null;
+    father_name: string | null;
+    father_occupation: string | null;
+    father_phone: string | null;
+    mother_name: string | null;
+    mother_occupation: string | null;
+    mother_phone: string | null;
+    guardian_name: string | null;
+    guardian_occupation: string | null;
+    guardian_phone: string | null;
+    photo_url: string | null;
+    created_at: string;
+    updated_at: string;
+}
