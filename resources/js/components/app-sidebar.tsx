@@ -81,7 +81,9 @@ const footerNavItems = [
 ];
 
 export function AppSidebar() {
-    const { unreadContactMessagesCount } = usePage<{ unreadContactMessagesCount: number }>().props;
+    const { unreadContactMessagesCount } = usePage<{
+        unreadContactMessagesCount: number;
+    }>().props;
 
     const navGroups: NavGroup[] = [
         {
@@ -230,7 +232,7 @@ export function AppSidebar() {
                 },
                 {
                     title: 'Preferensi Situs',
-                    href: '/preferensi',
+                    href: '/admin/settings/site-identity',
                     icon: Settings2,
                 },
                 {

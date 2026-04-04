@@ -7,6 +7,7 @@ import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
 import GuestLayoutProxy from '@/lib/theme-layout-proxy';
 import SettingsLayout from '@/layouts/settings/layout';
+import SiteSettingsLayout from '@/layouts/site-settings-layout';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -35,7 +36,10 @@ createInertiaApp({
             return component() as Promise<ResolvedComponent>;
         }
 
-        const activeTheme = (page?.props as Record<string, unknown>)?.activeTheme as string | undefined ?? 'clean-emerald';
+        const activeTheme =
+            ((page?.props as Record<string, unknown>)?.activeTheme as
+                | string
+                | undefined) ?? 'clean-emerald';
         const themeKey = `./themes/${activeTheme}/pages/${name}.tsx`;
 
         if (themePages[themeKey]) {
@@ -46,7 +50,9 @@ createInertiaApp({
         const fallbackKey = `./themes/clean-emerald/pages/${name}.tsx`;
 
         if (themePages[fallbackKey]) {
-            console.warn(`[theme] Page "${name}" not found in theme "${activeTheme}", falling back to clean-emerald.`);
+            console.warn(
+                `[theme] Page "${name}" not found in theme "${activeTheme}", falling back to clean-emerald.`,
+            );
 
             return themePages[fallbackKey]() as Promise<ResolvedComponent>;
         }
@@ -59,6 +65,8 @@ createInertiaApp({
                 return AuthLayout;
             case name.startsWith('settings/'):
                 return [AppLayout, SettingsLayout];
+            case name.startsWith('admin/settings/'):
+                return SiteSettingsLayout;
             case name === 'dashboard' || name.startsWith('admin/'):
                 return AppLayout;
             default:

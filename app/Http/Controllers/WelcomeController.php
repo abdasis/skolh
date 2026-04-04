@@ -10,6 +10,7 @@ use App\Models\Facility;
 use App\Models\Testimonial;
 use App\Repositories\Contracts\AlumniRepositoryInterface;
 use App\Repositories\Contracts\CurriculumRepositoryInterface;
+use App\Services\SiteConfigService;
 use Inertia\Inertia;
 use Inertia\Response;
 use Laravel\Fortify\Features;
@@ -19,37 +20,54 @@ class WelcomeController extends Controller
     public function __construct(
         private CurriculumRepositoryInterface $curriculumRepository,
         private AlumniRepositoryInterface $alumniRepository,
+        private SiteConfigService $siteConfig,
     ) {}
 
     public function __invoke(): Response
     {
-        $agendas = Agenda::whereDate('date', '>=', today())
-            ->orderBy('date')
-            ->limit(6)
-            ->get(['id', 'date', 'title', 'description']);
+        $sections = $this->siteConfig->getSectionPreferences();
 
-        $facilitiesTotal = Facility::published()->count();
+        $agendas = $sections['agenda']['enabled'] ?? true
+            ? Agenda::whereDate('date', '>=', today())
+                ->orderBy('date')
+                ->limit($sections['agenda']['limit'] ?? 6)
+                ->get(['id', 'date', 'title', 'description'])
+            : collect();
 
-        $facilities = Facility::published()
-            ->latest()
-            ->limit(8)
-            ->get(['id', 'icon', 'title', 'slug', 'description']);
+        $facilitiesTotal = $sections['facilities']['enabled'] ?? true
+            ? Facility::published()->count()
+            : 0;
 
-        $articles = Article::published()
-            ->with(['author', 'categories'])
-            ->latest('published_at')
-            ->limit(5)
-            ->get(['id', 'title', 'slug', 'excerpt', 'featured_image', 'user_id', 'published_at']);
+        $facilities = $sections['facilities']['enabled'] ?? true
+            ? Facility::published()
+                ->latest()
+                ->limit($sections['facilities']['limit'] ?? 8)
+                ->get(['id', 'icon', 'title', 'slug', 'description'])
+            : collect();
 
-        $curricula = $this->curriculumRepository->getActive();
+        $articles = $sections['articles']['enabled'] ?? true
+            ? Article::published()
+                ->with(['author', 'categories'])
+                ->latest('published_at')
+                ->limit($sections['articles']['limit'] ?? 5)
+                ->get(['id', 'title', 'slug', 'excerpt', 'featured_image', 'user_id', 'published_at'])
+            : collect();
 
-        $testimonials = Testimonial::query()
-            ->orderBy('sort_order')
-            ->orderBy('id')
-            ->limit(6)
-            ->get();
+        $curricula = $sections['curricula']['enabled'] ?? true
+            ? $this->curriculumRepository->getActive()
+            : collect();
 
-        $alumni = $this->alumniRepository->forWelcomePage();
+        $testimonials = $sections['testimonials']['enabled'] ?? true
+            ? Testimonial::query()
+                ->orderBy('sort_order')
+                ->orderBy('id')
+                ->limit($sections['testimonials']['limit'] ?? 6)
+                ->get()
+            : collect();
+
+        $alumni = $sections['alumni']['enabled'] ?? true
+            ? $this->alumniRepository->forWelcomePage()
+            : collect();
 
         return Inertia::render('welcome', [
             'canRegister' => Features::enabled(Features::registration()),

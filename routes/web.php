@@ -16,6 +16,7 @@ use App\Http\Controllers\Public\AdmissionController;
 use App\Http\Controllers\Admin\CustomFieldController as AdminCustomFieldController;
 use App\Http\Controllers\Admin\RegistrationController as AdminRegistrationController;
 use App\Http\Controllers\Admin\AlumniController as AdminAlumniController;
+use App\Http\Controllers\Admin\SiteSettingController as AdminSiteSettingController;
 use App\Http\Controllers\ExtracurricularController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\Admin\AgendaController;
@@ -106,6 +107,16 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::patch('registrations/{registration}/status', [AdminRegistrationController::class, 'updateStatus'])->name('registrations.update-status');
     Route::get('registrations/{registration}/pdf', [AdminRegistrationController::class, 'downloadPdf'])->name('registrations.pdf');
     Route::resource('registrations', AdminRegistrationController::class)->only(['index', 'show']);
+    Route::get('settings/site-identity', [AdminSiteSettingController::class, 'identity'])->name('settings.site-identity');
+    Route::put('settings/site-identity', [AdminSiteSettingController::class, 'updateIdentity'])->name('settings.site-identity.update');
+    Route::get('settings/welcome-content', [AdminSiteSettingController::class, 'welcomeContent'])->name('settings.welcome-content');
+    Route::put('settings/welcome-content', [AdminSiteSettingController::class, 'updateWelcomeContent'])->name('settings.welcome-content.update');
+    Route::get('settings/navigation', [AdminSiteSettingController::class, 'navigation'])->name('settings.navigation');
+    Route::put('settings/navigation', [AdminSiteSettingController::class, 'updateNavigation'])->name('settings.navigation.update');
+    Route::get('settings/page-meta', [AdminSiteSettingController::class, 'pageMeta'])->name('settings.page-meta');
+    Route::put('settings/page-meta', [AdminSiteSettingController::class, 'updatePageMeta'])->name('settings.page-meta.update');
+    Route::get('settings/section-preferences', [AdminSiteSettingController::class, 'sectionPreferences'])->name('settings.section-preferences');
+    Route::put('settings/section-preferences', [AdminSiteSettingController::class, 'updateSectionPreferences'])->name('settings.section-preferences.update');
 });
 
 require __DIR__.'/settings.php';

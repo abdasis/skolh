@@ -20,3 +20,4 @@ export type * from './alumni';
 export type * from './admission-period';
 export type * from './custom-field';
 export type * from './registration';
+export type * from './site-config';
