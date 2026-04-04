@@ -114,7 +114,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('registrations/export', [AdminRegistrationController::class, 'export'])->name('registrations.export');
     Route::patch('registrations/{registration}/status', [AdminRegistrationController::class, 'updateStatus'])->name('registrations.update-status');
     Route::get('registrations/{registration}/pdf', [AdminRegistrationController::class, 'downloadPdf'])->name('registrations.pdf');
-    Route::resource('registrations', AdminRegistrationController::class)->only(['index', 'show']);
+    Route::resource('registrations', AdminRegistrationController::class)->only(['index', 'show', 'create', 'store']);
     Route::get('visi-misi', [AdminVisiMisiController::class, 'show'])->name('visi-misi.show');
     Route::get('visi-misi/edit', [AdminVisiMisiController::class, 'edit'])->name('visi-misi.edit');
     Route::put('visi-misi', [AdminVisiMisiController::class, 'update'])->name('visi-misi.update');

@@ -1,4 +1,5 @@
-import { Head, router, setLayoutProps } from '@inertiajs/react';
+import { Head, Link, router, setLayoutProps } from '@inertiajs/react';
+import { PlusIcon } from 'lucide-react';
 import { DataTable, type DataTableState } from '@/components/data-table';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
@@ -72,6 +73,12 @@ const AdminRegistrationsIndex = ({ registrations, periods, activePeriod, stats }
                         </p>
                     </div>
                     <div className="flex items-center gap-2">
+                        <Link href={RegistrationController.create.url()}>
+                            <Button>
+                                <PlusIcon className="mr-2 h-4 w-4" />
+                                Daftarkan
+                            </Button>
+                        </Link>
                         <Select onValueChange={handlePeriodChange} defaultValue={activePeriod?.id.toString()}>
                             <SelectTrigger className="w-40">
                                 <SelectValue placeholder="Pilih Periode" />

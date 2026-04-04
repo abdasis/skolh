@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Admin;
 
 use App\Actions\Admission\ExportRegistrationsAction;
+use App\Actions\Admission\SubmitRegistrationAction;
 use App\Actions\Admission\UpdateRegistrationStatusAction;
 use App\Enums\RegistrationStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreAdminRegistrationRequest;
 use App\Http\Requests\Admin\UpdateRegistrationStatusRequest;
 use App\Http\Resources\AdmissionPeriodResource;
+use App\Http\Resources\CustomFieldResource;
 use App\Http\Resources\RegistrationDetailResource;
 use App\Http\Resources\RegistrationResource;
 use App\Models\Registration;
@@ -32,6 +35,7 @@ class RegistrationController extends Controller
         private readonly UpdateRegistrationStatusAction $updateStatusAction,
         private readonly ExportRegistrationsAction $exportAction,
         private readonly RegistrationPdfService $pdfService,
+        private readonly SubmitRegistrationAction $submitAction,
     ) {}
 
     public function index(Request $request): InertiaResponse
@@ -56,6 +60,44 @@ class RegistrationController extends Controller
                 'label' => $s->label(),
             ]),
         ]);
+    }
+
+    public function create(Request $request): InertiaResponse
+    {
+        $periodId = $request->input('period_id') ? (int) $request->input('period_id') : null;
+        $activePeriod = $this->periodRepository->findActive();
+
+        $selectedPeriod = $periodId
+            ? $this->periodRepository->getAll()->firstWhere('id', $periodId)
+            : $activePeriod;
+
+        if ($selectedPeriod) {
+            $selectedPeriod->load('customFields');
+        }
+
+        return Inertia::render('admin/registrations/create', [
+            'periods' => ['data' => AdmissionPeriodResource::collection($this->periodRepository->getAll())],
+            'activePeriod' => $activePeriod ? new AdmissionPeriodResource($activePeriod) : null,
+            'selectedPeriod' => $selectedPeriod ? new AdmissionPeriodResource($selectedPeriod) : null,
+            'customFields' => $selectedPeriod
+                ? ['data' => CustomFieldResource::collection($selectedPeriod->customFields)]
+                : ['data' => []],
+        ]);
+    }
+
+    public function store(StoreAdminRegistrationRequest $request): RedirectResponse
+    {
+        $period = $this->periodRepository->getAll()->firstWhere('id', $request->validated('admission_period_id'));
+
+        if (! $period) {
+            abort(422, 'Periode tidak ditemukan.');
+        }
+
+        $registration = $this->submitAction->handle($period, $request->validated() + $request->allFiles());
+
+        return redirect()
+            ->route('admin.registrations.show', $registration)
+            ->with('success', 'Pendaftaran berhasil ditambahkan.');
     }
 
     public function show(Registration $registration): InertiaResponse
