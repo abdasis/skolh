@@ -34,10 +34,12 @@ use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\ContactPageController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', WelcomeController::class)->name('home');
+Route::get('/contact', ContactPageController::class)->name('contact.index');
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 Route::get('/facilities/{facility:slug}', [FacilityController::class, 'show'])->name('facilities.show');
 Route::get('/curricula/{curriculum:slug}', [CurriculumController::class, 'show'])->name('curricula.show');

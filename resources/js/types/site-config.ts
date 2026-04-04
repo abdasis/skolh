@@ -5,6 +5,7 @@ export type SiteIdentity = {
     email: string | null;
     address: string | null;
     hours: string | null;
+    map_url: string | null;
     logo_url: string | null;
     favicon_url: string | null;
 };

@@ -22,6 +22,7 @@ class SiteConfigService
         'email' => 'info@sditalaziz.sch.id',
         'address' => 'Jl. KH. Abdul Hamid No. 23, Bangkalan, Jawa Timur 69116',
         'hours' => 'Sen - Jum, 07:00 - 15:00 WIB',
+        'map_url' => null,
     ];
 
     /**
@@ -93,7 +94,7 @@ class SiteConfigService
         ['id' => 'berita', 'label' => 'Berita', 'href' => '/articles', 'type' => 'route', 'route_name' => 'articles.index', 'visible' => true, 'order' => 5],
         ['id' => 'pengumuman', 'label' => 'Pengumuman', 'href' => '/announcements', 'type' => 'route', 'route_name' => 'announcements.index', 'visible' => true, 'order' => 6],
         ['id' => 'organisasi', 'label' => 'Organisasi', 'href' => '/organization', 'type' => 'route', 'route_name' => 'organization.index', 'visible' => true, 'order' => 7],
-        ['id' => 'kontak', 'label' => 'Kontak', 'href' => '#kontak', 'type' => 'anchor', 'visible' => true, 'order' => 8],
+        ['id' => 'kontak', 'label' => 'Kontak', 'href' => '/contact', 'type' => 'route', 'route_name' => 'contact.index', 'visible' => true, 'order' => 8],
     ];
 
     /**
