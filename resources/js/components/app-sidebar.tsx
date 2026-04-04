@@ -59,6 +59,7 @@ import { index as alumniIndex } from '@/actions/App/Http/Controllers/Admin/Alumn
 import { index as admissionPeriodsIndex } from '@/actions/App/Http/Controllers/Admin/AdmissionPeriodController';
 import { index as customFieldsIndex } from '@/actions/App/Http/Controllers/Admin/CustomFieldController';
 import { index as registrationsIndex } from '@/actions/App/Http/Controllers/Admin/RegistrationController';
+import { show as visiMisiShow } from '@/actions/App/Http/Controllers/Admin/VisiMisiController';
 import { dashboard } from '@/routes';
 import type { NavGroup } from '@/types';
 
@@ -106,7 +107,7 @@ export function AppSidebar() {
                 },
                 {
                     title: 'Visi & Misi',
-                    href: '/profil/visi-misi',
+                    href: visiMisiShow.url(),
                     icon: Star,
                 },
                 {

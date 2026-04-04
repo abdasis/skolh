@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\ContactMessageController as AdminContactMessageCo
 use App\Http\Controllers\Admin\CurriculumController as AdminCurriculumController;
 use App\Http\Controllers\Admin\FacilityController as AdminFacilityController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\VisiMisiController as AdminVisiMisiController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ContactMessageController;
@@ -109,6 +110,10 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::patch('registrations/{registration}/status', [AdminRegistrationController::class, 'updateStatus'])->name('registrations.update-status');
     Route::get('registrations/{registration}/pdf', [AdminRegistrationController::class, 'downloadPdf'])->name('registrations.pdf');
     Route::resource('registrations', AdminRegistrationController::class)->only(['index', 'show']);
+    Route::get('visi-misi', [AdminVisiMisiController::class, 'show'])->name('visi-misi.show');
+    Route::get('visi-misi/edit', [AdminVisiMisiController::class, 'edit'])->name('visi-misi.edit');
+    Route::put('visi-misi', [AdminVisiMisiController::class, 'update'])->name('visi-misi.update');
+
     Route::get('settings/site-identity', [AdminSiteSettingController::class, 'identity'])->name('settings.site-identity');
     Route::put('settings/site-identity', [AdminSiteSettingController::class, 'updateIdentity'])->name('settings.site-identity.update');
     Route::get('settings/welcome-content', [AdminSiteSettingController::class, 'welcomeContent'])->name('settings.welcome-content');
