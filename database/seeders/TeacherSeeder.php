@@ -9,7 +9,7 @@ class TeacherSeeder extends Seeder
 {
     public function run(): void
     {
-        Teacher::factory()->count(8)->active()->create();
-        Teacher::factory()->count(2)->inactive()->create();
+        Teacher::factory()->count(27)->active()->create();
+        Teacher::factory()->count(3)->inactive()->create();
     }
 }
