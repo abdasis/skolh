@@ -1,29 +1,43 @@
+import {
+    index as curriculumIndex,
+    show as curriculumShow,
+} from '@/actions/App/Http/Controllers/CurriculumController';
+import PageHero from '@/themes/clean-emerald/components/page-hero';
+import { type CurriculumCardResource, type CurriculumResource } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import * as Icons from 'lucide-react';
-import { ArrowLeft, Calendar, Download } from 'lucide-react';
-
-import { type CurriculumResource } from '@/types';
+import { ArrowLeft, BookOpen, Calendar, Download } from 'lucide-react';
 
 interface Props {
     curriculum: CurriculumResource;
+    others: CurriculumCardResource[];
 }
 
-const CurriculaShow = ({ curriculum }: Props) => {
-    const IconComponent = (Icons[curriculum.icon as keyof typeof Icons] ?? Icons.BookOpen) as React.ComponentType<{
+const CurriculaShow = ({ curriculum, others }: Props) => {
+    const IconComponent = (Icons[curriculum.icon as keyof typeof Icons] ??
+        Icons.BookOpen) as React.ComponentType<{
         className?: string;
     }>;
 
     const stripHtml = (html: string) => html.replace(/<[^>]*>/g, '');
-    const excerpt = curriculum.content ? stripHtml(curriculum.content).slice(0, 160) : curriculum.description.slice(0, 160);
+    const excerpt = curriculum.content
+        ? stripHtml(curriculum.content).slice(0, 160)
+        : curriculum.description.slice(0, 160);
 
     return (
         <>
-            <Head title={curriculum.name}>
+            <Head title={`${curriculum.name} - SDIT Al-Aziz`}>
                 <meta name="description" content={excerpt} />
-                <meta property="og:title" content={`${curriculum.name} - SDIT Al-Aziz`} />
+                <meta
+                    property="og:title"
+                    content={`${curriculum.name} - SDIT Al-Aziz`}
+                />
                 <meta property="og:description" content={excerpt} />
                 <meta property="og:type" content="article" />
-                <link rel="canonical" href={window.location.href.split('?')[0]} />
+                <link
+                    rel="canonical"
+                    href={window.location.href.split('?')[0]}
+                />
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link
                     href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800"
@@ -31,62 +45,109 @@ const CurriculaShow = ({ curriculum }: Props) => {
                 />
             </Head>
 
-            <div className="min-h-screen bg-white font-[Plus_Jakarta_Sans] text-gray-900 dark:bg-gray-950 dark:text-gray-100">
-                <div className="border-b border-gray-100 bg-white dark:border-gray-800 dark:bg-gray-950">
-                    <div className="mx-auto max-w-4xl px-4 py-4 sm:px-6 lg:px-8">
-                        <Link
-                            href="/"
-                            className="inline-flex items-center gap-2 text-sm text-gray-500 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400"
-                        >
-                            <ArrowLeft className="h-4 w-4" />
-                            Kembali ke Beranda
-                        </Link>
-                    </div>
-                </div>
+            <div className="mx-auto mt-[calc(1.75rem+3.75rem)] max-w-7xl px-4 py-12 font-[Plus_Jakarta_Sans] sm:px-6 lg:px-8">
+                <Link
+                    href={curriculumIndex.url()}
+                    className="inline-flex items-center gap-2 text-sm text-gray-500 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400"
+                >
+                    <ArrowLeft className="h-4 w-4" />
+                    Kembali ke Kurikulum
+                </Link>
 
-                <article className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-                    <header className="flex items-start gap-4">
-                        <div className="inline-flex shrink-0 rounded-xl bg-emerald-600 p-3 text-white">
-                            <IconComponent className="h-6 w-6" />
-                        </div>
-                        <div>
-                            <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
-                                {curriculum.name}
-                            </h1>
-                            <p className="mt-3 text-lg text-gray-600 dark:text-gray-400">{curriculum.description}</p>
-                            <div className="mt-3 flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-                                <span className="inline-flex items-center gap-1">
-                                    <Calendar className="h-4 w-4" />
-                                    Tahun {curriculum.year}
-                                </span>
-                                <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
-                                    {curriculum.level}
-                                </span>
-                            </div>
-                        </div>
-                    </header>
-
-                    {curriculum.content && (
-                        <div
-                            className="prose prose-emerald mt-10 max-w-none dark:prose-invert"
-                            dangerouslySetInnerHTML={{ __html: curriculum.content }}
+                <div className="mt-8 flex gap-10 lg:items-start">
+                    {/* Main content */}
+                    <article className="min-w-0 flex-1">
+                        <PageHero
+                            badge={`${curriculum.level} · ${curriculum.year}`}
+                            title=""
+                            highlight={curriculum.name}
+                            description={curriculum.description}
                         />
-                    )}
 
-                    {curriculum.document_url && (
-                        <section className="mt-10 border-t border-gray-200 pt-8 dark:border-gray-700">
-                            <a
-                                href={curriculum.document_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
-                            >
-                                <Download className="h-4 w-4" />
-                                Unduh Dokumen Kurikulum
-                            </a>
-                        </section>
-                    )}
-                </article>
+                        <div className="mt-2 flex flex-wrap items-center gap-2">
+                            <span className="inline-flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400">
+                                <Calendar className="h-4 w-4" />
+                                Tahun {curriculum.year}
+                            </span>
+                            <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
+                                {curriculum.level}
+                            </span>
+                        </div>
+
+                        {curriculum.content && (
+                            <div
+                                className="prose prose-emerald dark:prose-invert mt-10 max-w-none"
+                                dangerouslySetInnerHTML={{
+                                    __html: curriculum.content,
+                                }}
+                            />
+                        )}
+
+                        {curriculum.document_url && (
+                            <section className="mt-10 border-t border-gray-200 pt-8 dark:border-gray-700">
+                                <a
+                                    href={curriculum.document_url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
+                                >
+                                    <Download className="h-4 w-4" />
+                                    Unduh Dokumen Kurikulum
+                                </a>
+                            </section>
+                        )}
+                    </article>
+
+                    {/* Right Sidebar */}
+                    <aside className="hidden w-64 shrink-0 lg:block">
+                        <div>
+                            <span className="bg-emerald-600 px-3 py-1.5 text-[11px] font-bold tracking-widest text-white uppercase dark:bg-emerald-500">
+                                Kurikulum Lainnya
+                            </span>
+                            <div className="h-0.5 w-full bg-emerald-600 dark:bg-emerald-500" />
+                        </div>
+
+                        {others.length === 0 ? (
+                            <p className="mt-4 text-sm text-gray-400 dark:text-gray-500">
+                                Belum ada kurikulum lain.
+                            </p>
+                        ) : (
+                            <ul className="mt-4 space-y-4">
+                                {others.map((item) => {
+                                    const ItemIcon = (Icons[
+                                        item.icon as keyof typeof Icons
+                                    ] ?? BookOpen) as React.ComponentType<{
+                                        className?: string;
+                                    }>;
+                                    return (
+                                        <li key={item.id}>
+                                            <Link
+                                                href={
+                                                    curriculumShow({
+                                                        curriculum: item.slug,
+                                                    }).url
+                                                }
+                                                className="group flex items-start gap-3"
+                                            >
+                                                <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 transition group-hover:bg-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-400 dark:group-hover:bg-emerald-900/50">
+                                                    <ItemIcon className="h-4 w-4" />
+                                                </div>
+                                                <div className="min-w-0">
+                                                    <p className="line-clamp-2 text-sm leading-snug font-medium text-gray-700 transition group-hover:text-emerald-600 dark:text-gray-300 dark:group-hover:text-emerald-400">
+                                                        {item.name}
+                                                    </p>
+                                                    <p className="mt-0.5 line-clamp-2 text-[11px] text-gray-400 dark:text-gray-500">
+                                                        {item.description}
+                                                    </p>
+                                                </div>
+                                            </Link>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        )}
+                    </aside>
+                </div>
             </div>
 
             <script
