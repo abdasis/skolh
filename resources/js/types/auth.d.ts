@@ -1,7 +1,11 @@
-// T016 [US1]: Added is_active and roles fields
 export type Role = {
     id: number;
     name: string;
+    guard_name?: string;
+    permissions?: Array<{ id: number; name: string }>;
+    permissions_count?: number;
+    users_count?: number;
+    created_at?: string;
 };
 
 export type User = {
@@ -11,6 +15,7 @@ export type User = {
     avatar?: string;
     is_active: boolean;
     roles: Role[];
+    direct_permissions?: Array<{ id: number; name: string }>;
     email_verified_at: string | null;
     two_factor_enabled?: boolean;
     created_at: string;

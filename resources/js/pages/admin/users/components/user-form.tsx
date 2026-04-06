@@ -1,9 +1,8 @@
-// T019 [US2]: Reusable UserForm component — used by both create.tsx and edit.tsx
-// Fields: name, email, password, password_confirmation, role (select), is_active (toggle)
-
 import { type FormEventHandler } from 'react';
+import { Link } from '@inertiajs/react';
 import { type InertiaFormProps } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
+import { FormSubmit } from '@/components/form/form-submit';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -14,6 +13,11 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
+
+export interface RoleOption {
+    name: string;
+    permissions: number[];
+}
 
 export interface UserFormData {
     name: string;
@@ -26,20 +30,32 @@ export interface UserFormData {
 
 interface Props {
     form: InertiaFormProps<UserFormData>;
-    roles: string[];
+    roles: RoleOption[];
     onSubmit: FormEventHandler<HTMLFormElement>;
+    onRoleChange?: (roleName: string, permissionIds: number[]) => void;
+    cancelHref: string;
     submitLabel?: string;
     passwordRequired?: boolean;
 }
 
-export function UserForm({
+export const UserForm = ({
     form,
     roles,
     onSubmit,
+    onRoleChange,
+    cancelHref,
     submitLabel = 'Simpan',
     passwordRequired = true,
-}: Props) {
+}: Props) => {
     const { data, setData, errors, processing } = form;
+
+    const handleRoleChange = (value: string) => {
+        setData('role', value);
+        if (onRoleChange) {
+            const selected = roles.find((r) => r.name === value);
+            onRoleChange(value, selected?.permissions ?? []);
+        }
+    };
 
     return (
         <form onSubmit={onSubmit} className="flex flex-col gap-4">
@@ -72,41 +88,52 @@ export function UserForm({
 
             <div className="flex flex-col gap-1.5">
                 <Label htmlFor="password">
-                    Password {!passwordRequired && '(kosongkan jika tidak diubah)'}
+                    Password{' '}
+                    {!passwordRequired && '(kosongkan jika tidak diubah)'}
                 </Label>
                 <Input
                     id="password"
                     type="password"
                     value={data.password}
                     onChange={(e) => setData('password', e.target.value)}
-                    placeholder={passwordRequired ? 'Minimal 8 karakter' : 'Biarkan kosong untuk tidak mengubah'}
+                    placeholder={
+                        passwordRequired
+                            ? 'Minimal 8 karakter'
+                            : 'Biarkan kosong untuk tidak mengubah'
+                    }
                 />
                 {errors.password && (
-                    <p className="text-sm text-destructive">{errors.password}</p>
+                    <p className="text-sm text-destructive">
+                        {errors.password}
+                    </p>
                 )}
             </div>
 
             <div className="flex flex-col gap-1.5">
-                <Label htmlFor="password_confirmation">Konfirmasi Password</Label>
+                <Label htmlFor="password_confirmation">
+                    Konfirmasi Password
+                </Label>
                 <Input
                     id="password_confirmation"
                     type="password"
                     value={data.password_confirmation}
-                    onChange={(e) => setData('password_confirmation', e.target.value)}
+                    onChange={(e) =>
+                        setData('password_confirmation', e.target.value)
+                    }
                     placeholder="Ulangi password"
                 />
             </div>
 
             <div className="flex flex-col gap-1.5">
                 <Label htmlFor="role">Role</Label>
-                <Select value={data.role} onValueChange={(v) => setData('role', v)}>
+                <Select value={data.role} onValueChange={handleRoleChange}>
                     <SelectTrigger id="role">
                         <SelectValue placeholder="Pilih role" />
                     </SelectTrigger>
                     <SelectContent>
                         {roles.map((role) => (
-                            <SelectItem key={role} value={role}>
-                                {role}
+                            <SelectItem key={role.name} value={role.name}>
+                                {role.name}
                             </SelectItem>
                         ))}
                     </SelectContent>
@@ -124,15 +151,23 @@ export function UserForm({
                 />
                 <Label htmlFor="is_active">Akun Aktif</Label>
                 {errors.is_active && (
-                    <p className="text-sm text-destructive">{errors.is_active}</p>
+                    <p className="text-sm text-destructive">
+                        {errors.is_active}
+                    </p>
                 )}
             </div>
 
-            <div className="flex gap-2">
-                <Button type="submit" disabled={processing}>
-                    {submitLabel}
+            <div className="flex justify-end gap-2">
+                <Button type="button" variant="outline" asChild>
+                    <Link href={cancelHref}>Batal</Link>
                 </Button>
+                <FormSubmit
+                    processing={processing}
+                    successful={form.recentlySuccessful}
+                >
+                    {submitLabel}
+                </FormSubmit>
             </div>
         </form>
     );
-}
+};

@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -42,10 +43,13 @@ class UserController extends Controller
      */
     public function create(): Response
     {
-        $roles = Role::pluck('name');
+        $roles = Role::with('permissions:id,name')->get(['id', 'name']);
 
         return Inertia::render('admin/users/create', [
-            'roles' => $roles,
+            'roles' => $roles->map(fn ($role) => [
+                'name' => $role->name,
+                'permissions' => $role->permissions->map(fn ($p) => $p->id)->values(),
+            ]),
         ]);
     }
 
@@ -77,25 +81,48 @@ class UserController extends Controller
     }
 
     /**
-     * T023 [US3]: Show form for editing a user.
-     * Pass user + list of roles to view.
+     * T019 [US2+US3]: Show form for editing a user.
+     * Pass user with roles/direct_permissions, all roles, and grouped permissions.
      */
     public function edit(User $user): Response
     {
-        $roles = Role::pluck('name');
+        $roles = Role::with('permissions:id,name')->get(['id', 'name']);
+        $allPermissions = Permission::all(['id', 'name']);
+        $groupedPermissions = $allPermissions->groupBy(function ($permission) {
+            $parts = explode(' ', $permission->name);
+
+            return end($parts);
+        })->map(fn ($group) => $group->values());
+
+        $user->load('roles', 'permissions');
 
         return Inertia::render('admin/users/edit', [
-            'user' => $user->load('roles'),
-            'roles' => $roles,
+            'user' => array_merge($user->toArray(), [
+                'direct_permissions' => $user->permissions->map(fn ($p) => ['id' => $p->id, 'name' => $p->name])->values(),
+            ]),
+            'roles' => $roles->map(fn ($role) => [
+                'name' => $role->name,
+                'permissions' => $role->permissions->map(fn ($p) => $p->id)->values(),
+            ]),
+            'all_permissions' => $allPermissions->map(fn ($p) => ['id' => $p->id, 'name' => $p->name])->values(),
+            'grouped_permissions' => $groupedPermissions,
         ]);
     }
 
     /**
-     * T023 [US3]: Update the specified user.
-     * Use syncRoles() + redirect with flash.
+     * T019 [US2+US3]: Update the specified user.
+     * Sync role and direct permissions. T029: prevent removing last Super Admin.
      */
     public function update(UpdateUserRequest $request, User $user): RedirectResponse
     {
+        $isSuperAdmin = $user->hasRole('Super Admin');
+        $newRole = $request->validated('role');
+
+        if ($isSuperAdmin && $newRole !== 'Super Admin') {
+            $superAdminCount = User::role('Super Admin')->count();
+            abort_if($superAdminCount <= 1, 403, 'Tidak dapat menghapus Super Admin terakhir.');
+        }
+
         $data = [
             'name' => $request->validated('name'),
             'email' => $request->validated('email'),
@@ -107,7 +134,10 @@ class UserController extends Controller
         }
 
         $user->update($data);
-        $user->syncRoles([$request->validated('role')]);
+        $user->syncRoles([$newRole]);
+
+        $directPermissions = $request->validated('direct_permissions', []);
+        $user->syncPermissions($directPermissions);
 
         return redirect()->route('admin.users.index')
             ->with('success', 'User berhasil diperbarui.');

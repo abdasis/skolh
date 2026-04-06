@@ -26,6 +26,8 @@ class UpdateUserRequest extends FormRequest
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             'role' => ['required', 'string', 'exists:roles,name'],
             'is_active' => ['required', 'boolean'],
+            'direct_permissions' => ['nullable', 'array'],
+            'direct_permissions.*' => ['integer', 'exists:permissions,id'],
         ];
     }
 }
