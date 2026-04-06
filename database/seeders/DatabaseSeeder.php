@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             ArticleSeeder::class,
             FacilitySeeder::class,
             AgendaSeeder::class,
+            CurriculumSeeder::class,
         ]);
 
         // User::factory(10)->create();
