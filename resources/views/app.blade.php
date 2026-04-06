@@ -59,6 +59,7 @@
             $isThemePage = !str_starts_with($component, 'auth/')
                 && !str_starts_with($component, 'settings/')
                 && $component !== 'dashboard'
+                && $component !== 'install'
                 && !str_starts_with($component, 'admin/');
             $activeTheme = $page['props']['activeTheme'] ?? config('themes.default', 'clean-emerald');
             $componentPath = $isThemePage
