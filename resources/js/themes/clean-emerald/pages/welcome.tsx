@@ -140,7 +140,14 @@ const Welcome = ({
                     }
                 />
                 <meta property="og:type" content="website" />
-                <link rel="canonical" href={window.location.origin} />
+                <link
+                    rel="canonical"
+                    href={
+                        typeof window !== 'undefined'
+                            ? window.location.origin
+                            : ''
+                    }
+                />
             </Head>
             {/* Hero Section */}
             {siteConfig?.sections?.hero?.enabled !== false && (
@@ -1542,7 +1549,10 @@ const Welcome = ({
                         '@type': 'EducationalOrganization',
                         name: siteConfig?.identity?.name ?? undefined,
                         description: siteConfig?.identity?.tagline ?? undefined,
-                        url: window.location.origin,
+                        url:
+                            typeof window !== 'undefined'
+                                ? window.location.origin
+                                : undefined,
                         address: siteConfig?.identity?.address ?? undefined,
                         telephone: siteConfig?.identity?.phone ?? undefined,
                         email: siteConfig?.identity?.email ?? undefined,
