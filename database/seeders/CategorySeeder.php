@@ -13,6 +13,9 @@ class CategorySeeder extends Seeder
             ['name' => 'Akademik', 'description' => 'Pengumuman seputar kegiatan akademik dan pembelajaran.'],
             ['name' => 'Umum', 'description' => 'Pengumuman umum dari pihak sekolah.'],
             ['name' => 'Kegiatan', 'description' => 'Kegiatan dan acara sekolah.'],
+            ['name' => 'Parenting', 'description' => 'Tips dan panduan pengasuhan anak.'],
+            ['name' => 'Keislaman', 'description' => 'Artikel seputar nilai dan pendidikan Islam.'],
+            ['name' => 'Kesehatan', 'description' => 'Informasi seputar kesehatan anak dan gizi.'],
         ];
 
         foreach ($categories as $category) {

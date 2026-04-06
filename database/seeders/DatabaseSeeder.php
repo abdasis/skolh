@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             CategorySeeder::class,
             AnnouncementSeeder::class,
+            ArticleSeeder::class,
             FacilitySeeder::class,
             AgendaSeeder::class,
         ]);
