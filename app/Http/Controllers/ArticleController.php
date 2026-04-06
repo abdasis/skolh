@@ -39,6 +39,7 @@ class ArticleController extends Controller
 
         return Inertia::render('articles/show', [
             'article' => new ArticleResource($article),
+            'others' => ArticleResource::collection($this->repository->getOthers($article->id)),
         ]);
     }
 }

@@ -18,6 +18,11 @@ interface ArticleRepositoryInterface
     public function findBySlug(string $slug): ?Article;
 
     /**
+     * @return Collection<int, Article>
+     */
+    public function getOthers(int $excludeId, int $limit = 5): Collection;
+
+    /**
      * @return array{total: int, published: int, draft: int, with_image: int}
      */
     public function getStats(): array;

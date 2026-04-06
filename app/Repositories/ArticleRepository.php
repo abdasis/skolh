@@ -37,6 +37,19 @@ class ArticleRepository implements ArticleRepositoryInterface
     }
 
     /**
+     * @return Collection<int, Article>
+     */
+    public function getOthers(int $excludeId, int $limit = 5): Collection
+    {
+        return Article::published()
+            ->with(['author', 'categories'])
+            ->where('id', '!=', $excludeId)
+            ->latest('published_at')
+            ->limit($limit)
+            ->get();
+    }
+
+    /**
      * @return array{total: int, published: int, draft: int, with_image: int}
      */
     public function getStats(): array
