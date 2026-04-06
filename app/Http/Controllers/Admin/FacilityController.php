@@ -7,7 +7,6 @@ use App\Http\Requests\Admin\StoreFacilityRequest;
 use App\Http\Requests\Admin\UpdateFacilityRequest;
 use App\Models\Facility;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -37,13 +36,7 @@ class FacilityController extends Controller
 
     public function store(StoreFacilityRequest $request): RedirectResponse
     {
-        $data = $request->validated();
-
-        if ($request->hasFile('featured_image')) {
-            $data['featured_image'] = $request->file('featured_image')->store('facilities', 'public');
-        }
-
-        Facility::create($data);
+        Facility::create($request->validated());
 
         return redirect()->route('admin.facilities.index')
             ->with('success', 'Fasilitas berhasil dibuat.');
@@ -63,18 +56,7 @@ class FacilityController extends Controller
 
     public function update(UpdateFacilityRequest $request, Facility $facility): RedirectResponse
     {
-        $data = $request->validated();
-
-        if ($request->hasFile('featured_image')) {
-            if ($facility->featured_image) {
-                Storage::disk('public')->delete($facility->featured_image);
-            }
-            $data['featured_image'] = $request->file('featured_image')->store('facilities', 'public');
-        } else {
-            unset($data['featured_image']);
-        }
-
-        $facility->update($data);
+        $facility->update($request->validated());
 
         return redirect()->route('admin.facilities.index')
             ->with('success', 'Fasilitas berhasil diperbarui.');
@@ -82,10 +64,6 @@ class FacilityController extends Controller
 
     public function destroy(Facility $facility): RedirectResponse
     {
-        if ($facility->featured_image) {
-            Storage::disk('public')->delete($facility->featured_image);
-        }
-
         $facility->delete();
 
         return redirect()->route('admin.facilities.index')

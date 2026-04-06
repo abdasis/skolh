@@ -1,8 +1,15 @@
-import { type FormEventHandler, useRef, useState } from 'react';
+import { type FormEventHandler } from 'react';
 import { type InertiaFormProps } from '@inertiajs/react';
-import { FormIconPicker, FormInput, FormTextarea, FormSelect, FormSubmit, FormLabel, type SelectOption } from '@/components/form';
+import {
+    FormIconPicker,
+    FormInput,
+    FormTextarea,
+    FormSelect,
+    FormSubmit,
+    FormImagePicker,
+    type SelectOption,
+} from '@/components/form';
 import { TiptapEditor } from '@/components/tiptap-editor';
-import InputError from '@/components/ui/input-error';
 import { Button } from '@/components/ui/button';
 import { Link } from '@inertiajs/react';
 
@@ -11,7 +18,7 @@ export interface FacilityFormData {
     title: string;
     description: string;
     content: string;
-    featured_image: File | null;
+    featured_image: string | null;
     status: string;
 }
 
@@ -19,7 +26,6 @@ interface Props {
     form: InertiaFormProps<FacilityFormData>;
     onSubmit: FormEventHandler<HTMLFormElement>;
     submitLabel?: string;
-    existingImageUrl?: string | null;
     cancelHref: string;
 }
 
@@ -28,22 +34,16 @@ const statusOptions: SelectOption[] = [
     { value: 'public', label: 'Publik' },
 ];
 
-export function FacilityForm({ form, onSubmit, submitLabel = 'Simpan', existingImageUrl, cancelHref }: Props) {
+export function FacilityForm({
+    form,
+    onSubmit,
+    submitLabel = 'Simpan',
+    cancelHref,
+}: Props) {
     const { data, setData, errors, processing, recentlySuccessful } = form;
-    const fileInputRef = useRef<HTMLInputElement>(null);
-    const [previewUrl, setPreviewUrl] = useState<string | null>(existingImageUrl ?? null);
-
-    function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-        const file = e.target.files?.[0] ?? null;
-        setData('featured_image', file);
-
-        if (file) {
-            setPreviewUrl(URL.createObjectURL(file));
-        }
-    }
 
     return (
-        <form onSubmit={onSubmit} className="flex flex-col gap-4" encType="multipart/form-data">
+        <form onSubmit={onSubmit} className="flex flex-col gap-4">
             <FormIconPicker
                 label="Icon"
                 value={data.icon}
@@ -78,25 +78,13 @@ export function FacilityForm({ form, onSubmit, submitLabel = 'Simpan', existingI
                 error={errors.content}
             />
 
-            <div className="grid gap-2">
-                <FormLabel htmlFor="featured_image">Gambar Unggulan</FormLabel>
-                <input
-                    ref={fileInputRef}
-                    id="featured_image"
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp"
-                    onChange={handleFileChange}
-                    className="text-sm file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-muted file:px-3 file:py-1.5 file:text-sm file:font-medium"
-                />
-                {previewUrl && (
-                    <img
-                        src={previewUrl}
-                        alt="Preview"
-                        className="mt-1 h-32 w-auto rounded-md object-cover"
-                    />
-                )}
-                <InputError message={errors.featured_image} />
-            </div>
+            <FormImagePicker
+                label="Gambar Unggulan"
+                value={data.featured_image}
+                onChange={(url) => setData('featured_image', url)}
+                folder="facilities"
+                error={errors.featured_image}
+            />
 
             <FormSelect
                 label="Status"
@@ -112,7 +100,10 @@ export function FacilityForm({ form, onSubmit, submitLabel = 'Simpan', existingI
                 <Button type="button" variant="outline" asChild>
                     <Link href={cancelHref}>Batal</Link>
                 </Button>
-                <FormSubmit processing={processing} successful={recentlySuccessful}>
+                <FormSubmit
+                    processing={processing}
+                    successful={recentlySuccessful}
+                >
                     {submitLabel}
                 </FormSubmit>
             </div>

@@ -1,5 +1,14 @@
 export type FacilityStatus = 'public' | 'draft';
 
+export interface FacilityCardResource {
+    id: number;
+    icon: string;
+    title: string;
+    slug: string;
+    description: string;
+    featured_image_url: string | null;
+}
+
 export interface FacilityStats {
     total: number;
     public: number;

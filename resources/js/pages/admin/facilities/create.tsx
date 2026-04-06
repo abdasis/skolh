@@ -1,6 +1,9 @@
 import { Head, useForm } from '@inertiajs/react';
 import * as FacilityController from '@/actions/App/Http/Controllers/Admin/FacilityController';
-import { FacilityForm, type FacilityFormData } from './components/facility-form';
+import {
+    FacilityForm,
+    type FacilityFormData,
+} from './components/facility-form';
 
 export default function AdminFacilitiesCreate() {
     const form = useForm<FacilityFormData>({
@@ -14,9 +17,7 @@ export default function AdminFacilitiesCreate() {
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        form.post(FacilityController.store.url(), {
-            forceFormData: true,
-        });
+        form.post(FacilityController.store.url());
     }
 
     return (

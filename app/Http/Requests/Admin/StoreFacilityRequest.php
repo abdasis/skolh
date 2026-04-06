@@ -22,7 +22,7 @@ class StoreFacilityRequest extends FormRequest
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'content' => ['nullable', 'string'],
-            'featured_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'featured_image' => ['nullable', 'string', 'url'],
             'status' => ['required', 'in:public,draft'],
         ];
     }

@@ -1,7 +1,10 @@
 import { Head, useForm } from '@inertiajs/react';
 import * as FacilityController from '@/actions/App/Http/Controllers/Admin/FacilityController';
 import { type FacilityResource } from '@/types';
-import { FacilityForm, type FacilityFormData } from './components/facility-form';
+import {
+    FacilityForm,
+    type FacilityFormData,
+} from './components/facility-form';
 
 interface Props {
     facility: FacilityResource;
@@ -14,14 +17,13 @@ const AdminFacilitiesEdit = ({ facility }: Props) => {
         title: facility.title,
         description: facility.description,
         content: facility.content ?? '',
-        featured_image: null,
+        featured_image: facility.featured_image ?? null,
         status: facility.status,
     });
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         form.post(FacilityController.update.url({ facility: facility.id }), {
-            forceFormData: true,
             preserveScroll: true,
         });
     }
@@ -33,7 +35,9 @@ const AdminFacilitiesEdit = ({ facility }: Props) => {
             <div className="flex flex-col gap-4 p-6">
                 <div>
                     <h1 className="text-xl font-semibold">Edit Fasilitas</h1>
-                    <p className="text-sm text-muted-foreground">Ubah data fasilitas.</p>
+                    <p className="text-sm text-muted-foreground">
+                        Ubah data fasilitas.
+                    </p>
                 </div>
 
                 <div className="overflow-hidden rounded-2xl bg-gradient-to-b from-muted/60 to-muted/30 p-1 ring-1 ring-foreground/8">
@@ -43,7 +47,6 @@ const AdminFacilitiesEdit = ({ facility }: Props) => {
                                 form={form}
                                 onSubmit={handleSubmit}
                                 submitLabel="Simpan Perubahan"
-                                existingImageUrl={facility.featured_image}
                                 cancelHref={FacilityController.index.url()}
                             />
                         </div>

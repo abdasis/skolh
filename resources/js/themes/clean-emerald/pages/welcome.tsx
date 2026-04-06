@@ -1,4 +1,7 @@
-import { show as facilityShow } from '@/actions/App/Http/Controllers/FacilityController';
+import {
+    index as facilityIndex,
+    show as facilityShow,
+} from '@/actions/App/Http/Controllers/FacilityController';
 import { show as curriculumShow } from '@/actions/App/Http/Controllers/CurriculumController';
 import { store as contactMessageStore } from '@/actions/App/Http/Controllers/ContactMessageController';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
@@ -771,13 +774,12 @@ const Welcome = ({
                                 {facilitiesTotal > facilities.length && (
                                     <div className="mt-10 text-center">
                                         <Link
-                                            href="/facilities"
-                                            className="group inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-b from-white/60 to-white/30 p-0.5 ring-1 ring-black/8 transition-all duration-300 hover:ring-black/14 dark:from-white/8 dark:to-white/4 dark:ring-white/10 dark:hover:ring-white/18"
+                                            href={facilityIndex.url()}
+                                            className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-linear-to-r from-emerald-400 to-emerald-600 px-7 py-3 text-sm font-semibold text-white shadow-[0_2px_8px_rgba(16,185,129,0.3)] transition-all duration-300 hover:shadow-[0_4px_12px_rgba(16,185,129,0.35)] hover:brightness-110"
                                         >
-                                            <span className="inline-flex items-center gap-2 rounded-full bg-white/80 px-6 py-2.5 text-sm font-semibold text-emerald-700 transition-all duration-300 group-hover:bg-white/95 dark:bg-white/6 dark:text-emerald-400 dark:group-hover:bg-white/10">
-                                                Lihat Semua Fasilitas
-                                                <Icons.ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                                            </span>
+                                            <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-linear-to-b from-white/20 to-transparent" />
+                                            Lihat Semua Fasilitas
+                                            <Icons.ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                                         </Link>
                                     </div>
                                 )}
