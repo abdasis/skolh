@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Actions\Teacher;
 
 use App\Models\Teacher;
-use Illuminate\Http\UploadedFile;
 
 final class UpdateTeacherAction
 {
@@ -14,8 +13,8 @@ final class UpdateTeacherAction
      */
     public function handle(Teacher $teacher, array $data): Teacher
     {
-        $avatar = $data['avatar'] ?? null;
-        unset($data['avatar']);
+        $avatarUrl = $data['avatar_url'] ?? null;
+        $existingAvatarUrl = $teacher->getFirstMediaUrl('avatar');
 
         $teacher->update([
             'name' => $data['name'],
@@ -30,8 +29,14 @@ final class UpdateTeacherAction
             'status' => $data['status'],
         ]);
 
-        if ($avatar instanceof UploadedFile) {
-            $teacher->addMedia($avatar)->toMediaCollection('avatar');
+        if (is_string($avatarUrl) && $avatarUrl !== '' && $avatarUrl !== $existingAvatarUrl) {
+            $localPath = public_path(parse_url($avatarUrl, PHP_URL_PATH));
+            if (file_exists($localPath)) {
+                $teacher->clearMediaCollection('avatar');
+                $teacher->addMedia($localPath)->preservingOriginal()->toMediaCollection('avatar');
+            }
+        } elseif ($avatarUrl === null || $avatarUrl === '') {
+            $teacher->clearMediaCollection('avatar');
         }
 
         $teacher->socials()->delete();

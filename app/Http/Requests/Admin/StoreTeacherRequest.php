@@ -30,7 +30,7 @@ final class StoreTeacherRequest extends FormRequest
             'date_of_birth' => ['nullable', 'date', 'before:today'],
             'joined_at' => ['nullable', 'date'],
             'status' => ['required', new Enum(TeacherStatus::class)],
-            'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'avatar_url' => ['nullable', 'string', 'url', 'max:2048'],
             'socials' => ['nullable', 'array'],
             'socials.*.platform' => ['required', 'string', new Enum(SocialPlatform::class)],
             'socials.*.url' => ['required', 'string', 'url', 'max:500'],

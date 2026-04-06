@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\TeacherController as AdminTeacherController;
 use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialController;
 use App\Http\Controllers\Admin\AdmissionPeriodController as AdminAdmissionPeriodController;
 use App\Http\Controllers\Public\AdmissionController;
+use App\Http\Controllers\Public\PublicTeacherController;
 use App\Http\Controllers\Admin\CustomFieldController as AdminCustomFieldController;
 use App\Http\Controllers\Admin\RegistrationController as AdminRegistrationController;
 use App\Http\Controllers\Admin\AlumniController as AdminAlumniController;
@@ -60,6 +61,7 @@ Route::get('/achievements/{achievement}', [AchievementController::class, 'show']
 Route::get('/extracurriculars', [ExtracurricularController::class, 'index'])->name('extracurriculars.index');
 Route::get('/extracurriculars/{extracurricular:slug}', [ExtracurricularController::class, 'show'])->name('extracurriculars.show');
 Route::get('/organization', OrganizationController::class)->name('organization.index');
+Route::get('/teachers', PublicTeacherController::class)->name('teachers.index');
 Route::get('/gallery', [GalleryAlbumController::class, 'index'])->name('gallery.index');
 Route::get('/gallery/{galleryAlbum:slug}', [GalleryAlbumController::class, 'show'])->name('gallery.show');
 

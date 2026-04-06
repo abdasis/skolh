@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Actions\Teacher;
 
 use App\Models\Teacher;
-use Illuminate\Http\UploadedFile;
 
 final class CreateTeacherAction
 {
@@ -14,8 +13,7 @@ final class CreateTeacherAction
      */
     public function handle(array $data): Teacher
     {
-        $avatar = $data['avatar'] ?? null;
-        unset($data['avatar']);
+        $avatarUrl = $data['avatar_url'] ?? null;
 
         $teacher = Teacher::create([
             'name' => $data['name'],
@@ -30,8 +28,11 @@ final class CreateTeacherAction
             'status' => $data['status'],
         ]);
 
-        if ($avatar instanceof UploadedFile) {
-            $teacher->addMedia($avatar)->toMediaCollection('avatar');
+        if (is_string($avatarUrl) && $avatarUrl !== '') {
+            $localPath = public_path(parse_url($avatarUrl, PHP_URL_PATH));
+            if (file_exists($localPath)) {
+                $teacher->addMedia($localPath)->preservingOriginal()->toMediaCollection('avatar');
+            }
         }
 
         if (! empty($data['socials'])) {
