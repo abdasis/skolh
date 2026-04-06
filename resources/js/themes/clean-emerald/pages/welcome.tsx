@@ -6,7 +6,10 @@ import {
     index as articleIndex,
     show as articleShow,
 } from '@/actions/App/Http/Controllers/ArticleController';
-import { show as curriculumShow } from '@/actions/App/Http/Controllers/CurriculumController';
+import {
+    index as curriculumIndex,
+    show as curriculumShow,
+} from '@/actions/App/Http/Controllers/CurriculumController';
 import { store as contactMessageStore } from '@/actions/App/Http/Controllers/ContactMessageController';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import * as Icons from 'lucide-react';
@@ -483,208 +486,173 @@ const Welcome = ({
             )}
 
             {/* Program Unggulan */}
-            <section
-                id="program"
-                className="bg-gray-50 py-20 sm:py-28 dark:bg-gray-900/50"
-            >
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="text-center">
-                        <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold tracking-widest text-emerald-700 uppercase dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
-                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
-                            Program Unggulan
-                        </span>
-                        <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
-                            Kurikulum yang Komprehensif
-                        </h2>
-                        <p className="mx-auto mt-4 max-w-2xl text-base text-gray-600 dark:text-gray-400">
-                            Program pendidikan yang dirancang untuk
-                            mengembangkan potensi siswa secara menyeluruh.
-                        </p>
-                    </div>
+            {curricula.length > 0 &&
+                siteConfig?.sections?.curricula?.enabled !== false && (
+                    <section
+                        id="program"
+                        className="bg-gray-50 py-20 sm:py-28 dark:bg-gray-900/50"
+                    >
+                        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                            <div className="text-center">
+                                <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold tracking-widest text-emerald-700 uppercase dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
+                                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
+                                    Program Unggulan
+                                </span>
+                                <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
+                                    Kurikulum yang Komprehensif
+                                </h2>
+                                <p className="mx-auto mt-4 max-w-2xl text-base text-gray-600 dark:text-gray-400">
+                                    Program pendidikan yang dirancang untuk
+                                    mengembangkan potensi siswa secara
+                                    menyeluruh.
+                                </p>
+                            </div>
 
-                    <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        {[
-                            {
-                                title: 'Tahfidz Al-Quran',
-                                desc: 'Program hafalan Al-Quran dengan metode yang menyenangkan dan terstruktur. Target hafalan minimal 3 juz selama 6 tahun.',
-                                icon: QuranIcon,
-                                color: 'emerald',
-                                num: '01',
-                                tag: 'Karakter Islami',
-                            },
-                            {
-                                title: 'Bahasa Arab & Inggris',
-                                desc: 'Pembelajaran bilingual yang intensif untuk mempersiapkan siswa menghadapi tantangan global.',
-                                icon: LanguageIcon,
-                                color: 'teal',
-                                num: '02',
-                                tag: 'Komunikasi Global',
-                            },
-                            {
-                                title: 'Sains & Teknologi',
-                                desc: 'Kurikulum STEM yang mengembangkan kemampuan berpikir kritis dan kreativitas siswa.',
-                                icon: ScienceIcon,
-                                color: 'orange',
-                                num: '03',
-                                tag: 'STEM',
-                            },
-                            {
-                                title: 'Kepemimpinan',
-                                desc: 'Program pengembangan karakter dan jiwa kepemimpinan melalui berbagai kegiatan.',
-                                icon: LeaderIcon,
-                                color: 'emerald',
-                                num: '04',
-                                tag: 'Soft Skills',
-                            },
-                            {
-                                title: 'Seni & Olahraga',
-                                desc: 'Pengembangan bakat dan minat siswa melalui ekstrakulikuler seni dan olahraga.',
-                                icon: ArtIcon,
-                                color: 'teal',
-                                num: '05',
-                                tag: 'Kreativitas',
-                            },
-                            {
-                                title: 'Life Skills',
-                                desc: 'Pembekalan keterampilan hidup seperti kemandirian, kerja tim, dan problem solving.',
-                                icon: LifeIcon,
-                                color: 'orange',
-                                num: '06',
-                                tag: 'Kecakapan Hidup',
-                            },
-                        ].map((program) => {
-                            const palette: Record<
-                                string,
-                                {
-                                    gradient: string;
-                                    iconBg: string;
-                                    iconText: string;
-                                    tagBg: string;
-                                    tagText: string;
-                                    numText: string;
-                                    line: string;
-                                    arrow: string;
-                                }
-                            > = {
-                                emerald: {
-                                    gradient:
-                                        'from-emerald-500/10 via-transparent to-transparent dark:from-emerald-500/15',
-                                    iconBg: 'bg-emerald-100 dark:bg-emerald-950',
-                                    iconText:
-                                        'text-emerald-600 dark:text-emerald-400',
-                                    tagBg: 'bg-emerald-50 dark:bg-emerald-950/60',
-                                    tagText:
-                                        'text-emerald-700 dark:text-emerald-400',
-                                    numText:
-                                        'text-emerald-200 dark:text-emerald-900',
-                                    line: 'bg-emerald-500',
-                                    arrow: 'text-emerald-600 dark:text-emerald-400',
-                                },
-                                teal: {
-                                    gradient:
-                                        'from-teal-500/10 via-transparent to-transparent dark:from-teal-500/15',
-                                    iconBg: 'bg-teal-100 dark:bg-teal-950',
-                                    iconText:
-                                        'text-teal-600 dark:text-teal-400',
-                                    tagBg: 'bg-teal-50 dark:bg-teal-950/60',
-                                    tagText: 'text-teal-700 dark:text-teal-400',
-                                    numText: 'text-teal-200 dark:text-teal-900',
-                                    line: 'bg-teal-500',
-                                    arrow: 'text-teal-600 dark:text-teal-400',
-                                },
-                                orange: {
-                                    gradient:
-                                        'from-orange-500/10 via-transparent to-transparent dark:from-orange-500/15',
-                                    iconBg: 'bg-orange-100 dark:bg-orange-950',
-                                    iconText:
-                                        'text-orange-600 dark:text-orange-400',
-                                    tagBg: 'bg-orange-50 dark:bg-orange-950/60',
-                                    tagText:
-                                        'text-orange-700 dark:text-orange-400',
-                                    numText:
-                                        'text-orange-200 dark:text-orange-900',
-                                    line: 'bg-orange-500',
-                                    arrow: 'text-orange-600 dark:text-orange-400',
-                                },
-                            };
-                            const p = palette[program.color];
-                            return (
-                                <div
-                                    key={program.title}
-                                    className="group relative flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-gray-800 dark:bg-gray-900"
-                                >
-                                    {/* Colored top bar */}
-                                    <div
-                                        className={`h-1 w-0 ${p.line} transition-all duration-500 ease-out group-hover:w-full`}
-                                    />
+                            <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                                {curricula.map((curriculum, index) => {
+                                    const colors = [
+                                        'emerald',
+                                        'teal',
+                                        'orange',
+                                    ] as const;
+                                    const color = colors[index % colors.length];
+                                    const palette = {
+                                        emerald: {
+                                            gradient:
+                                                'from-emerald-500/10 via-transparent to-transparent dark:from-emerald-500/15',
+                                            iconBg: 'bg-emerald-100 dark:bg-emerald-950',
+                                            iconText:
+                                                'text-emerald-600 dark:text-emerald-400',
+                                            numText:
+                                                'text-emerald-200 dark:text-emerald-900',
+                                            line: 'bg-emerald-500',
+                                            arrow: 'text-emerald-600 dark:text-emerald-400',
+                                        },
+                                        teal: {
+                                            gradient:
+                                                'from-teal-500/10 via-transparent to-transparent dark:from-teal-500/15',
+                                            iconBg: 'bg-teal-100 dark:bg-teal-950',
+                                            iconText:
+                                                'text-teal-600 dark:text-teal-400',
+                                            numText:
+                                                'text-teal-200 dark:text-teal-900',
+                                            line: 'bg-teal-500',
+                                            arrow: 'text-teal-600 dark:text-teal-400',
+                                        },
+                                        orange: {
+                                            gradient:
+                                                'from-orange-500/10 via-transparent to-transparent dark:from-orange-500/15',
+                                            iconBg: 'bg-orange-100 dark:bg-orange-950',
+                                            iconText:
+                                                'text-orange-600 dark:text-orange-400',
+                                            numText:
+                                                'text-orange-200 dark:text-orange-900',
+                                            line: 'bg-orange-500',
+                                            arrow: 'text-orange-600 dark:text-orange-400',
+                                        },
+                                    };
+                                    const p = palette[color];
+                                    const num = String(index + 1).padStart(
+                                        2,
+                                        '0',
+                                    );
+                                    const IconComponent = (Icons[
+                                        curriculum.icon as keyof typeof Icons
+                                    ] ??
+                                        Icons.BookOpen) as React.ComponentType<{
+                                        className?: string;
+                                    }>;
 
-                                    {/* Gradient wash */}
-                                    <div
-                                        className={`absolute inset-0 bg-gradient-to-br ${p.gradient} pointer-events-none`}
-                                    />
-
-                                    {/* Big background number */}
-                                    <span
-                                        className={`pointer-events-none absolute top-3 right-4 text-7xl leading-none font-black select-none ${p.numText} transition duration-300 group-hover:opacity-60`}
-                                    >
-                                        {program.num}
-                                    </span>
-
-                                    <div className="relative flex flex-1 flex-col p-6">
-                                        {/* Tag */}
-                                        <span
-                                            className={`inline-flex w-fit items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold tracking-wide ${p.tagBg} ${p.tagText}`}
+                                    return (
+                                        <Link
+                                            key={curriculum.id}
+                                            href={curriculumShow.url({
+                                                curriculum: curriculum.slug,
+                                            })}
+                                            className="group relative flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-gray-800 dark:bg-gray-900"
                                         >
-                                            {program.tag}
-                                        </span>
-
-                                        {/* Icon */}
-                                        <div
-                                            className={`mt-5 inline-flex rounded-xl p-3 ${p.iconBg} w-fit shadow-sm`}
-                                        >
-                                            <program.icon
-                                                className={`h-6 w-6 ${p.iconText}`}
+                                            {/* Colored top bar */}
+                                            <div
+                                                className={`h-1 w-0 ${p.line} transition-all duration-500 ease-out group-hover:w-full`}
                                             />
-                                        </div>
 
-                                        {/* Title */}
-                                        <h3 className="mt-4 text-lg leading-snug font-bold text-gray-900 dark:text-white">
-                                            {program.title}
-                                        </h3>
+                                            {/* Gradient wash */}
+                                            <div
+                                                className={`absolute inset-0 bg-gradient-to-br ${p.gradient} pointer-events-none`}
+                                            />
 
-                                        {/* Desc */}
-                                        <p className="mt-2 flex-1 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
-                                            {program.desc}
-                                        </p>
-
-                                        {/* Footer link */}
-                                        <div className="mt-6 flex items-center gap-1.5 border-t border-gray-100 pt-4 dark:border-gray-800">
+                                            {/* Big background number */}
                                             <span
-                                                className={`text-xs font-semibold ${p.arrow} transition-all duration-200 group-hover:underline`}
+                                                className={`pointer-events-none absolute top-3 right-4 text-7xl leading-none font-black select-none ${p.numText} transition duration-300 group-hover:opacity-60`}
                                             >
-                                                Selengkapnya
+                                                {num}
                                             </span>
-                                            <svg
-                                                className={`h-3.5 w-3.5 ${p.arrow} transition-transform duration-200 group-hover:translate-x-1`}
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                strokeWidth={2.5}
-                                                stroke="currentColor"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                                                />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-            </section>
+
+                                            <div className="relative flex flex-1 flex-col p-6">
+                                                {/* Icon */}
+                                                <div
+                                                    className={`mt-5 inline-flex rounded-xl p-3 ${p.iconBg} w-fit shadow-sm`}
+                                                >
+                                                    <IconComponent
+                                                        className={`h-6 w-6 ${p.iconText}`}
+                                                    />
+                                                </div>
+
+                                                {/* Title */}
+                                                <h3 className="mt-4 text-lg leading-snug font-bold text-gray-900 dark:text-white">
+                                                    {curriculum.name}
+                                                </h3>
+
+                                                {/* Desc */}
+                                                <p className="mt-2 flex-1 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
+                                                    {curriculum.description
+                                                        .length > 120
+                                                        ? curriculum.description.slice(
+                                                              0,
+                                                              120,
+                                                          ) + '…'
+                                                        : curriculum.description}
+                                                </p>
+
+                                                {/* Footer link */}
+                                                <div className="mt-6 flex items-center gap-1.5 border-t border-gray-100 pt-4 dark:border-gray-800">
+                                                    <span
+                                                        className={`text-xs font-semibold ${p.arrow} transition-all duration-200 group-hover:underline`}
+                                                    >
+                                                        Selengkapnya
+                                                    </span>
+                                                    <svg
+                                                        className={`h-3.5 w-3.5 ${p.arrow} transition-transform duration-200 group-hover:translate-x-1`}
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        strokeWidth={2.5}
+                                                        stroke="currentColor"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                                                        />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </Link>
+                                    );
+                                })}
+                            </div>
+
+                            <div className="mt-10 text-center">
+                                <Link
+                                    href={curriculumIndex.url()}
+                                    className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white px-6 py-2.5 text-sm font-medium text-emerald-700 transition hover:bg-emerald-50 dark:border-emerald-800 dark:bg-gray-900 dark:text-emerald-400 dark:hover:bg-emerald-950/30"
+                                >
+                                    Lihat Semua Kurikulum
+                                    <Icons.ArrowRight className="h-4 w-4" />
+                                </Link>
+                            </div>
+                        </div>
+                    </section>
+                )}
 
             {/* Fasilitas */}
             {siteConfig?.sections?.facilities?.enabled !== false && (
@@ -794,74 +762,6 @@ const Welcome = ({
                     </div>
                 </section>
             )}
-
-            {/* Kurikulum */}
-            {curricula.length > 0 &&
-                siteConfig?.sections?.curricula?.enabled !== false && (
-                    <section id="kurikulum" className="py-20 sm:py-28">
-                        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                            <div className="mb-12">
-                                <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold tracking-widest text-emerald-700 uppercase dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
-                                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
-                                    Kurikulum
-                                </span>
-                                <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
-                                    Kurikulum Kami
-                                </h2>
-                                <p className="mt-4 max-w-xl text-base text-gray-600 dark:text-gray-400">
-                                    Kami menerapkan kurikulum yang komprehensif
-                                    untuk membentuk generasi unggul berakhlak
-                                    mulia.
-                                </p>
-                            </div>
-
-                            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                                {curricula.map((curriculum) => {
-                                    const IconComponent = (Icons[
-                                        curriculum.icon as keyof typeof Icons
-                                    ] ??
-                                        Icons.BookOpen) as React.ComponentType<{
-                                        className?: string;
-                                    }>;
-                                    return (
-                                        <Link
-                                            key={curriculum.id}
-                                            href={curriculumShow.url({
-                                                curriculum: curriculum.slug,
-                                            })}
-                                            className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-gray-200 transition hover:shadow-md hover:ring-emerald-200 dark:bg-gray-900 dark:ring-gray-800 dark:hover:ring-emerald-800"
-                                        >
-                                            <div className="flex items-start gap-4 p-6">
-                                                <div className="shrink-0 rounded-xl bg-emerald-600 p-3 text-white transition group-hover:bg-emerald-700">
-                                                    <IconComponent className="h-6 w-6" />
-                                                </div>
-                                                <div className="min-w-0 flex-1">
-                                                    <h3 className="font-semibold text-gray-900 dark:text-white">
-                                                        {curriculum.name}
-                                                    </h3>
-                                                    <p className="mt-1 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
-                                                        {curriculum.description
-                                                            .length > 100
-                                                            ? curriculum.description.slice(
-                                                                  0,
-                                                                  100,
-                                                              ) + '…'
-                                                            : curriculum.description}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div className="border-t border-gray-100 px-6 py-3 dark:border-gray-800">
-                                                <span className="text-xs font-medium text-emerald-600 transition group-hover:text-emerald-700 dark:text-emerald-400">
-                                                    Lihat detail &rarr;
-                                                </span>
-                                            </div>
-                                        </Link>
-                                    );
-                                })}
-                            </div>
-                        </div>
-                    </section>
-                )}
 
             {/* Berita Terbaru */}
             {siteConfig?.sections?.articles?.enabled !== false && (
@@ -1777,114 +1677,6 @@ function UsersIcon({ className }: { className?: string }) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"
-            />
-        </svg>
-    );
-}
-
-function QuranIcon({ className }: { className?: string }) {
-    return (
-        <svg
-            className={className}
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-        >
-            <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"
-            />
-        </svg>
-    );
-}
-
-function LanguageIcon({ className }: { className?: string }) {
-    return (
-        <svg
-            className={className}
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-        >
-            <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="m10.5 21 5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 0 1 6-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 0 1-3.827-5.802"
-            />
-        </svg>
-    );
-}
-
-function ScienceIcon({ className }: { className?: string }) {
-    return (
-        <svg
-            className={className}
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-        >
-            <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5"
-            />
-        </svg>
-    );
-}
-
-function LeaderIcon({ className }: { className?: string }) {
-    return (
-        <svg
-            className={className}
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-        >
-            <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"
-            />
-        </svg>
-    );
-}
-
-function ArtIcon({ className }: { className?: string }) {
-    return (
-        <svg
-            className={className}
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-        >
-            <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a2.25 2.25 0 0 0 1.632-2.163Zm0 0V4.846a2.25 2.25 0 0 0-1.632-2.163l-1.32-.377a1.803 1.803 0 1 0-.99 3.467l2.31.66A2.25 2.25 0 0 1 9 9Zm-8.25 6.75h.008v.008H.75v-.008Zm0-3h.008v.008H.75v-.008Z"
-            />
-        </svg>
-    );
-}
-
-function LifeIcon({ className }: { className?: string }) {
-    return (
-        <svg
-            className={className}
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-        >
-            <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"
             />
         </svg>
     );
