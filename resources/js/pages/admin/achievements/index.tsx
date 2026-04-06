@@ -21,8 +21,16 @@ interface Filters {
     year?: string;
 }
 
+interface PaginatedAchievements {
+    data: AchievementResource[];
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
+}
+
 interface Props {
-    achievements: AchievementResource[];
+    achievements: PaginatedAchievements;
     stats: AchievementStats;
     filters: Filters;
     categories: EnumOption[];
@@ -49,21 +57,18 @@ const AdminAchievementsIndex = ({
         if (!toDelete) {
             return;
         }
-        router.delete(AchievementController.destroy.url({ achievement: toDelete.id }), {
-            preserveScroll: true,
-            onFinish: () => setToDelete(null),
-        });
+        router.delete(
+            AchievementController.destroy.url({ achievement: toDelete.id }),
+            {
+                preserveScroll: true,
+                onFinish: () => setToDelete(null),
+            },
+        );
     };
 
     const handleEdit = (achievement: AchievementResource) => {
-        router.visit(AchievementController.edit.url({ achievement: achievement.id }));
-    };
-
-    const handleFilterChange = (key: string, value: string) => {
-        router.get(
-            AchievementController.index.url(),
-            { ...filters, [key]: value || undefined },
-            { preserveState: true, replace: true },
+        router.visit(
+            AchievementController.edit.url({ achievement: achievement.id }),
         );
     };
 
@@ -96,7 +101,9 @@ const AdminAchievementsIndex = ({
             <div className="flex flex-col gap-4 p-2">
                 <div className="flex items-center justify-between px-2">
                     <div>
-                        <h1 className="text-xl font-semibold">Manajemen Prestasi</h1>
+                        <h1 className="text-xl font-semibold">
+                            Manajemen Prestasi
+                        </h1>
                         <p className="text-sm text-muted-foreground">
                             Kelola data prestasi sekolah.
                         </p>
@@ -113,11 +120,13 @@ const AdminAchievementsIndex = ({
                 <div className="px-2">
                     <DataTable
                         columns={columns}
-                        data={achievements}
+                        data={achievements.data}
                         searchPlaceholder="Cari prestasi..."
                         filters={tableFilters}
-                        filterValues={filters as Record<string, string | undefined>}
-                        onFilterChange={handleFilterChange}
+                        filterValues={
+                            filters as Record<string, string | undefined>
+                        }
+                        filterUrl={AchievementController.index.url()}
                     />
                 </div>
             </div>

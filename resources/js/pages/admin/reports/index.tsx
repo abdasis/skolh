@@ -62,17 +62,6 @@ const AdminReportsIndex = ({
         );
     };
 
-    const handleFilterChange = (key: string, value: string) => {
-        router.get(
-            ReportController.index.url(),
-            { ...filters, [key]: value || undefined } as Record<
-                string,
-                string | undefined
-            >,
-            { preserveState: false },
-        );
-    };
-
     const categoryOptions = [
         { value: 'facilities', label: 'Fasilitas' },
         { value: 'teaching_quality', label: 'Kualitas Pengajaran' },
@@ -185,7 +174,7 @@ const AdminReportsIndex = ({
                             date_from: filters.date_from,
                             date_to: filters.date_to,
                         }}
-                        onFilterChange={handleFilterChange}
+                        filterUrl={ReportController.index.url()}
                     />
                 </div>
             </div>

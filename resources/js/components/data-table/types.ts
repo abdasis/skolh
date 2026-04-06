@@ -60,7 +60,10 @@ export interface DataTableFilterYearRange {
     className?: string;
 }
 
-export type DataTableFilter = DataTableFilterSelect | DataTableFilterText | DataTableFilterYearRange;
+export type DataTableFilter =
+    | DataTableFilterSelect
+    | DataTableFilterText
+    | DataTableFilterYearRange;
 
 export interface DataTableProps<TData> {
     columns: ColumnDef<TData>[];
@@ -74,5 +77,5 @@ export interface DataTableProps<TData> {
     description?: string;
     filters?: DataTableFilter[];
     filterValues?: Record<string, string | undefined>;
-    onFilterChange?: (key: string, value: string) => void;
+    filterUrl?: string;
 }

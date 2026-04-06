@@ -15,6 +15,7 @@ import {
     useReactTable,
     flexRender,
 } from '@tanstack/react-table';
+import { router } from '@inertiajs/react';
 import {
     Table,
     TableBody,
@@ -40,7 +41,7 @@ export function DataTable<TData>({
     description,
     filters,
     filterValues,
-    onFilterChange,
+    filterUrl,
 }: DataTableProps<TData>) {
     const [globalFilter, setGlobalFilter] = React.useState('');
     const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -121,7 +122,35 @@ export function DataTable<TData>({
                         searchPlaceholder={searchPlaceholder}
                         filters={filters}
                         filterValues={filterValues}
-                        onFilterChange={onFilterChange}
+                        onFilterChange={
+                            filterUrl
+                                ? (key, value) => {
+                                      router.get(
+                                          filterUrl,
+                                          {
+                                              ...filterValues,
+                                              [key]: value || undefined,
+                                          },
+                                          {
+                                              preserveState: true,
+                                              replace: true,
+                                          },
+                                      );
+                                  }
+                                : undefined
+                        }
+                        onResetAll={() => {
+                            setGlobalFilter('');
+                            if (filterUrl && filters?.length) {
+                                const cleared = Object.fromEntries(
+                                    filters.map((f) => [f.key, undefined]),
+                                );
+                                router.get(filterUrl, cleared, {
+                                    preserveState: true,
+                                    replace: true,
+                                });
+                            }
+                        }}
                     />
                 </div>
                 <Table>

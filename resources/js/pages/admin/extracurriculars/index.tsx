@@ -7,7 +7,10 @@ import type { DataTableFilter } from '@/components/data-table';
 import * as ExtracurricularController from '@/actions/App/Http/Controllers/Admin/ExtracurricularController';
 import { createExtracurricularColumns } from './components/extracurricular-columns';
 import { ExtracurricularStatsCards } from './components/extracurricular-stats-cards';
-import { type ExtracurricularResource, type ExtracurricularStats } from '@/types';
+import {
+    type ExtracurricularResource,
+    type ExtracurricularStats,
+} from '@/types';
 
 interface EnumOption {
     value: string;
@@ -38,31 +41,37 @@ const AdminExtracurricularsIndex = ({
     setLayoutProps({
         breadcrumbs: [
             { title: 'Dashboard', href: '/dashboard' },
-            { title: 'Ekstrakurikuler', href: ExtracurricularController.index.url() },
+            {
+                title: 'Ekstrakurikuler',
+                href: ExtracurricularController.index.url(),
+            },
         ],
     });
 
-    const [toDelete, setToDelete] = useState<ExtracurricularResource | null>(null);
+    const [toDelete, setToDelete] = useState<ExtracurricularResource | null>(
+        null,
+    );
 
     const handleDeleteConfirm = () => {
         if (!toDelete) {
             return;
         }
-        router.delete(ExtracurricularController.destroy.url({ extracurricular: toDelete.id }), {
-            preserveScroll: true,
-            onFinish: () => setToDelete(null),
-        });
+        router.delete(
+            ExtracurricularController.destroy.url({
+                extracurricular: toDelete.id,
+            }),
+            {
+                preserveScroll: true,
+                onFinish: () => setToDelete(null),
+            },
+        );
     };
 
     const handleEdit = (extracurricular: ExtracurricularResource) => {
-        router.visit(ExtracurricularController.edit.url({ extracurricular: extracurricular.id }));
-    };
-
-    const handleFilterChange = (key: string, value: string) => {
-        router.get(
-            ExtracurricularController.index.url(),
-            { ...filters, [key]: value || undefined },
-            { preserveState: true, replace: true },
+        router.visit(
+            ExtracurricularController.edit.url({
+                extracurricular: extracurricular.id,
+            }),
         );
     };
 
@@ -90,7 +99,9 @@ const AdminExtracurricularsIndex = ({
             <div className="flex flex-col gap-4 p-2">
                 <div className="flex items-center justify-between px-2">
                     <div>
-                        <h1 className="text-xl font-semibold">Manajemen Ekstrakurikuler</h1>
+                        <h1 className="text-xl font-semibold">
+                            Manajemen Ekstrakurikuler
+                        </h1>
                         <p className="text-sm text-muted-foreground">
                             Kelola data kegiatan ekstrakurikuler sekolah.
                         </p>
@@ -110,8 +121,10 @@ const AdminExtracurricularsIndex = ({
                         data={extracurriculars}
                         searchPlaceholder="Cari ekstrakurikuler..."
                         filters={tableFilters}
-                        filterValues={filters as Record<string, string | undefined>}
-                        onFilterChange={handleFilterChange}
+                        filterValues={
+                            filters as Record<string, string | undefined>
+                        }
+                        filterUrl={ExtracurricularController.index.url()}
                     />
                 </div>
             </div>

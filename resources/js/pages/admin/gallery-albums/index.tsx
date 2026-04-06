@@ -26,7 +26,12 @@ interface Props {
     statuses: EnumOption[];
 }
 
-const AdminGalleryAlbumsIndex = ({ albums, stats, filters, statuses }: Props) => {
+const AdminGalleryAlbumsIndex = ({
+    albums,
+    stats,
+    filters,
+    statuses,
+}: Props) => {
     setLayoutProps({
         breadcrumbs: [
             { title: 'Dashboard', href: '/dashboard' },
@@ -40,21 +45,18 @@ const AdminGalleryAlbumsIndex = ({ albums, stats, filters, statuses }: Props) =>
         if (!toDelete) {
             return;
         }
-        router.delete(GalleryAlbumController.destroy.url({ gallery_album: toDelete.id }), {
-            preserveScroll: true,
-            onFinish: () => setToDelete(null),
-        });
+        router.delete(
+            GalleryAlbumController.destroy.url({ gallery_album: toDelete.id }),
+            {
+                preserveScroll: true,
+                onFinish: () => setToDelete(null),
+            },
+        );
     };
 
     const handleEdit = (album: GalleryAlbumResource) => {
-        router.visit(GalleryAlbumController.edit.url({ gallery_album: album.id }));
-    };
-
-    const handleFilterChange = (key: string, value: string) => {
-        router.get(
-            GalleryAlbumController.index.url(),
-            { ...filters, [key]: value || undefined },
-            { preserveState: true, replace: true },
+        router.visit(
+            GalleryAlbumController.edit.url({ gallery_album: album.id }),
         );
     };
 
@@ -76,7 +78,9 @@ const AdminGalleryAlbumsIndex = ({ albums, stats, filters, statuses }: Props) =>
             <div className="flex flex-col gap-4 p-2">
                 <div className="flex items-center justify-between px-2">
                     <div>
-                        <h1 className="text-xl font-semibold">Manajemen Galeri</h1>
+                        <h1 className="text-xl font-semibold">
+                            Manajemen Galeri
+                        </h1>
                         <p className="text-sm text-muted-foreground">
                             Kelola album dan foto galeri sekolah.
                         </p>
@@ -96,8 +100,10 @@ const AdminGalleryAlbumsIndex = ({ albums, stats, filters, statuses }: Props) =>
                         data={albums}
                         searchPlaceholder="Cari album galeri..."
                         filters={tableFilters}
-                        filterValues={filters as Record<string, string | undefined>}
-                        onFilterChange={handleFilterChange}
+                        filterValues={
+                            filters as Record<string, string | undefined>
+                        }
+                        filterUrl={GalleryAlbumController.index.url()}
                     />
                 </div>
             </div>
