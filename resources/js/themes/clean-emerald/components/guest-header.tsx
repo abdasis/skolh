@@ -1,4 +1,4 @@
-import { dashboard, home, login, register } from '@/routes';
+import { dashboard, home, register } from '@/routes';
 import type { SiteConfig, SiteNavItem } from '@/types/site-config';
 import { Link, usePage } from '@inertiajs/react';
 import { useState, useRef, useEffect } from 'react';
@@ -405,12 +405,6 @@ const GuestHeader = ({ canRegister = true }: { canRegister?: boolean }) => {
                                         Daftar Sekarang
                                     </Link>
                                 )}
-                                <Link
-                                    href={login()}
-                                    className="rounded-lg border-2 border-emerald-600 px-5 py-2 text-sm font-bold text-emerald-600 transition hover:bg-emerald-600 hover:text-white dark:border-emerald-400 dark:text-emerald-400 dark:hover:bg-emerald-600 dark:hover:text-white"
-                                >
-                                    Masuk
-                                </Link>
                             </>
                         )}
                     </div>
@@ -470,12 +464,6 @@ const GuestHeader = ({ canRegister = true }: { canRegister?: boolean }) => {
                                                 Daftar Sekarang
                                             </Link>
                                         )}
-                                        <Link
-                                            href={login()}
-                                            className="rounded-lg border-2 border-emerald-600 py-2.5 text-center text-sm font-bold text-emerald-600"
-                                        >
-                                            Masuk
-                                        </Link>
                                     </>
                                 )}
                             </div>
