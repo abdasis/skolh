@@ -26,3 +26,4 @@ export type * from './site-setting';
 export type * from './student';
 export type * from './permission';
 export type * from './report';
+export type * from './dashboard';
