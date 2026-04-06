@@ -14,6 +14,16 @@ import { store as contactMessageStore } from '@/actions/App/Http/Controllers/Con
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import * as Icons from 'lucide-react';
 import {
+    BookOpenIcon,
+    BuildingIcon,
+    CalendarIcon,
+    GraduationCapIcon,
+    InfoIcon,
+    MailIcon,
+    MessageSquareQuoteIcon,
+    NewspaperIcon,
+} from 'lucide-react';
+import {
     type Alumni,
     type CurriculumCardResource,
     type SiteConfig,
@@ -279,9 +289,15 @@ const Welcome = ({
                         <div className="grid items-stretch gap-12 lg:grid-cols-2 lg:gap-16">
                             <div className="flex flex-col">
                                 <div>
-                                    <span className="inline-flex w-auto items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold tracking-widest text-emerald-700 uppercase dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
-                                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
-                                        Tentang Kami
+                                    <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest text-gray-500 uppercase dark:text-gray-400">
+                                        <InfoIcon className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                                        Tentang{' '}
+                                        <span className="relative inline-block">
+                                            <span className="relative z-10 text-emerald-600 dark:text-emerald-400">
+                                                Kami
+                                            </span>
+                                            <span className="absolute bottom-0.5 left-0 h-2 w-full rounded-full bg-emerald-100 dark:bg-emerald-900/50" />
+                                        </span>
                                     </span>
                                 </div>
                                 {siteConfig?.about?.heading && (
@@ -426,9 +442,15 @@ const Welcome = ({
                     >
                         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                             <div className="text-center">
-                                <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold tracking-widest text-emerald-700 uppercase dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
-                                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
-                                    Program Unggulan
+                                <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest text-gray-500 uppercase dark:text-gray-400">
+                                    <BookOpenIcon className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                                    Program{' '}
+                                    <span className="relative inline-block">
+                                        <span className="relative z-10 text-emerald-600 dark:text-emerald-400">
+                                            Unggulan
+                                        </span>
+                                        <span className="absolute bottom-0.5 left-0 h-2 w-full rounded-full bg-emerald-100 dark:bg-emerald-900/50" />
+                                    </span>
                                 </span>
                                 <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
                                     {siteConfig?.sections?.curricula?.heading ??
@@ -609,9 +631,14 @@ const Welcome = ({
                     <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         {/* Header */}
                         <div className="text-center">
-                            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold tracking-widest text-emerald-700 uppercase dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
-                                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
-                                Fasilitas
+                            <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest text-gray-500 uppercase dark:text-gray-400">
+                                <BuildingIcon className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                                <span className="relative inline-block">
+                                    <span className="relative z-10 text-emerald-600 dark:text-emerald-400">
+                                        Fasilitas
+                                    </span>
+                                    <span className="absolute bottom-0.5 left-0 h-2 w-full rounded-full bg-emerald-100 dark:bg-emerald-900/50" />
+                                </span>
                             </span>
                             <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
                                 {siteConfig?.sections?.facilities?.heading ??
@@ -711,9 +738,15 @@ const Welcome = ({
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
                             <div>
-                                <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold tracking-widest text-emerald-700 uppercase dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
-                                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
-                                    Berita & Kegiatan
+                                <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest text-gray-500 uppercase dark:text-gray-400">
+                                    <NewspaperIcon className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                                    Berita &{' '}
+                                    <span className="relative inline-block">
+                                        <span className="relative z-10 text-emerald-600 dark:text-emerald-400">
+                                            Kegiatan
+                                        </span>
+                                        <span className="absolute bottom-0.5 left-0 h-2 w-full rounded-full bg-emerald-100 dark:bg-emerald-900/50" />
+                                    </span>
                                 </span>
                                 <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
                                     {siteConfig?.sections?.articles?.heading ??
@@ -859,9 +892,14 @@ const Welcome = ({
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         {/* Header */}
                         <div className="text-center">
-                            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold tracking-widest text-emerald-700 uppercase dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
-                                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
-                                Agenda
+                            <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest text-gray-500 uppercase dark:text-gray-400">
+                                <CalendarIcon className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                                <span className="relative inline-block">
+                                    <span className="relative z-10 text-emerald-600 dark:text-emerald-400">
+                                        Agenda
+                                    </span>
+                                    <span className="absolute bottom-0.5 left-0 h-2 w-full rounded-full bg-emerald-100 dark:bg-emerald-900/50" />
+                                </span>
                             </span>
                             <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl dark:text-white">
                                 {siteConfig?.sections?.agenda?.heading ??
@@ -958,9 +996,14 @@ const Welcome = ({
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         {/* Header */}
                         <div className="text-center">
-                            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold tracking-widest text-emerald-700 uppercase dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
-                                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
-                                Testimoni
+                            <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest text-gray-500 uppercase dark:text-gray-400">
+                                <MessageSquareQuoteIcon className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                                <span className="relative inline-block">
+                                    <span className="relative z-10 text-emerald-600 dark:text-emerald-400">
+                                        Testimoni
+                                    </span>
+                                    <span className="absolute bottom-0.5 left-0 h-2 w-full rounded-full bg-emerald-100 dark:bg-emerald-900/50" />
+                                </span>
                             </span>
                             <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl dark:text-white">
                                 {siteConfig?.sections?.testimonials?.heading ??
@@ -1107,9 +1150,14 @@ const Welcome = ({
                         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                             {/* Header */}
                             <div className="text-center">
-                                <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold tracking-widest text-emerald-700 uppercase dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
-                                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
-                                    Alumni
+                                <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest text-gray-500 uppercase dark:text-gray-400">
+                                    <GraduationCapIcon className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                                    <span className="relative inline-block">
+                                        <span className="relative z-10 text-emerald-600 dark:text-emerald-400">
+                                            Alumni
+                                        </span>
+                                        <span className="absolute bottom-0.5 left-0 h-2 w-full rounded-full bg-emerald-100 dark:bg-emerald-900/50" />
+                                    </span>
                                 </span>
                                 <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
                                     {siteConfig?.sections?.alumni?.heading ??
@@ -1328,9 +1376,14 @@ const Welcome = ({
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div className="grid gap-12 lg:grid-cols-2">
                             <div>
-                                <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold tracking-widest text-emerald-700 uppercase dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
-                                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
-                                    Kontak
+                                <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest text-gray-500 uppercase dark:text-gray-400">
+                                    <MailIcon className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                                    <span className="relative inline-block">
+                                        <span className="relative z-10 text-emerald-600 dark:text-emerald-400">
+                                            Kontak
+                                        </span>
+                                        <span className="absolute bottom-0.5 left-0 h-2 w-full rounded-full bg-emerald-100 dark:bg-emerald-900/50" />
+                                    </span>
                                 </span>
                                 <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
                                     {siteConfig?.sections?.contact?.heading ??
