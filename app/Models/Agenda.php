@@ -13,6 +13,6 @@ class Agenda extends Model
     protected $fillable = ['date', 'title', 'description'];
 
     protected $casts = [
-        'date' => 'date',
+        'date' => 'date:Y-m-d',
     ];
 }
