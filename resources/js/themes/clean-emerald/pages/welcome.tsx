@@ -111,28 +111,32 @@ const Welcome = ({
             <Head
                 title={
                     siteConfig?.pageMeta?.title ??
-                    'SDIT Al-Aziz - Sekolah Dasar Islam Terpadu'
+                    siteConfig?.identity?.name ??
+                    ''
                 }
             >
                 <meta
                     name="description"
                     content={
                         siteConfig?.pageMeta?.description ??
-                        'SDIT Al-Aziz - Sekolah Dasar Islam Terpadu. Pendidikan berkualitas berbasis nilai-nilai Islam untuk generasi unggul.'
+                        siteConfig?.identity?.tagline ??
+                        undefined
                     }
                 />
                 <meta
                     property="og:title"
                     content={
                         siteConfig?.pageMeta?.title ??
-                        'SDIT Al-Aziz - Sekolah Dasar Islam Terpadu'
+                        siteConfig?.identity?.name ??
+                        undefined
                     }
                 />
                 <meta
                     property="og:description"
                     content={
                         siteConfig?.pageMeta?.description ??
-                        'Pendidikan berkualitas berbasis nilai-nilai Islam untuk generasi unggul.'
+                        siteConfig?.identity?.tagline ??
+                        undefined
                     }
                 />
                 <meta property="og:type" content="website" />
@@ -164,99 +168,70 @@ const Welcome = ({
                         <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-8 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:px-12">
                             {/* Left: text */}
                             <div>
-                                <p className="text-base font-medium text-white/80 sm:text-lg">
-                                    {siteConfig?.hero?.subtitle ??
-                                        'Pendekatan Baru dalam'}
-                                </p>
+                                {siteConfig?.hero?.subtitle && (
+                                    <p className="text-base font-medium text-white/80 sm:text-lg">
+                                        {siteConfig.hero.subtitle}
+                                    </p>
+                                )}
 
                                 <h1 className="mt-3 text-4xl leading-tight font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
-                                    {siteConfig?.hero?.title ??
-                                        'Pendidikan Islam'}{' '}
-                                    <span className="text-orange-400">
-                                        {siteConfig?.hero?.title_accent ??
-                                            'Terpadu'}
-                                    </span>
+                                    {siteConfig?.hero?.title}{' '}
+                                    {siteConfig?.hero?.title_accent && (
+                                        <span className="text-orange-400">
+                                            {siteConfig.hero.title_accent}
+                                        </span>
+                                    )}
                                 </h1>
 
-                                <p className="mt-5 max-w-md text-sm leading-relaxed text-white/75 sm:text-base">
-                                    {siteConfig?.hero?.description ??
-                                        'SDIT Al-Aziz memadukan kurikulum nasional dengan nilai-nilai keislaman untuk membentuk generasi yang cerdas, berkarakter, dan berakhlak mulia.'}
-                                </p>
+                                {siteConfig?.hero?.description && (
+                                    <p className="mt-5 max-w-md text-sm leading-relaxed text-white/75 sm:text-base">
+                                        {siteConfig.hero.description}
+                                    </p>
+                                )}
 
                                 <div className="mt-8 flex flex-wrap gap-3">
                                     {siteConfig?.hero?.cta_buttons &&
-                                    siteConfig.hero.cta_buttons.length > 0 ? (
-                                        siteConfig.hero.cta_buttons.map(
-                                            (btn) => (
-                                                <a
-                                                    key={btn.label}
-                                                    href={btn.href}
-                                                    className={
-                                                        btn.variant ===
-                                                        'primary'
-                                                            ? 'rounded-lg bg-orange-500 px-7 py-3 text-sm font-bold tracking-wide text-white uppercase shadow-sm transition hover:bg-orange-600'
-                                                            : 'rounded-lg bg-emerald-800 px-7 py-3 text-sm font-bold tracking-wide text-white uppercase shadow-sm transition hover:bg-emerald-900'
-                                                    }
-                                                >
-                                                    {btn.label}
-                                                </a>
-                                            ),
-                                        )
-                                    ) : (
-                                        <>
-                                            <a
-                                                href="#kontak"
-                                                className="rounded-lg bg-orange-500 px-7 py-3 text-sm font-bold tracking-wide text-white uppercase shadow-sm transition hover:bg-orange-600"
-                                            >
-                                                Daftar Sekarang
-                                            </a>
-                                            <a
-                                                href="#program"
-                                                className="rounded-lg bg-emerald-800 px-7 py-3 text-sm font-bold tracking-wide text-white uppercase shadow-sm transition hover:bg-emerald-900"
-                                            >
-                                                Program Kami
-                                            </a>
-                                        </>
-                                    )}
+                                    siteConfig.hero.cta_buttons.length > 0
+                                        ? siteConfig.hero.cta_buttons.map(
+                                              (btn) => (
+                                                  <a
+                                                      key={btn.label}
+                                                      href={btn.href}
+                                                      className={
+                                                          btn.variant ===
+                                                          'primary'
+                                                              ? 'rounded-lg bg-orange-500 px-7 py-3 text-sm font-bold tracking-wide text-white uppercase shadow-sm transition hover:bg-orange-600'
+                                                              : 'rounded-lg bg-emerald-800 px-7 py-3 text-sm font-bold tracking-wide text-white uppercase shadow-sm transition hover:bg-emerald-900'
+                                                      }
+                                                  >
+                                                      {btn.label}
+                                                  </a>
+                                              ),
+                                          )
+                                        : null}
                                 </div>
 
                                 {/* Stats strip */}
-                                <div className="mt-12 flex flex-wrap gap-6">
-                                    {(siteConfig?.hero?.stats &&
-                                    siteConfig.hero.stats.length > 0
-                                        ? siteConfig.hero.stats
-                                        : [
-                                              {
-                                                  value: '500+',
-                                                  label: 'Siswa Aktif',
-                                              },
-                                              {
-                                                  value: '50+',
-                                                  label: 'Pendidik',
-                                              },
-                                              {
-                                                  value: '15+',
-                                                  label: 'Tahun Berdiri',
-                                              },
-                                              {
-                                                  value: '98%',
-                                                  label: 'Kelulusan',
-                                              },
-                                          ]
-                                    ).map((stat) => (
-                                        <div
-                                            key={stat.label}
-                                            className="text-center"
-                                        >
-                                            <div className="text-2xl font-extrabold text-orange-400">
-                                                {stat.value}
-                                            </div>
-                                            <div className="mt-0.5 text-xs font-medium text-white/70">
-                                                {stat.label}
-                                            </div>
+                                {siteConfig?.hero?.stats &&
+                                    siteConfig.hero.stats.length > 0 && (
+                                        <div className="mt-12 flex flex-wrap gap-6">
+                                            {siteConfig.hero.stats.map(
+                                                (stat) => (
+                                                    <div
+                                                        key={stat.label}
+                                                        className="text-center"
+                                                    >
+                                                        <div className="text-2xl font-extrabold text-orange-400">
+                                                            {stat.value}
+                                                        </div>
+                                                        <div className="mt-0.5 text-xs font-medium text-white/70">
+                                                            {stat.label}
+                                                        </div>
+                                                    </div>
+                                                ),
+                                            )}
                                         </div>
-                                    ))}
-                                </div>
+                                    )}
                             </div>
 
                             {/* Right: floating image with decorations */}
@@ -274,14 +249,15 @@ const Welcome = ({
                                             siteConfig?.hero?.side_image_url ??
                                             '/images/hero-right.jpg'
                                         }
-                                        alt="Siswa SDIT Al-Aziz"
+                                        alt={siteConfig?.identity?.name ?? ''}
                                         className="relative h-[420px] w-[340px] rounded-[1.75rem] object-cover object-center"
                                     />
                                     {/* Badge */}
-                                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 rounded-full bg-white px-5 py-2 text-xs font-bold whitespace-nowrap text-emerald-800 shadow-sm">
-                                        {siteConfig?.hero?.badge_text ??
-                                            'Lingkungan Belajar Islami'}
-                                    </div>
+                                    {siteConfig?.hero?.badge_text && (
+                                        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 rounded-full bg-white px-5 py-2 text-xs font-bold whitespace-nowrap text-emerald-800 shadow-sm">
+                                            {siteConfig.hero.badge_text}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -301,12 +277,13 @@ const Welcome = ({
                                         Tentang Kami
                                     </span>
                                 </div>
-                                <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
-                                    {siteConfig?.about?.heading ??
-                                        'Pendidikan Berkualitas dengan Nilai-Nilai Islam'}
-                                </h2>
+                                {siteConfig?.about?.heading && (
+                                    <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
+                                        {siteConfig.about.heading}
+                                    </h2>
+                                )}
                                 {siteConfig?.about?.paragraphs &&
-                                siteConfig.about.paragraphs.length > 0 ? (
+                                    siteConfig.about.paragraphs.length > 0 &&
                                     siteConfig.about.paragraphs.map(
                                         (paragraph, index) => (
                                             <p
@@ -316,105 +293,53 @@ const Welcome = ({
                                                 {paragraph}
                                             </p>
                                         ),
-                                    )
-                                ) : (
-                                    <>
-                                        <p className="mt-6 text-base leading-relaxed text-gray-600 dark:text-gray-400">
-                                            SDIT Al-Aziz adalah sekolah dasar
-                                            Islam terpadu yang berkomitmen untuk
-                                            memberikan pendidikan holistik
-                                            kepada setiap siswa. Kami memadukan
-                                            kurikulum nasional dengan kurikulum
-                                            keislaman yang komprehensif,
-                                            sehingga siswa tidak hanya unggul
-                                            dalam akademik tetapi juga memiliki
-                                            fondasi keimanan dan akhlak yang
-                                            kuat.
-                                        </p>
-                                        <p className="mt-4 text-base leading-relaxed text-gray-600 dark:text-gray-400">
-                                            Dengan tenaga pendidik yang
-                                            profesional dan berpengalaman, kami
-                                            menciptakan lingkungan belajar yang
-                                            kondusif, menyenangkan, dan penuh
-                                            kasih sayang.
-                                        </p>
-                                    </>
-                                )}
+                                    )}
 
-                                <div className="mt-8 grid grid-cols-2 gap-4">
-                                    {(siteConfig?.about?.feature_cards &&
-                                    siteConfig.about.feature_cards.length > 0
-                                        ? siteConfig.about.feature_cards.map(
-                                              (card) => {
-                                                  const IconComponent = (Icons[
-                                                      card.icon as keyof typeof Icons
-                                                  ] ??
-                                                      BookIcon) as React.ComponentType<{
-                                                      className?: string;
-                                                  }>;
-                                                  return {
-                                                      IconComponent,
-                                                      title: card.title,
-                                                      desc: card.description,
-                                                      stat: card.stat_value,
-                                                      statLabel:
-                                                          card.stat_label,
-                                                  };
-                                              },
-                                          )
-                                        : [
-                                              {
-                                                  IconComponent: BookIcon,
-                                                  title: 'Kurikulum Terpadu',
-                                                  desc: 'Kurikulum nasional terintegrasi keislaman',
-                                                  stat: '6',
-                                                  statLabel: 'Tahun',
-                                              },
-                                              {
-                                                  IconComponent: HeartIcon,
-                                                  title: 'Pembinaan Akhlak',
-                                                  desc: 'Pembiasaan ibadah dan akhlak mulia',
-                                                  stat: '15+',
-                                                  statLabel: 'Program',
-                                              },
-                                              {
-                                                  IconComponent: StarIcon,
-                                                  title: 'Prestasi Gemilang',
-                                                  desc: 'Meraih prestasi di berbagai kompetisi',
-                                                  stat: '50+',
-                                                  statLabel: 'Prestasi',
-                                              },
-                                              {
-                                                  IconComponent: UsersIcon,
-                                                  title: 'Guru Profesional',
-                                                  desc: 'Tenaga pendidik bersertifikasi',
-                                                  stat: '30+',
-                                                  statLabel: 'Guru',
-                                              },
-                                          ]
-                                    ).map((item) => (
-                                        <div
-                                            key={item.title}
-                                            className="relative overflow-hidden rounded-xl bg-emerald-600 p-4 text-white dark:bg-emerald-700"
-                                        >
-                                            <item.IconComponent className="absolute right-3 bottom-3 h-16 w-16 text-white/10" />
-                                            <h3 className="text-sm leading-tight font-semibold">
-                                                {item.title}
-                                            </h3>
-                                            <p className="mt-1 text-[11px] leading-snug text-emerald-100/80">
-                                                {item.desc}
-                                            </p>
-                                            <div className="mt-3 flex items-baseline gap-1.5">
-                                                <span className="text-3xl leading-none font-extrabold">
-                                                    {item.stat}
-                                                </span>
-                                                <span className="text-xs font-medium text-emerald-100/90">
-                                                    {item.statLabel}
-                                                </span>
-                                            </div>
+                                {siteConfig?.about?.feature_cards &&
+                                    siteConfig.about.feature_cards.length >
+                                        0 && (
+                                        <div className="mt-8 grid grid-cols-2 gap-4">
+                                            {siteConfig.about.feature_cards.map(
+                                                (card) => {
+                                                    const IconComponent =
+                                                        (Icons[
+                                                            card.icon as keyof typeof Icons
+                                                        ] ??
+                                                            BookIcon) as React.ComponentType<{
+                                                            className?: string;
+                                                        }>;
+                                                    return (
+                                                        <div
+                                                            key={card.title}
+                                                            className="relative overflow-hidden rounded-xl bg-emerald-600 p-4 text-white dark:bg-emerald-700"
+                                                        >
+                                                            <IconComponent className="absolute right-3 bottom-3 h-16 w-16 text-white/10" />
+                                                            <h3 className="text-sm leading-tight font-semibold">
+                                                                {card.title}
+                                                            </h3>
+                                                            <p className="mt-1 text-[11px] leading-snug text-emerald-100/80">
+                                                                {
+                                                                    card.description
+                                                                }
+                                                            </p>
+                                                            <div className="mt-3 flex items-baseline gap-1.5">
+                                                                <span className="text-3xl leading-none font-extrabold">
+                                                                    {
+                                                                        card.stat_value
+                                                                    }
+                                                                </span>
+                                                                <span className="text-xs font-medium text-emerald-100/90">
+                                                                    {
+                                                                        card.stat_label
+                                                                    }
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                },
+                                            )}
                                         </div>
-                                    ))}
-                                </div>
+                                    )}
                             </div>
 
                             <div className="grid h-full grid-cols-5 gap-4">
@@ -422,7 +347,7 @@ const Welcome = ({
                                 <div className="relative col-span-3 overflow-hidden rounded-3xl bg-gray-50 dark:bg-gray-800/50">
                                     <img
                                         src="/images/maskot.png"
-                                        alt="Maskot SDIT Al-Aziz"
+                                        alt={siteConfig?.identity?.name ?? ''}
                                         className="absolute inset-0 h-full w-full object-contain object-bottom"
                                     />
                                 </div>
@@ -499,13 +424,18 @@ const Welcome = ({
                                     Program Unggulan
                                 </span>
                                 <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
-                                    Kurikulum yang Komprehensif
+                                    {siteConfig?.sections?.curricula?.heading ??
+                                        'Kurikulum yang Komprehensif'}
                                 </h2>
-                                <p className="mx-auto mt-4 max-w-2xl text-base text-gray-600 dark:text-gray-400">
-                                    Program pendidikan yang dirancang untuk
-                                    mengembangkan potensi siswa secara
-                                    menyeluruh.
-                                </p>
+                                {siteConfig?.sections?.curricula
+                                    ?.description && (
+                                    <p className="mx-auto mt-4 max-w-2xl text-base text-gray-600 dark:text-gray-400">
+                                        {
+                                            siteConfig.sections.curricula
+                                                .description
+                                        }
+                                    </p>
+                                )}
                             </div>
 
                             <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -677,12 +607,14 @@ const Welcome = ({
                                 Fasilitas
                             </span>
                             <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
-                                Lingkungan Belajar yang Nyaman
+                                {siteConfig?.sections?.facilities?.heading ??
+                                    'Fasilitas'}
                             </h2>
-                            <p className="mx-auto mt-4 max-w-xl text-base text-gray-600 dark:text-gray-400">
-                                Fasilitas lengkap dan modern untuk mendukung
-                                proses belajar mengajar yang optimal.
-                            </p>
+                            {siteConfig?.sections?.facilities?.description && (
+                                <p className="mx-auto mt-4 max-w-xl text-base text-gray-600 dark:text-gray-400">
+                                    {siteConfig.sections.facilities.description}
+                                </p>
+                            )}
                         </div>
 
                         {/* Cards */}
@@ -777,12 +709,18 @@ const Welcome = ({
                                     Berita & Kegiatan
                                 </span>
                                 <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
-                                    Berita Terbaru
+                                    {siteConfig?.sections?.articles?.heading ??
+                                        'Berita Terbaru'}
                                 </h2>
-                                <p className="mt-4 max-w-xl text-base text-gray-600 dark:text-gray-400">
-                                    Ikuti perkembangan terkini tentang kegiatan
-                                    dan prestasi SDIT Al-Aziz.
-                                </p>
+                                {siteConfig?.sections?.articles
+                                    ?.description && (
+                                    <p className="mt-4 max-w-xl text-base text-gray-600 dark:text-gray-400">
+                                        {
+                                            siteConfig.sections.articles
+                                                .description
+                                        }
+                                    </p>
+                                )}
                             </div>
                             {articlesTotal > articles.length && (
                                 <Link
@@ -919,15 +857,14 @@ const Welcome = ({
                                 Agenda
                             </span>
                             <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl dark:text-white">
-                                Agenda{' '}
-                                <span className="text-emerald-600 dark:text-emerald-400">
-                                    Kegiatan
-                                </span>
+                                {siteConfig?.sections?.agenda?.heading ??
+                                    'Agenda Kegiatan'}
                             </h2>
-                            <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-gray-600 dark:text-gray-400">
-                                Jadwal kegiatan dan acara penting SDIT Al-Aziz
-                                yang akan datang.
-                            </p>
+                            {siteConfig?.sections?.agenda?.description && (
+                                <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-gray-600 dark:text-gray-400">
+                                    {siteConfig.sections.agenda.description}
+                                </p>
+                            )}
                         </div>
 
                         {/* Agenda grid */}
@@ -1019,16 +956,18 @@ const Welcome = ({
                                 Testimoni
                             </span>
                             <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl dark:text-white">
-                                Apa Kata{' '}
-                                <span className="text-emerald-600 dark:text-emerald-400">
-                                    Wali Murid
-                                </span>
+                                {siteConfig?.sections?.testimonials?.heading ??
+                                    'Apa Kata Wali Murid'}
                             </h2>
-                            <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-gray-600 dark:text-gray-400">
-                                Kepercayaan orang tua adalah amanah terbesar
-                                kami. Simak pengalaman mereka bersama SDIT
-                                Al-Aziz.
-                            </p>
+                            {siteConfig?.sections?.testimonials
+                                ?.description && (
+                                <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-gray-600 dark:text-gray-400">
+                                    {
+                                        siteConfig.sections.testimonials
+                                            .description
+                                    }
+                                </p>
+                            )}
                         </div>
 
                         {/* Testimonial grid */}
@@ -1128,16 +1067,14 @@ const Welcome = ({
                                     Alumni
                                 </span>
                                 <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
-                                    Jejak Prestasi{' '}
-                                    <span className="text-emerald-600 dark:text-emerald-400">
-                                        Alumni Kami
-                                    </span>
+                                    {siteConfig?.sections?.alumni?.heading ??
+                                        'Jejak Prestasi Alumni Kami'}
                                 </h2>
-                                <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-gray-600 dark:text-gray-400">
-                                    Lulusan SDIT Al-Aziz telah menapaki berbagai
-                                    bidang dan melanjutkan ke sekolah-sekolah
-                                    terbaik di dalam dan luar negeri.
-                                </p>
+                                {siteConfig?.sections?.alumni?.description && (
+                                    <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-gray-600 dark:text-gray-400">
+                                        {siteConfig.sections.alumni.description}
+                                    </p>
+                                )}
                             </div>
 
                             {/* Alumni cards grid - 2 columns */}
@@ -1293,41 +1230,46 @@ const Welcome = ({
                     {/* Student image — anchored inside container */}
                     <img
                         src="/images/cta-student.png"
-                        alt="Siswa SDIT Al-Aziz"
+                        alt={siteConfig?.identity?.name ?? ''}
                         className="pointer-events-none absolute bottom-0 left-4 z-20 hidden object-contain object-bottom drop-shadow-2xl sm:left-6 sm:block lg:left-8"
                         style={{ height: 'calc(100% + 160px)', width: '420px' }}
                     />
 
                     {/* Right: text + CTA */}
                     <div className="flex flex-1 flex-col justify-center py-12 sm:py-14 sm:pl-[440px]">
-                        <p className="max-w-lg text-lg leading-relaxed text-slate-500 dark:text-slate-400">
-                            Ayo jadi bagian dari generasi emas yang cerdas,
-                            berkarakter, dan berakhlak mulia.
-                        </p>
+                        {siteConfig?.identity?.tagline && (
+                            <p className="max-w-lg text-lg leading-relaxed text-slate-500 dark:text-slate-400">
+                                {siteConfig.identity.tagline}
+                            </p>
+                        )}
                         <p className="mt-3 max-w-lg text-2xl leading-snug font-extrabold text-slate-800 sm:text-3xl dark:text-white">
-                            Mari bergabung bersama kami.
+                            {siteConfig?.identity?.name
+                                ? `Bergabung bersama ${siteConfig.identity.name}`
+                                : 'Mari bergabung bersama kami.'}
                         </p>
-                        <div className="mt-8">
-                            <a
-                                href="#kontak"
-                                className="inline-flex items-center gap-2 rounded-xl bg-emerald-800 px-8 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-emerald-900 dark:bg-emerald-700 dark:hover:bg-emerald-600"
-                            >
-                                Daftar Sekarang
-                                <svg
-                                    className="h-4 w-4"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth={2.5}
-                                    stroke="currentColor"
+                        {canRegister && (
+                            <div className="mt-8">
+                                <a
+                                    href="#kontak"
+                                    className="inline-flex items-center gap-2 rounded-xl bg-emerald-800 px-8 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-emerald-900 dark:bg-emerald-700 dark:hover:bg-emerald-600"
                                 >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                                    />
-                                </svg>
-                            </a>
-                        </div>
+                                    Daftar Sekarang
+                                    <svg
+                                        className="h-4 w-4"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth={2.5}
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                                        />
+                                    </svg>
+                                </a>
+                            </div>
+                        )}
                     </div>
                 </div>
             </section>
@@ -1346,13 +1288,17 @@ const Welcome = ({
                                     Kontak
                                 </span>
                                 <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
-                                    Hubungi Kami
+                                    {siteConfig?.sections?.contact?.heading ??
+                                        'Hubungi Kami'}
                                 </h2>
-                                <p className="mt-4 text-base text-gray-600 dark:text-gray-400">
-                                    Silakan hubungi kami untuk informasi lebih
-                                    lanjut tentang pendaftaran dan program
-                                    sekolah.
-                                </p>
+                                {siteConfig?.sections?.contact?.description && (
+                                    <p className="mt-4 text-base text-gray-600 dark:text-gray-400">
+                                        {
+                                            siteConfig.sections.contact
+                                                .description
+                                        }
+                                    </p>
+                                )}
 
                                 <div className="mt-8 space-y-6">
                                     <div className="flex items-start gap-4">
@@ -1381,10 +1327,8 @@ const Welcome = ({
                                                 Alamat
                                             </h3>
                                             <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                                Jl. Pendidikan No. 1, Kelurahan
-                                                Contoh,
-                                                <br />
-                                                Kecamatan Contoh, Kota Contoh
+                                                {siteConfig?.identity
+                                                    ?.address ?? '-'}
                                             </p>
                                         </div>
                                     </div>
@@ -1410,7 +1354,8 @@ const Welcome = ({
                                                 Telepon
                                             </h3>
                                             <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                                (021) 1234-5678
+                                                {siteConfig?.identity?.phone ??
+                                                    '-'}
                                             </p>
                                         </div>
                                     </div>
@@ -1436,7 +1381,8 @@ const Welcome = ({
                                                 Email
                                             </h3>
                                             <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                                info@sditalaziz.sch.id
+                                                {siteConfig?.identity?.email ??
+                                                    '-'}
                                             </p>
                                         </div>
                                     </div>
@@ -1462,9 +1408,8 @@ const Welcome = ({
                                                 Jam Operasional
                                             </h3>
                                             <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                                Senin - Jumat: 07.00 - 15.00 WIB
-                                                <br />
-                                                Sabtu: 07.00 - 12.00 WIB
+                                                {siteConfig?.identity?.hours ??
+                                                    '-'}
                                             </p>
                                         </div>
                                     </div>
@@ -1595,10 +1540,12 @@ const Welcome = ({
                     __html: JSON.stringify({
                         '@context': 'https://schema.org',
                         '@type': 'EducationalOrganization',
-                        name: 'SDIT Al-Aziz',
-                        description:
-                            'Sekolah Dasar Islam Terpadu - Pendidikan berkualitas berbasis nilai-nilai Islam untuk generasi unggul.',
+                        name: siteConfig?.identity?.name ?? undefined,
+                        description: siteConfig?.identity?.tagline ?? undefined,
                         url: window.location.origin,
+                        address: siteConfig?.identity?.address ?? undefined,
+                        telephone: siteConfig?.identity?.phone ?? undefined,
+                        email: siteConfig?.identity?.email ?? undefined,
                     }),
                 }}
             />

@@ -89,6 +89,8 @@ export type PageMeta = {
 export type SectionConfig = {
     enabled: boolean;
     limit?: number;
+    heading?: string | null;
+    description?: string | null;
 };
 
 export type SiteSections = {

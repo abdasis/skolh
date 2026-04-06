@@ -147,13 +147,45 @@ class SiteConfigService
     private const DEFAULT_SECTIONS = [
         'hero' => ['enabled' => true],
         'about' => ['enabled' => true],
-        'agenda' => ['enabled' => true, 'limit' => 6],
-        'facilities' => ['enabled' => true, 'limit' => 8],
-        'curricula' => ['enabled' => true],
-        'articles' => ['enabled' => true, 'limit' => 5],
-        'testimonials' => ['enabled' => true, 'limit' => 6],
-        'alumni' => ['enabled' => true],
-        'contact' => ['enabled' => true],
+        'agenda' => [
+            'enabled' => true,
+            'limit' => 6,
+            'heading' => 'Agenda Kegiatan',
+            'description' => 'Jadwal kegiatan dan acara penting sekolah yang akan datang.',
+        ],
+        'facilities' => [
+            'enabled' => true,
+            'limit' => 8,
+            'heading' => 'Lingkungan Belajar yang Nyaman',
+            'description' => 'Fasilitas lengkap dan modern untuk mendukung proses belajar mengajar yang optimal.',
+        ],
+        'curricula' => [
+            'enabled' => true,
+            'heading' => 'Kurikulum yang Komprehensif',
+            'description' => 'Program pendidikan yang dirancang untuk mengembangkan potensi siswa secara menyeluruh.',
+        ],
+        'articles' => [
+            'enabled' => true,
+            'limit' => 5,
+            'heading' => 'Berita Terbaru',
+            'description' => 'Ikuti perkembangan terkini tentang kegiatan dan prestasi sekolah.',
+        ],
+        'testimonials' => [
+            'enabled' => true,
+            'limit' => 6,
+            'heading' => 'Apa Kata Wali Murid',
+            'description' => 'Kepercayaan orang tua adalah amanah terbesar kami.',
+        ],
+        'alumni' => [
+            'enabled' => true,
+            'heading' => 'Jejak Prestasi Alumni Kami',
+            'description' => 'Lulusan sekolah telah menapaki berbagai bidang dan melanjutkan ke sekolah-sekolah terbaik.',
+        ],
+        'contact' => [
+            'enabled' => true,
+            'heading' => 'Hubungi Kami',
+            'description' => 'Silakan hubungi kami untuk informasi lebih lanjut tentang pendaftaran dan program sekolah.',
+        ],
     ];
 
     /**
