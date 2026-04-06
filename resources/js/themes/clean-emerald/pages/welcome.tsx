@@ -365,9 +365,9 @@ const Welcome = ({
                                     )}
                             </div>
 
-                            <div className="grid h-full grid-cols-5 gap-4">
+                            <div className="grid h-full grid-cols-1 gap-4 lg:grid-cols-5">
                                 {/* Gambar maskot - 3 col */}
-                                <div className="relative col-span-3 overflow-hidden rounded-3xl bg-gray-50 dark:bg-gray-800/50">
+                                <div className="relative min-h-[280px] overflow-hidden rounded-3xl bg-gray-50 lg:col-span-3 dark:bg-gray-800/50">
                                     <img
                                         src="/images/maskot.png"
                                         alt={siteConfig?.identity?.name ?? ''}
@@ -376,13 +376,20 @@ const Welcome = ({
                                 </div>
 
                                 {/* Right cards - 2 col */}
-                                <div className="col-span-2 flex flex-col gap-4">
+                                <div className="grid grid-cols-2 gap-4 lg:col-span-2 lg:flex lg:flex-col">
                                     {/* Visi card */}
                                     <div className="relative flex flex-1 flex-col overflow-hidden rounded-3xl bg-gray-50 p-5 dark:bg-gray-800/60">
                                         {/* Decorative shapes */}
                                         <div className="absolute -top-6 -right-6 h-20 w-20 rounded-full bg-white/60 dark:bg-white/5" />
                                         <div className="absolute -bottom-4 -left-4 h-16 w-16 rotate-45 rounded-2xl bg-white/50 dark:bg-white/5" />
                                         <div className="absolute top-1/2 right-3 h-10 w-10 rounded-full border-2 border-white/40 dark:border-white/5" />
+
+                                        {/* Opportunity icon - background */}
+                                        <img
+                                            src="/images/opportunity.png"
+                                            alt=""
+                                            className="absolute right-2 bottom-2 h-16 w-16 object-contain opacity-15"
+                                        />
 
                                         <div className="relative z-10">
                                             <h4 className="text-sm font-bold text-gray-900 dark:text-white">
@@ -396,13 +403,6 @@ const Welcome = ({
                                                 berprestasi.
                                             </p>
                                         </div>
-
-                                        {/* Opportunity icon - bottom right */}
-                                        <img
-                                            src="/images/opportunity.png"
-                                            alt=""
-                                            className="absolute right-3 bottom-3 z-10 h-14 w-14 object-contain opacity-80"
-                                        />
                                     </div>
 
                                     {/* Stat card - dark */}
