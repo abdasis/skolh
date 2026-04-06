@@ -18,7 +18,7 @@ final class ReportRepository implements ReportRepositoryInterface
      */
     public function getPaginated(array $filters): LengthAwarePaginator
     {
-        $query = Report::query()->latest();
+        $query = Report::query()->with(['statusHistories.changedBy'])->latest();
 
         if (! empty($filters['status'])) {
             $status = ReportStatus::tryFrom($filters['status']);

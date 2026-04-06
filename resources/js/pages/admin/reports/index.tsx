@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { Head, router, setLayoutProps } from '@inertiajs/react';
 import * as ReportController from '@/actions/App/Http/Controllers/Admin/ReportController';
 import { DataTable, type DataTableState } from '@/components/data-table';
 import { type Report, type ReportStats } from '@/types';
 import { ReportStatsCards } from './components/report-stats-cards';
+import { ReportDetailModal } from './components/report-detail-modal';
 import { createReportColumns } from './components/report-columns';
 
 interface Props {
@@ -21,7 +23,12 @@ interface Props {
     statusOptions: { value: string; label: string }[];
 }
 
-const AdminReportsIndex = ({ reports, stats, filters, statusOptions }: Props) => {
+const AdminReportsIndex = ({
+    reports,
+    stats,
+    filters,
+    statusOptions,
+}: Props) => {
     setLayoutProps({
         breadcrumbs: [
             { title: 'Dashboard', href: '/dashboard' },
@@ -29,8 +36,14 @@ const AdminReportsIndex = ({ reports, stats, filters, statusOptions }: Props) =>
         ],
     });
 
+    const [selectedReport, setSelectedReport] = useState<Report | null>(null);
+
     const handleView = (report: Report) => {
-        router.visit(ReportController.show.url({ report: report.id }));
+        setSelectedReport(report);
+    };
+
+    const handleCloseModal = () => {
+        setSelectedReport(null);
     };
 
     const handleStateChange = (state: DataTableState) => {
@@ -52,7 +65,10 @@ const AdminReportsIndex = ({ reports, stats, filters, statusOptions }: Props) =>
     const handleFilterChange = (key: string, value: string) => {
         router.get(
             ReportController.index.url(),
-            { ...filters, [key]: value || undefined } as Record<string, string | undefined>,
+            { ...filters, [key]: value || undefined } as Record<
+                string,
+                string | undefined
+            >,
             { preserveState: false },
         );
     };
@@ -76,7 +92,8 @@ const AdminReportsIndex = ({ reports, stats, filters, statusOptions }: Props) =>
                     <div>
                         <h1 className="text-xl font-semibold">Laporan</h1>
                         <p className="text-sm text-muted-foreground">
-                            Kelola laporan dan pengaduan dari orang tua atau pengunjung.
+                            Kelola laporan dan pengaduan dari orang tua atau
+                            pengunjung.
                         </p>
                     </div>
                 </div>
@@ -86,22 +103,37 @@ const AdminReportsIndex = ({ reports, stats, filters, statusOptions }: Props) =>
                 <div className="px-2">
                     <div className="rounded-2xl bg-gradient-to-b from-muted/60 to-muted/30 p-1 ring-1 ring-foreground/8">
                         <div className="px-4 pt-3 pb-3">
-                            <p className="text-xs font-medium text-muted-foreground">Laporan per Kategori</p>
+                            <p className="text-xs font-medium text-muted-foreground">
+                                Laporan per Kategori
+                            </p>
                         </div>
                         <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
                             <div className="grid grid-cols-2 divide-x divide-y divide-foreground/6 sm:grid-cols-3 lg:grid-cols-5">
                                 {[
                                     { key: 'facilities', label: 'Fasilitas' },
-                                    { key: 'teaching_quality', label: 'Kualitas Pengajaran' },
-                                    { key: 'administration', label: 'Administrasi' },
+                                    {
+                                        key: 'teaching_quality',
+                                        label: 'Kualitas Pengajaran',
+                                    },
+                                    {
+                                        key: 'administration',
+                                        label: 'Administrasi',
+                                    },
                                     { key: 'safety', label: 'Keamanan' },
                                     { key: 'other', label: 'Lainnya' },
                                 ].map(({ key, label }) => (
-                                    <div key={key} className="flex flex-col gap-1 p-4">
-                                        <p className="text-2xl font-bold leading-tight">
-                                            {stats.by_category?.[key as keyof typeof stats.by_category] ?? 0}
+                                    <div
+                                        key={key}
+                                        className="flex flex-col gap-1 p-4"
+                                    >
+                                        <p className="text-2xl leading-tight font-bold">
+                                            {stats.by_category?.[
+                                                key as keyof typeof stats.by_category
+                                            ] ?? 0}
                                         </p>
-                                        <p className="text-xs text-muted-foreground">{label}</p>
+                                        <p className="text-xs text-muted-foreground">
+                                            {label}
+                                        </p>
                                     </div>
                                 ))}
                             </div>
@@ -157,6 +189,13 @@ const AdminReportsIndex = ({ reports, stats, filters, statusOptions }: Props) =>
                     />
                 </div>
             </div>
+
+            <ReportDetailModal
+                report={selectedReport}
+                open={selectedReport !== null}
+                onClose={handleCloseModal}
+                statusOptions={statusOptions}
+            />
         </>
     );
 };

@@ -54,7 +54,7 @@ class ReportController extends Controller
             $request->user(),
         );
 
-        return redirect()->route('admin.reports.show', $report)
+        return redirect()->route('admin.reports.index')
             ->with('success', 'Status laporan berhasil diperbarui.');
     }
 }
