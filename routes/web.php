@@ -40,6 +40,8 @@ use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\ContactPageController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -60,6 +62,9 @@ Route::get('/extracurriculars/{extracurricular:slug}', [ExtracurricularControlle
 Route::get('/organization', OrganizationController::class)->name('organization.index');
 Route::get('/gallery', [GalleryAlbumController::class, 'index'])->name('gallery.index');
 Route::get('/gallery/{galleryAlbum:slug}', [GalleryAlbumController::class, 'show'])->name('gallery.show');
+
+Route::get('/reports/submit', [ReportController::class, 'create'])->name('reports.create');
+Route::post('/reports', [ReportController::class, 'store'])->middleware('throttle:contact-form')->name('reports.store');
 
 // Pendaftaran publik (SPMB)
 Route::prefix('admission')->name('admission.')->group(function () {
@@ -136,6 +141,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::put('settings/page-meta', [AdminSiteSettingController::class, 'updatePageMeta'])->name('settings.page-meta.update');
     Route::get('settings/section-preferences', [AdminSiteSettingController::class, 'sectionPreferences'])->name('settings.section-preferences');
     Route::put('settings/section-preferences', [AdminSiteSettingController::class, 'updateSectionPreferences'])->name('settings.section-preferences.update');
+    Route::resource('reports', AdminReportController::class)->only(['index', 'show', 'update']);
 });
 
 require __DIR__.'/settings.php';

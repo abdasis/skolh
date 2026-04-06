@@ -28,5 +28,6 @@ return [
         'admission/closed',
         'admission/success',
         'admission/check',
+        'reports/submit',
     ],
 ];

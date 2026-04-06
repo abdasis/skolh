@@ -22,7 +22,9 @@ use App\Repositories\Contracts\AdmissionPeriodRepositoryInterface;
 use App\Repositories\Contracts\AlumniRepositoryInterface;
 use App\Repositories\Contracts\CustomFieldRepositoryInterface;
 use App\Repositories\Contracts\RegistrationRepositoryInterface;
+use App\Repositories\Contracts\ReportRepositoryInterface;
 use App\Repositories\Contracts\StudentRepositoryInterface;
+use App\Repositories\ReportRepository;
 use App\Repositories\StudentRepository;
 use App\Repositories\AdmissionPeriodRepository;
 use App\Repositories\CustomFieldRepository;
@@ -69,6 +71,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CustomFieldRepositoryInterface::class, CustomFieldRepository::class);
         $this->app->bind(RegistrationRepositoryInterface::class, RegistrationRepository::class);
         $this->app->bind(StudentRepositoryInterface::class, StudentRepository::class);
+        $this->app->bind(ReportRepositoryInterface::class, ReportRepository::class);
         $this->app->singleton(ThemeRegistryService::class);
     }
 

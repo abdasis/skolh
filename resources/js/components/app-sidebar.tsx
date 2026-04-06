@@ -63,6 +63,7 @@ import { index as admissionPeriodsIndex } from '@/actions/App/Http/Controllers/A
 import { index as customFieldsIndex } from '@/actions/App/Http/Controllers/Admin/CustomFieldController';
 import { index as registrationsIndex } from '@/actions/App/Http/Controllers/Admin/RegistrationController';
 import { index as studentsIndex } from '@/actions/App/Http/Controllers/Admin/StudentController';
+import { index as reportsIndex } from '@/actions/App/Http/Controllers/Admin/ReportController';
 import { show as visiMisiShow } from '@/actions/App/Http/Controllers/Admin/VisiMisiController';
 import { show as schoolHistoryShow } from '@/actions/App/Http/Controllers/Admin/SchoolHistoryController';
 import { dashboard } from '@/routes';
@@ -223,7 +224,7 @@ export function AppSidebar() {
                 },
                 {
                     title: 'Laporan',
-                    href: '/laporan',
+                    href: reportsIndex.url(),
                     icon: FileText,
                 },
             ],
