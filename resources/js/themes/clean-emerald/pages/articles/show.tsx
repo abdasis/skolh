@@ -127,12 +127,32 @@ const ArticlesShow = ({ article, others }: Props) => {
                         {/* Rich-text content */}
                         {article.content && (
                             <div
-                                className="prose prose-emerald dark:prose-invert mt-10 max-w-none"
+                                className="tiptap-content mt-10"
                                 dangerouslySetInnerHTML={{
                                     __html: article.content,
                                 }}
                             />
                         )}
+
+                        {/* Author card */}
+                        <div className="mt-12 flex items-center gap-4 rounded-2xl border border-gray-100 bg-gray-50 p-5 dark:border-gray-700/50 dark:bg-gray-800/50">
+                            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xl font-bold text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400">
+                                {article.author.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                                <p className="text-xs font-semibold tracking-widest text-emerald-600 uppercase dark:text-emerald-400">
+                                    Ditulis oleh
+                                </p>
+                                <p className="mt-0.5 text-base font-semibold text-gray-900 dark:text-white">
+                                    {article.author.name}
+                                </p>
+                                {formattedDate && (
+                                    <p className="mt-0.5 text-xs text-gray-400 dark:text-gray-500">
+                                        Dipublikasikan pada {formattedDate}
+                                    </p>
+                                )}
+                            </div>
+                        </div>
                     </article>
 
                     {/* Right Sidebar */}

@@ -141,17 +141,17 @@ const ArticlesIndex = ({ articles, categories, selectedCategory }: Props) => {
                                         articleShow({ article: featured.slug })
                                             .url
                                     }
-                                    className="group relative flex flex-col overflow-hidden rounded-3xl bg-gray-900 shadow-2xl lg:h-[480px] lg:flex-row"
+                                    className="group relative flex flex-col overflow-hidden rounded-3xl bg-gray-900 ring-1 ring-transparent transition-[background-color,ring-color] duration-300 hover:bg-gray-800 hover:ring-emerald-500/30 lg:h-[480px] lg:flex-row"
                                 >
                                     {/* Image */}
-                                    <div className="relative h-64 w-full shrink-0 lg:h-full lg:w-3/5">
+                                    <div className="relative h-64 w-full shrink-0 overflow-hidden lg:h-full lg:w-3/5">
                                         {featured.featured_image_url ? (
                                             <img
                                                 src={
                                                     featured.featured_image_url
                                                 }
                                                 alt={featured.title}
-                                                className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                                                className="h-full w-full object-cover"
                                             />
                                         ) : (
                                             <div className="flex h-full w-full items-center justify-center bg-emerald-900/40">
@@ -181,7 +181,7 @@ const ArticlesIndex = ({ articles, categories, selectedCategory }: Props) => {
                                             </div>
                                         )}
 
-                                        <h2 className="text-2xl leading-tight font-extrabold text-white transition duration-300 group-hover:text-emerald-300 sm:text-3xl lg:text-4xl">
+                                        <h2 className="text-2xl leading-tight font-extrabold text-white transition-colors duration-300 group-hover:text-emerald-300 sm:text-3xl lg:text-4xl">
                                             {featured.title}
                                         </h2>
 
@@ -207,9 +207,9 @@ const ArticlesIndex = ({ articles, categories, selectedCategory }: Props) => {
                                         </div>
 
                                         <div className="mt-8">
-                                            <span className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/30 transition group-hover:bg-emerald-400">
+                                            <span className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-300 group-hover:bg-emerald-400">
                                                 Baca Selengkapnya
-                                                <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                                                <ChevronRight className="h-4 w-4" />
                                             </span>
                                         </div>
                                     </div>
