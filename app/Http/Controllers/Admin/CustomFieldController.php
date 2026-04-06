@@ -44,6 +44,10 @@ class CustomFieldController extends Controller
                 ? CustomFieldResource::collection($this->fieldRepository->getByPeriod($activePeriod->id))
                 : [],
             'periods' => AdmissionPeriodResource::collection($this->periodRepository->getAll()),
+            'fieldTypes' => collect(CustomFieldType::cases())->map(fn ($t) => [
+                'value' => $t->value,
+                'label' => $t->label(),
+            ]),
         ]);
     }
 
