@@ -15,6 +15,7 @@ export const pages: Record<string, () => Promise<unknown>> = {
     'gallery/index': () => import('./pages/gallery/index'),
     'gallery/show': () => import('./pages/gallery/show'),
     'public/organization': () => import('./pages/public/organization'),
+    'public/teachers': () => import('./pages/public/teachers'),
     'admission/register': () => import('./pages/admission/register'),
     'admission/closed': () => import('./pages/admission/closed'),
     'admission/success': () => import('./pages/admission/success'),

@@ -15,7 +15,12 @@ interface Props {
     socialPlatformOptions: EnumOption[];
 }
 
-const AdminTeachersEdit = ({ teacher, statusOptions, genderOptions, socialPlatformOptions }: Props) => {
+const AdminTeachersEdit = ({
+    teacher,
+    statusOptions,
+    genderOptions,
+    socialPlatformOptions,
+}: Props) => {
     setLayoutProps({
         breadcrumbs: [
             { title: 'Dashboard', href: '/dashboard' },
@@ -36,15 +41,17 @@ const AdminTeachersEdit = ({ teacher, statusOptions, genderOptions, socialPlatfo
         date_of_birth: teacher.date_of_birth ?? '',
         joined_at: teacher.joined_at ?? '',
         status: teacher.status,
-        avatar: null,
-        socials: teacher.socials?.map((s) => ({ platform: s.platform, url: s.url })) ?? [],
+        avatar_url: teacher.avatar_url ?? null,
+        socials:
+            teacher.socials?.map((s) => ({
+                platform: s.platform,
+                url: s.url,
+            })) ?? [],
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        form.post(TeacherController.update.url({ teacher: teacher.id }), {
-            forceFormData: true,
-        });
+        form.post(TeacherController.update.url({ teacher: teacher.id }));
     };
 
     return (
@@ -70,7 +77,6 @@ const AdminTeachersEdit = ({ teacher, statusOptions, genderOptions, socialPlatfo
                                 socialPlatformOptions={socialPlatformOptions}
                                 submitLabel="Simpan Perubahan"
                                 cancelUrl={TeacherController.index.url()}
-                                existingAvatarUrl={teacher.avatar_url}
                             />
                         </div>
                     </div>

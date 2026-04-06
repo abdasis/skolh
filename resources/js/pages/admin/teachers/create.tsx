@@ -13,7 +13,11 @@ interface Props {
     socialPlatformOptions: EnumOption[];
 }
 
-const AdminTeachersCreate = ({ statusOptions, genderOptions, socialPlatformOptions }: Props) => {
+const AdminTeachersCreate = ({
+    statusOptions,
+    genderOptions,
+    socialPlatformOptions,
+}: Props) => {
     setLayoutProps({
         breadcrumbs: [
             { title: 'Dashboard', href: '/dashboard' },
@@ -33,15 +37,13 @@ const AdminTeachersCreate = ({ statusOptions, genderOptions, socialPlatformOptio
         date_of_birth: '',
         joined_at: '',
         status: 'active',
-        avatar: null,
+        avatar_url: null,
         socials: [],
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        form.post(TeacherController.store.url(), {
-            forceFormData: true,
-        });
+        form.post(TeacherController.store.url());
     };
 
     return (

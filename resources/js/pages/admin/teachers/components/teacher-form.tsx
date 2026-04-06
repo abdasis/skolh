@@ -1,8 +1,14 @@
-import { useRef, useState } from 'react';
 import { Link, type InertiaFormProps } from '@inertiajs/react';
-import { FormInput, FormTextarea, FormSelect, FormSubmit, FormLabel, type SelectOption } from '@/components/form';
+import {
+    FormInput,
+    FormTextarea,
+    FormSelect,
+    FormSubmit,
+    FormImagePicker,
+    FormLabel,
+    type SelectOption,
+} from '@/components/form';
 import { Button } from '@/components/ui/button';
-import InputError from '@/components/ui/input-error';
 
 interface EnumOption {
     value: string;
@@ -26,7 +32,7 @@ export interface TeacherFormData {
     date_of_birth: string;
     joined_at: string;
     status: string;
-    avatar: File | null;
+    avatar_url: string | null;
     socials: SocialEntry[];
 }
 
@@ -38,7 +44,6 @@ interface Props {
     statusOptions: EnumOption[];
     genderOptions: EnumOption[];
     socialPlatformOptions: EnumOption[];
-    existingAvatarUrl?: string | null;
 }
 
 const TeacherForm = ({
@@ -49,39 +54,45 @@ const TeacherForm = ({
     statusOptions,
     genderOptions,
     socialPlatformOptions,
-    existingAvatarUrl,
 }: Props) => {
     const { data, setData, errors, processing, recentlySuccessful } = form;
-    const fileInputRef = useRef<HTMLInputElement>(null);
-    const [previewUrl, setPreviewUrl] = useState<string | null>(existingAvatarUrl ?? null);
 
-    const statusSelectOptions: SelectOption[] = statusOptions.map((s) => ({ value: s.value, label: s.label }));
-    const genderSelectOptions: SelectOption[] = genderOptions.map((g) => ({ value: g.value, label: g.label }));
-    const platformSelectOptions: SelectOption[] = socialPlatformOptions.map((p) => ({ value: p.value, label: p.label }));
-
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0] ?? null;
-        setData('avatar', file);
-        if (file) {
-            setPreviewUrl(URL.createObjectURL(file));
-        }
-    };
+    const statusSelectOptions: SelectOption[] = statusOptions.map((s) => ({
+        value: s.value,
+        label: s.label,
+    }));
+    const genderSelectOptions: SelectOption[] = genderOptions.map((g) => ({
+        value: g.value,
+        label: g.label,
+    }));
+    const platformSelectOptions: SelectOption[] = socialPlatformOptions.map(
+        (p) => ({ value: p.value, label: p.label }),
+    );
 
     const addSocial = () => {
         setData('socials', [...data.socials, { platform: '', url: '' }]);
     };
 
     const removeSocial = (index: number) => {
-        setData('socials', data.socials.filter((_, i) => i !== index));
+        setData(
+            'socials',
+            data.socials.filter((_, i) => i !== index),
+        );
     };
 
-    const updateSocial = (index: number, field: keyof SocialEntry, value: string) => {
-        const updated = data.socials.map((s, i) => (i === index ? { ...s, [field]: value } : s));
+    const updateSocial = (
+        index: number,
+        field: keyof SocialEntry,
+        value: string,
+    ) => {
+        const updated = data.socials.map((s, i) =>
+            i === index ? { ...s, [field]: value } : s,
+        );
         setData('socials', updated);
     };
 
     return (
-        <form onSubmit={onSubmit} className="flex flex-col gap-4" encType="multipart/form-data">
+        <form onSubmit={onSubmit} className="flex flex-col gap-4">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <FormInput
                     label="Nama Lengkap"
@@ -168,25 +179,13 @@ const TeacherForm = ({
                 error={errors.address}
             />
 
-            <div className="grid gap-2">
-                <FormLabel htmlFor="avatar">Foto Profil</FormLabel>
-                <input
-                    ref={fileInputRef}
-                    id="avatar"
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp"
-                    onChange={handleFileChange}
-                    className="text-sm file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-muted file:px-3 file:py-1.5 file:text-sm file:font-medium"
-                />
-                {previewUrl && (
-                    <img
-                        src={previewUrl}
-                        alt="Preview"
-                        className="mt-1 h-24 w-24 rounded-full object-cover ring-2 ring-muted"
-                    />
-                )}
-                <InputError message={errors.avatar} />
-            </div>
+            <FormImagePicker
+                label="Foto Profil"
+                value={data.avatar_url}
+                onChange={(url) => setData('avatar_url', url)}
+                folder="teachers/avatars"
+                error={errors.avatar_url}
+            />
 
             <FormSelect
                 label="Status"
@@ -201,7 +200,12 @@ const TeacherForm = ({
             <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between">
                     <FormLabel>Media Sosial</FormLabel>
-                    <Button type="button" variant="outline" size="sm" onClick={addSocial}>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={addSocial}
+                    >
                         + Tambah Sosmed
                     </Button>
                 </div>
@@ -209,22 +213,42 @@ const TeacherForm = ({
                 {data.socials.length > 0 && (
                     <div className="flex flex-col gap-2">
                         {data.socials.map((social, index) => (
-                            <div key={index} className="flex gap-2 items-start">
+                            <div key={index} className="flex items-start gap-2">
                                 <div className="w-40 shrink-0">
                                     <FormSelect
                                         value={social.platform}
-                                        onValueChange={(value) => updateSocial(index, 'platform', value)}
+                                        onValueChange={(value) =>
+                                            updateSocial(
+                                                index,
+                                                'platform',
+                                                value,
+                                            )
+                                        }
                                         options={platformSelectOptions}
                                         placeholder="Platform"
-                                        error={(errors as Record<string, string>)[`socials.${index}.platform`]}
+                                        error={
+                                            (errors as Record<string, string>)[
+                                                `socials.${index}.platform`
+                                            ]
+                                        }
                                     />
                                 </div>
                                 <div className="flex-1">
                                     <FormInput
                                         value={social.url}
-                                        onChange={(e) => updateSocial(index, 'url', e.target.value)}
+                                        onChange={(e) =>
+                                            updateSocial(
+                                                index,
+                                                'url',
+                                                e.target.value,
+                                            )
+                                        }
                                         placeholder="https://..."
-                                        error={(errors as Record<string, string>)[`socials.${index}.url`]}
+                                        error={
+                                            (errors as Record<string, string>)[
+                                                `socials.${index}.url`
+                                            ]
+                                        }
                                     />
                                 </div>
                                 <Button
@@ -246,7 +270,10 @@ const TeacherForm = ({
                 <Button type="button" variant="outline" asChild>
                     <Link href={cancelUrl}>Batal</Link>
                 </Button>
-                <FormSubmit processing={processing} successful={recentlySuccessful}>
+                <FormSubmit
+                    processing={processing}
+                    successful={recentlySuccessful}
+                >
                     {submitLabel}
                 </FormSubmit>
             </div>
