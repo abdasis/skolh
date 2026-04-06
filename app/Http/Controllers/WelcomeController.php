@@ -45,6 +45,10 @@ class WelcomeController extends Controller
                 ->get(['id', 'icon', 'title', 'slug', 'description'])
             : collect();
 
+        $articlesTotal = $sections['articles']['enabled'] ?? true
+            ? Article::published()->count()
+            : 0;
+
         $articles = $sections['articles']['enabled'] ?? true
             ? Article::published()
                 ->with(['author', 'categories'])
@@ -75,6 +79,7 @@ class WelcomeController extends Controller
             'facilities' => $facilities,
             'facilitiesTotal' => $facilitiesTotal,
             'articles' => $articles,
+            'articlesTotal' => $articlesTotal,
             'curricula' => $curricula,
             'testimonials' => TestimonialResource::collection($testimonials),
             'alumni' => AlumniResource::collection($alumni),

@@ -2,6 +2,10 @@ import {
     index as facilityIndex,
     show as facilityShow,
 } from '@/actions/App/Http/Controllers/FacilityController';
+import {
+    index as articleIndex,
+    show as articleShow,
+} from '@/actions/App/Http/Controllers/ArticleController';
 import { show as curriculumShow } from '@/actions/App/Http/Controllers/CurriculumController';
 import { store as contactMessageStore } from '@/actions/App/Http/Controllers/ContactMessageController';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
@@ -63,6 +67,7 @@ const Welcome = ({
     facilities = [],
     facilitiesTotal = 0,
     articles = [],
+    articlesTotal = 0,
     curricula = [],
     testimonials = [],
     alumni = [],
@@ -72,6 +77,7 @@ const Welcome = ({
     facilities?: FacilityCard[];
     facilitiesTotal?: number;
     articles?: ArticlePreview[];
+    articlesTotal?: number;
     curricula?: CurriculumCardResource[];
     testimonials?: Testimonial[];
     alumni?: Alumni[];
@@ -878,316 +884,123 @@ const Welcome = ({
                                     dan prestasi SDIT Al-Aziz.
                                 </p>
                             </div>
-                            <a
-                                href="#"
-                                className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-400 dark:hover:bg-emerald-950/50"
-                            >
-                                Lihat Semua Berita
-                                <svg
-                                    className="h-4 w-4"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth={2}
-                                    stroke="currentColor"
+                            {articlesTotal > articles.length && (
+                                <Link
+                                    href={articleIndex.url()}
+                                    className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-400 dark:hover:bg-emerald-950/50"
                                 >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                                    />
-                                </svg>
-                            </a>
+                                    Lihat Semua Berita
+                                    <Icons.ArrowRight className="h-4 w-4" />
+                                </Link>
+                            )}
                         </div>
 
-                        <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                            {/* Card Berita 1 - Featured */}
-                            <article className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] transition hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.1),0_20px_25px_-5px_rgba(0,0,0,0.05)] dark:bg-gray-900 dark:shadow-[0_2px_15px_-3px_rgba(0,0,0,0.3),0_10px_20px_-2px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.4),0_20px_25px_-5px_rgba(0,0,0,0.3)]">
-                                <div className="relative overflow-hidden">
-                                    <div className="aspect-[16/9]">
-                                        <img
-                                            src="/images/blog-3.jpg"
-                                            alt="Olimpiade Matematika Nasional"
-                                            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                                        />
-                                    </div>
-                                    <div className="absolute top-4 left-4">
-                                        <span className="inline-flex items-center rounded-full bg-emerald-600 px-3 py-1 text-xs font-semibold text-white">
-                                            Prestasi
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className="flex flex-1 flex-col p-6">
-                                    <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
-                                        <div className="flex items-center gap-1.5">
-                                            <svg
-                                                className="h-3.5 w-3.5"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                strokeWidth={1.8}
-                                                stroke="currentColor"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"
-                                                />
-                                            </svg>
-                                            <span>25 Maret 2026</span>
-                                        </div>
-                                        <span className="text-gray-300 dark:text-gray-600">
-                                            &bull;
-                                        </span>
-                                        <div className="flex items-center gap-1.5">
-                                            <svg
-                                                className="h-3.5 w-3.5"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                strokeWidth={1.8}
-                                                stroke="currentColor"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                                                />
-                                            </svg>
-                                            <span>3 menit baca</span>
-                                        </div>
-                                    </div>
-                                    <h3 className="mt-3 text-base leading-snug font-bold text-gray-900 transition group-hover:text-emerald-700 dark:text-white dark:group-hover:text-emerald-400">
-                                        Siswa SDIT Al-Aziz Raih Juara 1
-                                        Olimpiade Matematika Tingkat Nasional
-                                    </h3>
-                                    <p className="mt-2 flex-1 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-                                        Kebanggaan bagi seluruh keluarga besar
-                                        SDIT Al-Aziz. Ahmad Fauzi, siswa kelas
-                                        5, berhasil meraih juara pertama dalam
-                                        kompetisi bergengsi tersebut.
-                                    </p>
-                                    <div className="mt-5 flex items-center justify-between border-t border-gray-100 pt-4 dark:border-gray-800">
-                                        <div className="flex items-center gap-2">
-                                            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-100 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
-                                                RA
-                                            </div>
-                                            <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
-                                                Redaksi Al-Aziz
-                                            </span>
-                                        </div>
-                                        <a
-                                            href="#"
-                                            className="flex items-center gap-1 text-xs font-semibold text-emerald-600 transition hover:text-emerald-700 dark:text-emerald-400"
-                                        >
-                                            Baca selengkapnya
-                                            <svg
-                                                className="h-3.5 w-3.5"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                strokeWidth={2.5}
-                                                stroke="currentColor"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                                                />
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </div>
-                            </article>
+                        {articles.length === 0 ? null : (
+                            <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                                {articles.map((article) => {
+                                    const firstCategory = article.categories[0];
+                                    const formattedDate = article.published_at
+                                        ? new Date(
+                                              article.published_at,
+                                          ).toLocaleDateString('id-ID', {
+                                              day: 'numeric',
+                                              month: 'long',
+                                              year: 'numeric',
+                                          })
+                                        : null;
+                                    const initials = getInitials(
+                                        article.author.name,
+                                    );
 
-                            {/* Card Berita 2 */}
-                            <article className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] transition hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.1),0_20px_25px_-5px_rgba(0,0,0,0.05)] dark:bg-gray-900 dark:shadow-[0_2px_15px_-3px_rgba(0,0,0,0.3),0_10px_20px_-2px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.4),0_20px_25px_-5px_rgba(0,0,0,0.3)]">
-                                <div className="relative overflow-hidden">
-                                    <div className="aspect-[16/9]">
-                                        <img
-                                            src="/images/blog-2.jpg"
-                                            alt="Kunjungan Museum Nasional"
-                                            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                                        />
-                                    </div>
-                                    <div className="absolute top-4 left-4">
-                                        <span className="inline-flex items-center rounded-full bg-emerald-600 px-3 py-1 text-xs font-semibold text-white">
-                                            Kegiatan
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className="flex flex-1 flex-col p-6">
-                                    <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
-                                        <div className="flex items-center gap-1.5">
-                                            <svg
-                                                className="h-3.5 w-3.5"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                strokeWidth={1.8}
-                                                stroke="currentColor"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"
-                                                />
-                                            </svg>
-                                            <span>20 Maret 2026</span>
-                                        </div>
-                                        <span className="text-gray-300 dark:text-gray-600">
-                                            &bull;
-                                        </span>
-                                        <div className="flex items-center gap-1.5">
-                                            <svg
-                                                className="h-3.5 w-3.5"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                strokeWidth={1.8}
-                                                stroke="currentColor"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                                                />
-                                            </svg>
-                                            <span>4 menit baca</span>
-                                        </div>
-                                    </div>
-                                    <h3 className="mt-3 text-base leading-snug font-bold text-gray-900 transition group-hover:text-emerald-700 dark:text-white dark:group-hover:text-emerald-400">
-                                        Kunjungan Edukatif ke Museum Nasional:
-                                        Belajar Sejarah Langsung di Lapangan
-                                    </h3>
-                                    <p className="mt-2 flex-1 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-                                        Ratusan siswa kelas 4, 5, dan 6
-                                        mengikuti kunjungan edukatif ke Museum
-                                        Nasional sebagai bagian dari program
-                                        pembelajaran berbasis pengalaman nyata.
-                                    </p>
-                                    <div className="mt-5 flex items-center justify-between border-t border-gray-100 pt-4 dark:border-gray-800">
-                                        <div className="flex items-center gap-2">
-                                            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-100 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
-                                                RA
-                                            </div>
-                                            <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
-                                                Redaksi Al-Aziz
-                                            </span>
-                                        </div>
-                                        <a
-                                            href="#"
-                                            className="flex items-center gap-1 text-xs font-semibold text-emerald-600 transition hover:text-emerald-700 dark:text-emerald-400"
+                                    return (
+                                        <article
+                                            key={article.id}
+                                            className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] transition hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.1),0_20px_25px_-5px_rgba(0,0,0,0.05)] dark:bg-gray-900 dark:shadow-[0_2px_15px_-3px_rgba(0,0,0,0.3),0_10px_20px_-2px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.4),0_20px_25px_-5px_rgba(0,0,0,0.3)]"
                                         >
-                                            Baca selengkapnya
-                                            <svg
-                                                className="h-3.5 w-3.5"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                strokeWidth={2.5}
-                                                stroke="currentColor"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                                                />
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </div>
-                            </article>
-
-                            {/* Card Berita 3 */}
-                            <article className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] transition hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.1),0_20px_25px_-5px_rgba(0,0,0,0.05)] dark:bg-gray-900 dark:shadow-[0_2px_15px_-3px_rgba(0,0,0,0.3),0_10px_20px_-2px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.4),0_20px_25px_-5px_rgba(0,0,0,0.3)]">
-                                <div className="relative overflow-hidden">
-                                    <div className="aspect-[16/9]">
-                                        <img
-                                            src="/images/blog-1.jpg"
-                                            alt="Pendaftaran Peserta Didik Baru"
-                                            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                                        />
-                                    </div>
-                                    <div className="absolute top-4 left-4">
-                                        <span className="inline-flex items-center rounded-full bg-orange-500 px-3 py-1 text-xs font-semibold text-white">
-                                            Pengumuman
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className="flex flex-1 flex-col p-6">
-                                    <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
-                                        <div className="flex items-center gap-1.5">
-                                            <svg
-                                                className="h-3.5 w-3.5"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                strokeWidth={1.8}
-                                                stroke="currentColor"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"
-                                                />
-                                            </svg>
-                                            <span>15 Maret 2026</span>
-                                        </div>
-                                        <span className="text-gray-300 dark:text-gray-600">
-                                            &bull;
-                                        </span>
-                                        <div className="flex items-center gap-1.5">
-                                            <svg
-                                                className="h-3.5 w-3.5"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                strokeWidth={1.8}
-                                                stroke="currentColor"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                                                />
-                                            </svg>
-                                            <span>2 menit baca</span>
-                                        </div>
-                                    </div>
-                                    <h3 className="mt-3 text-base leading-snug font-bold text-gray-900 transition group-hover:text-emerald-700 dark:text-white dark:group-hover:text-emerald-400">
-                                        Pendaftaran Peserta Didik Baru Tahun
-                                        Ajaran 2026/2027 Resmi Dibuka
-                                    </h3>
-                                    <p className="mt-2 flex-1 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-                                        SDIT Al-Aziz membuka pendaftaran peserta
-                                        didik baru untuk tahun ajaran 2026/2027.
-                                        Kuota terbatas, segera daftarkan
-                                        putra-putri Anda sebelum 30 April 2026.
-                                    </p>
-                                    <div className="mt-5 flex items-center justify-between border-t border-gray-100 pt-4 dark:border-gray-800">
-                                        <div className="flex items-center gap-2">
-                                            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-100 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
-                                                RA
+                                            <div className="relative overflow-hidden">
+                                                <div className="aspect-[16/9] bg-emerald-50 dark:bg-emerald-950/30">
+                                                    {article.featured_image ? (
+                                                        <img
+                                                            src={
+                                                                article.featured_image
+                                                            }
+                                                            alt={article.title}
+                                                            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                                                        />
+                                                    ) : (
+                                                        <div className="flex h-full w-full items-center justify-center">
+                                                            <Icons.Newspaper className="h-12 w-12 text-emerald-200 dark:text-emerald-800" />
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                {firstCategory && (
+                                                    <div className="absolute top-4 left-4">
+                                                        <span className="inline-flex items-center rounded-full bg-emerald-600 px-3 py-1 text-xs font-semibold text-white">
+                                                            {firstCategory.name}
+                                                        </span>
+                                                    </div>
+                                                )}
                                             </div>
-                                            <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
-                                                Redaksi Al-Aziz
-                                            </span>
-                                        </div>
-                                        <a
-                                            href="#"
-                                            className="flex items-center gap-1 text-xs font-semibold text-emerald-600 transition hover:text-emerald-700 dark:text-emerald-400"
-                                        >
-                                            Baca selengkapnya
-                                            <svg
-                                                className="h-3.5 w-3.5"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                strokeWidth={2.5}
-                                                stroke="currentColor"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                                                />
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
+                                            <div className="flex flex-1 flex-col p-6">
+                                                {formattedDate && (
+                                                    <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
+                                                        <svg
+                                                            className="h-3.5 w-3.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            strokeWidth={1.8}
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                                d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"
+                                                            />
+                                                        </svg>
+                                                        <span>
+                                                            {formattedDate}
+                                                        </span>
+                                                    </div>
+                                                )}
+                                                <h3 className="mt-3 text-base leading-snug font-bold text-gray-900 transition group-hover:text-emerald-700 dark:text-white dark:group-hover:text-emerald-400">
+                                                    {article.title}
+                                                </h3>
+                                                {article.excerpt && (
+                                                    <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+                                                        {article.excerpt}
+                                                    </p>
+                                                )}
+                                                <div className="mt-5 flex items-center justify-between border-t border-gray-100 pt-4 dark:border-gray-800">
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-100 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
+                                                            {initials}
+                                                        </div>
+                                                        <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                                                            {
+                                                                article.author
+                                                                    .name
+                                                            }
+                                                        </span>
+                                                    </div>
+                                                    <Link
+                                                        href={
+                                                            articleShow({
+                                                                article:
+                                                                    article.slug,
+                                                            }).url
+                                                        }
+                                                        className="flex items-center gap-1 text-xs font-semibold text-emerald-600 transition hover:text-emerald-700 dark:text-emerald-400"
+                                                    >
+                                                        Baca selengkapnya
+                                                        <Icons.ArrowRight className="h-3.5 w-3.5" />
+                                                    </Link>
+                                                </div>
+                                            </div>
+                                        </article>
+                                    );
+                                })}
+                            </div>
+                        )}
                     </div>
                 </section>
             )}
