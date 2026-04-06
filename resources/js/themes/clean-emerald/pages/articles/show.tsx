@@ -1,6 +1,6 @@
 import { show as articleShow } from '@/actions/App/Http/Controllers/ArticleController';
-import type { ArticleResource } from '@/types';
-import { Head, Link } from '@inertiajs/react';
+import type { ArticleResource, SiteConfig } from '@/types';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { ArrowLeft, Calendar, Tag, User } from 'lucide-react';
 
 interface Props {
@@ -9,6 +9,8 @@ interface Props {
 }
 
 const ArticlesShow = ({ article, others }: Props) => {
+    const { siteConfig } = usePage<{ siteConfig: SiteConfig | null }>().props;
+
     const formattedDate = article.published_at
         ? new Date(article.published_at).toLocaleDateString('id-ID', {
               day: 'numeric',
@@ -221,7 +223,7 @@ const ArticlesShow = ({ article, others }: Props) => {
                             : {}),
                         publisher: {
                             '@type': 'EducationalOrganization',
-                            name: 'SDIT Al-Aziz',
+                            name: siteConfig?.identity?.name ?? 'SDIT Al-Aziz',
                         },
                     }),
                 }}

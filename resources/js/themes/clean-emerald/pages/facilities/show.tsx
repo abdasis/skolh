@@ -1,6 +1,10 @@
 import { show as facilityShow } from '@/actions/App/Http/Controllers/FacilityController';
-import { type FacilityCardResource, type FacilityResource } from '@/types';
-import { Head, Link } from '@inertiajs/react';
+import {
+    type FacilityCardResource,
+    type FacilityResource,
+    type SiteConfig,
+} from '@/types';
+import { Head, Link, usePage } from '@inertiajs/react';
 import * as Icons from 'lucide-react';
 import { ArrowLeft, Building2 } from 'lucide-react';
 
@@ -10,6 +14,8 @@ interface Props {
 }
 
 const FacilityShow = ({ facility, others }: Props) => {
+    const { siteConfig } = usePage<{ siteConfig: SiteConfig | null }>().props;
+
     const IconComponent = (Icons[facility.icon as keyof typeof Icons] ??
         Icons.Building2) as React.ComponentType<{ className?: string }>;
 
@@ -158,7 +164,7 @@ const FacilityShow = ({ facility, others }: Props) => {
                             : {}),
                         containedInPlace: {
                             '@type': 'EducationalOrganization',
-                            name: 'SDIT Al-Aziz',
+                            name: siteConfig?.identity?.name ?? 'SDIT Al-Aziz',
                         },
                     }),
                 }}

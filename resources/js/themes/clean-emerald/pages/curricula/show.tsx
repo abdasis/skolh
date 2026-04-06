@@ -3,8 +3,12 @@ import {
     show as curriculumShow,
 } from '@/actions/App/Http/Controllers/CurriculumController';
 import PageHero from '@/themes/clean-emerald/components/page-hero';
-import { type CurriculumCardResource, type CurriculumResource } from '@/types';
-import { Head, Link } from '@inertiajs/react';
+import {
+    type CurriculumCardResource,
+    type CurriculumResource,
+    type SiteConfig,
+} from '@/types';
+import { Head, Link, usePage } from '@inertiajs/react';
 import * as Icons from 'lucide-react';
 import { ArrowLeft, BookOpen, Calendar, Download } from 'lucide-react';
 
@@ -14,6 +18,8 @@ interface Props {
 }
 
 const CurriculaShow = ({ curriculum, others }: Props) => {
+    const { siteConfig } = usePage<{ siteConfig: SiteConfig | null }>().props;
+
     const IconComponent = (Icons[curriculum.icon as keyof typeof Icons] ??
         Icons.BookOpen) as React.ComponentType<{
         className?: string;
@@ -162,7 +168,7 @@ const CurriculaShow = ({ curriculum, others }: Props) => {
                         dateModified: curriculum.updated_at,
                         publisher: {
                             '@type': 'Organization',
-                            name: 'SDIT Al-Aziz',
+                            name: siteConfig?.identity?.name ?? 'SDIT Al-Aziz',
                         },
                     }),
                 }}

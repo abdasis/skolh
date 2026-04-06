@@ -5,8 +5,9 @@ import {
 import {
     type AnnouncementCardResource,
     type AnnouncementResource,
+    type SiteConfig,
 } from '@/types';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { ArrowLeft, Calendar, Clock, Paperclip } from 'lucide-react';
 
 interface Props {
@@ -16,6 +17,8 @@ interface Props {
 }
 
 const AnnouncementShow = ({ announcement, latest, related }: Props) => {
+    const { siteConfig } = usePage<{ siteConfig: SiteConfig | null }>().props;
+
     const publishedDate = announcement.published_at
         ? new Date(announcement.published_at).toLocaleDateString('id-ID', {
               day: 'numeric',
@@ -220,7 +223,7 @@ const AnnouncementShow = ({ announcement, latest, related }: Props) => {
                         dateModified: announcement.updated_at,
                         publisher: {
                             '@type': 'Organization',
-                            name: 'SDIT Al-Aziz',
+                            name: siteConfig?.identity?.name ?? 'SDIT Al-Aziz',
                         },
                     }),
                 }}
