@@ -34,7 +34,9 @@ class TeacherController extends Controller
         return Inertia::render('admin/teachers/index', [
             'teachers' => TeacherResource::collection($this->repository->getPaginated(DatatableRequest::fromRequest($request))),
             'stats' => $this->repository->getStats(),
+            'filters' => $request->only(['search', 'status', 'gender']),
             'statusOptions' => collect(TeacherStatus::cases())->map(fn ($s) => ['value' => $s->value, 'label' => $s->name]),
+            'genderOptions' => collect(Gender::cases())->map(fn ($g) => ['value' => $g->value, 'label' => $g->name]),
         ]);
     }
 

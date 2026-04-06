@@ -14,6 +14,33 @@ class AnnouncementRepository implements AnnouncementRepositoryInterface
         return Announcement::with(['categories', 'attachments'])->latest()->get();
     }
 
+    /**
+     * @param  array<string, mixed>  $filters
+     * @return Collection<int, Announcement>
+     */
+    public function getAllFiltered(array $filters = []): Collection
+    {
+        $query = Announcement::with(['categories', 'attachments'])->latest();
+
+        if (! empty($filters['search'])) {
+            $search = $filters['search'];
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('excerpt', 'like', "%{$search}%");
+            });
+        }
+
+        if (! empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        if (! empty($filters['category_id'])) {
+            $query->whereHas('categories', fn ($q) => $q->where('categories.id', $filters['category_id']));
+        }
+
+        return $query->get();
+    }
+
     public function getActive(): Collection
     {
         return Announcement::active()->with('categories')->latest()->get();

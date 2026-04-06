@@ -14,6 +14,29 @@ class CurriculumRepository implements CurriculumRepositoryInterface
         return Curriculum::latest()->get();
     }
 
+    /**
+     * @param  array<string, mixed>  $filters
+     * @return Collection<int, Curriculum>
+     */
+    public function getAllFiltered(array $filters = []): Collection
+    {
+        $query = Curriculum::latest();
+
+        if (! empty($filters['search'])) {
+            $search = $filters['search'];
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('code', 'like', "%{$search}%");
+            });
+        }
+
+        if (! empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        return $query->get();
+    }
+
     public function getActive(): Collection
     {
         return Curriculum::active()->latest()->get(['id', 'name', 'slug', 'description', 'icon']);

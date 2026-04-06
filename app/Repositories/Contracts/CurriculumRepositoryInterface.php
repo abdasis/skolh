@@ -9,6 +9,12 @@ interface CurriculumRepositoryInterface
 {
     public function getAll(): Collection;
 
+    /**
+     * @param  array<string, mixed>  $filters
+     * @return Collection<int, Curriculum>
+     */
+    public function getAllFiltered(array $filters = []): Collection;
+
     public function getActive(): Collection;
 
     public function findBySlug(string $slug): ?Curriculum;

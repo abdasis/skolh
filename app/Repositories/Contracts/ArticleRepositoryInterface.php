@@ -11,6 +11,12 @@ interface ArticleRepositoryInterface
     public function getAll(): Collection;
 
     /**
+     * @param  array<string, mixed>  $filters
+     * @return Collection<int, Article>
+     */
+    public function getAllFiltered(array $filters = []): Collection;
+
+    /**
      * @return LengthAwarePaginator<Article>
      */
     public function getPublished(?string $categorySlug = null): LengthAwarePaginator;

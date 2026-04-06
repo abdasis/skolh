@@ -15,6 +15,7 @@ use App\Models\Announcement;
 use App\Repositories\Contracts\AnnouncementRepositoryInterface;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -29,11 +30,15 @@ class AnnouncementController extends Controller
         private readonly StoreAttachmentAction $storeAttachmentAction,
     ) {}
 
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $filters = $request->only(['search', 'status', 'category_id']);
+
         return Inertia::render('admin/announcements/index', [
-            'announcements' => AnnouncementResource::collection($this->repository->getAll()),
+            'announcements' => AnnouncementResource::collection($this->repository->getAllFiltered($filters)),
             'stats' => $this->repository->getStats(),
+            'filters' => $filters,
+            'categories' => CategoryResource::collection($this->categoryRepository->getAll()),
         ]);
     }
 

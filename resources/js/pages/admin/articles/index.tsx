@@ -3,6 +3,7 @@ import { Head, Link, router, setLayoutProps } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { ConfirmationDelete } from '@/components/confirmation-delete';
 import { DataTable } from '@/components/data-table';
+import type { DataTableFilter } from '@/components/data-table';
 import * as ArticleController from '@/actions/App/Http/Controllers/Admin/ArticleController';
 import { createArticleColumns } from './components/article-columns';
 import { ArticleStatsCards } from './components/article-stats-cards';
@@ -11,9 +12,16 @@ import { type ArticleResource, type ArticleStats } from '@/types';
 interface Props {
     articles: ArticleResource[];
     stats: ArticleStats;
+    filters: { status?: string; category_id?: string };
+    categories: Array<{ id: number; name: string }>;
 }
 
-const AdminArticlesIndex = ({ articles, stats }: Props) => {
+const AdminArticlesIndex = ({
+    articles,
+    stats,
+    filters,
+    categories,
+}: Props) => {
     setLayoutProps({
         breadcrumbs: [
             { title: 'Dashboard', href: '/dashboard' },
@@ -38,6 +46,27 @@ const AdminArticlesIndex = ({ articles, stats }: Props) => {
     };
 
     const columns = createArticleColumns(setToDelete, handleEdit);
+
+    const tableFilters: DataTableFilter[] = [
+        {
+            type: 'select',
+            key: 'status',
+            label: 'Status',
+            options: [
+                { value: 'published', label: 'Dipublikasikan' },
+                { value: 'draft', label: 'Draft' },
+            ],
+        },
+        {
+            type: 'select',
+            key: 'category_id',
+            label: 'Kategori',
+            options: categories.map((c) => ({
+                value: String(c.id),
+                label: c.name,
+            })),
+        },
+    ];
 
     return (
         <>
@@ -67,6 +96,11 @@ const AdminArticlesIndex = ({ articles, stats }: Props) => {
                         columns={columns}
                         data={articles}
                         searchPlaceholder="Cari artikel..."
+                        filters={tableFilters}
+                        filterValues={
+                            filters as Record<string, string | undefined>
+                        }
+                        filterUrl={ArticleController.index.url()}
                     />
                 </div>
             </div>

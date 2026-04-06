@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Repositories\Contracts\ArticleRepositoryInterface;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -28,11 +29,15 @@ class ArticleController extends Controller
         private readonly DeleteArticleAction $deleteAction,
     ) {}
 
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $filters = $request->only(['search', 'status', 'category_id']);
+
         return Inertia::render('admin/articles/index', [
-            'articles' => ArticleResource::collection($this->repository->getAll()),
+            'articles' => ArticleResource::collection($this->repository->getAllFiltered($filters)),
             'stats' => $this->repository->getStats(),
+            'filters' => $filters,
+            'categories' => CategoryResource::collection($this->categoryRepository->getAll()),
         ]);
     }
 

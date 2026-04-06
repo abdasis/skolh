@@ -7,17 +7,29 @@ use App\Http\Requests\Admin\StoreAgendaRequest;
 use App\Http\Requests\Admin\UpdateAgendaRequest;
 use App\Models\Agenda;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class AgendaController extends Controller
 {
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $agendas = Agenda::orderBy('date')->get();
+        $filters = $request->only(['month', 'year']);
+
+        $query = Agenda::orderBy('date');
+
+        if (! empty($filters['month'])) {
+            $query->whereMonth('date', $filters['month']);
+        }
+
+        if (! empty($filters['year'])) {
+            $query->whereYear('date', $filters['year']);
+        }
 
         return Inertia::render('admin/agendas/index', [
-            'agendas' => $agendas,
+            'agendas' => $query->get(),
+            'filters' => $filters,
         ]);
     }
 

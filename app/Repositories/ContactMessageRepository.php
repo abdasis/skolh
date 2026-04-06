@@ -26,6 +26,10 @@ class ContactMessageRepository implements ContactMessageRepositoryInterface
             });
         }
 
+        if (isset($filters['is_read']) && $filters['is_read'] !== '') {
+            $query->where('is_read', (bool) $filters['is_read']);
+        }
+
         return $query->get();
     }
 

@@ -21,7 +21,7 @@ class ContactMessageController extends Controller
 
     public function index(Request $request): Response
     {
-        $filters = $request->only('search');
+        $filters = $request->only(['search', 'is_read']);
 
         return Inertia::render('admin/contact-messages/index', [
             'contactMessages' => ContactMessageResource::collection(

@@ -9,6 +9,12 @@ interface AnnouncementRepositoryInterface
 {
     public function getAll(): Collection;
 
+    /**
+     * @param  array<string, mixed>  $filters
+     * @return Collection<int, Announcement>
+     */
+    public function getAllFiltered(array $filters = []): Collection;
+
     public function getActive(): Collection;
 
     public function findBySlug(string $slug): ?Announcement;

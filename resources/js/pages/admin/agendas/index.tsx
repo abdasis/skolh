@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Head, router, useForm } from '@inertiajs/react';
 import { XIcon } from 'lucide-react';
+import type { DataTableFilter } from '@/components/data-table';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -19,12 +20,17 @@ import { AgendaForm, type AgendaFormData } from './components/agenda-form';
 
 interface Props {
     agendas: AgendaResource[];
+    filters: { month?: string; year?: string };
 }
 
-export default function AdminAgendasIndex({ agendas }: Props) {
-    const [agendaToDelete, setAgendaToDelete] = useState<AgendaResource | null>(null);
+const AdminAgendasIndex = ({ agendas, filters }: Props) => {
+    const [agendaToDelete, setAgendaToDelete] = useState<AgendaResource | null>(
+        null,
+    );
     const [showCreateModal, setShowCreateModal] = useState(false);
-    const [agendaToEdit, setAgendaToEdit] = useState<AgendaResource | null>(null);
+    const [agendaToEdit, setAgendaToEdit] = useState<AgendaResource | null>(
+        null,
+    );
 
     const createForm = useForm<AgendaFormData>({
         date: '',
@@ -71,13 +77,52 @@ export default function AdminAgendasIndex({ agendas }: Props) {
         if (!agendaToDelete) {
             return;
         }
-        router.delete(AgendaController.destroy.url({ agenda: agendaToDelete.id }), {
-            preserveScroll: true,
-            onFinish: () => setAgendaToDelete(null),
-        });
+        router.delete(
+            AgendaController.destroy.url({ agenda: agendaToDelete.id }),
+            {
+                preserveScroll: true,
+                onFinish: () => setAgendaToDelete(null),
+            },
+        );
     }
 
     const columns = createAgendaColumns(setAgendaToDelete, handleEditOpen);
+
+    const monthOptions = [
+        { value: '1', label: 'Januari' },
+        { value: '2', label: 'Februari' },
+        { value: '3', label: 'Maret' },
+        { value: '4', label: 'April' },
+        { value: '5', label: 'Mei' },
+        { value: '6', label: 'Juni' },
+        { value: '7', label: 'Juli' },
+        { value: '8', label: 'Agustus' },
+        { value: '9', label: 'September' },
+        { value: '10', label: 'Oktober' },
+        { value: '11', label: 'November' },
+        { value: '12', label: 'Desember' },
+    ];
+
+    const currentYear = new Date().getFullYear();
+    const yearOptions = Array.from({ length: 5 }, (_, i) => {
+        const year = currentYear - 3 + i;
+        return { value: String(year), label: String(year) };
+    });
+
+    const tableFilters: DataTableFilter[] = [
+        {
+            type: 'select',
+            key: 'month',
+            label: 'Bulan',
+            options: monthOptions,
+        },
+        {
+            type: 'select',
+            key: 'year',
+            label: 'Tahun',
+            options: yearOptions,
+        },
+    ];
 
     return (
         <>
@@ -86,10 +131,16 @@ export default function AdminAgendasIndex({ agendas }: Props) {
             <div className="flex flex-col gap-4 p-2">
                 <div className="flex items-center justify-between px-2">
                     <div>
-                        <h1 className="text-xl font-semibold">Manajemen Agenda</h1>
-                        <p className="text-sm text-muted-foreground">Kelola jadwal agenda dan kegiatan sekolah.</p>
+                        <h1 className="text-xl font-semibold">
+                            Manajemen Agenda
+                        </h1>
+                        <p className="text-sm text-muted-foreground">
+                            Kelola jadwal agenda dan kegiatan sekolah.
+                        </p>
                     </div>
-                    <Button onClick={() => setShowCreateModal(true)}>Tambah Agenda</Button>
+                    <Button onClick={() => setShowCreateModal(true)}>
+                        Tambah Agenda
+                    </Button>
                 </div>
 
                 <div className="px-2">
@@ -97,6 +148,11 @@ export default function AdminAgendasIndex({ agendas }: Props) {
                         columns={columns}
                         data={agendas}
                         searchPlaceholder="Cari agenda..."
+                        filters={tableFilters}
+                        filterValues={
+                            filters as Record<string, string | undefined>
+                        }
+                        filterUrl={AgendaController.index.url()}
                     />
                 </div>
             </div>
@@ -119,10 +175,16 @@ export default function AdminAgendasIndex({ agendas }: Props) {
                         <DialogHeader className="flex flex-row items-center justify-between gap-2 border-b border-foreground/8 px-5 py-4">
                             <div className="flex flex-col gap-0.5">
                                 <DialogTitle>Tambah Agenda</DialogTitle>
-                                <DialogDescription>Buat entri agenda baru.</DialogDescription>
+                                <DialogDescription>
+                                    Buat entri agenda baru.
+                                </DialogDescription>
                             </div>
                             <DialogClose asChild>
-                                <Button variant="ghost" size="icon" className="size-7 shrink-0">
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="size-7 shrink-0"
+                                >
                                     <XIcon className="size-4" />
                                     <span className="sr-only">Tutup</span>
                                 </Button>
@@ -156,10 +218,16 @@ export default function AdminAgendasIndex({ agendas }: Props) {
                         <DialogHeader className="flex flex-row items-center justify-between gap-2 border-b border-foreground/8 px-5 py-4">
                             <div className="flex flex-col gap-0.5">
                                 <DialogTitle>Edit Agenda</DialogTitle>
-                                <DialogDescription>Ubah data agenda.</DialogDescription>
+                                <DialogDescription>
+                                    Ubah data agenda.
+                                </DialogDescription>
                             </div>
                             <DialogClose asChild>
-                                <Button variant="ghost" size="icon" className="size-7 shrink-0">
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="size-7 shrink-0"
+                                >
                                     <XIcon className="size-4" />
                                     <span className="sr-only">Tutup</span>
                                 </Button>
@@ -187,7 +255,9 @@ export default function AdminAgendasIndex({ agendas }: Props) {
             />
         </>
     );
-}
+};
+
+export default AdminAgendasIndex;
 
 AdminAgendasIndex.layout = {
     breadcrumbs: [

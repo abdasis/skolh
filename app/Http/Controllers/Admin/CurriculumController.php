@@ -12,6 +12,7 @@ use App\Http\Resources\CurriculumResource;
 use App\Models\Curriculum;
 use App\Repositories\Contracts\CurriculumRepositoryInterface;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -24,14 +25,16 @@ class CurriculumController extends Controller
         private readonly DeleteCurriculumAction $deleteAction,
     ) {}
 
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $curricula = $this->repository->getAll();
+        $filters = $request->only(['search', 'status']);
+        $curricula = $this->repository->getAllFiltered($filters);
         $stats = $this->repository->getStats();
 
         return Inertia::render('admin/curricula/index', [
             'curricula' => CurriculumResource::collection($curricula),
             'stats' => $stats,
+            'filters' => $filters,
         ]);
     }
 

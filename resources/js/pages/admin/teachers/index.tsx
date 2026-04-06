@@ -22,10 +22,18 @@ interface PaginatedTeachers {
 interface Props {
     teachers: PaginatedTeachers;
     stats: TeacherStats;
+    filters: { search?: string; status?: string; gender?: string };
     statusOptions: EnumOption[];
+    genderOptions: EnumOption[];
 }
 
-const AdminTeachersIndex = ({ teachers, stats, statusOptions }: Props) => {
+const AdminTeachersIndex = ({
+    teachers,
+    stats,
+    filters,
+    statusOptions,
+    genderOptions,
+}: Props) => {
     setLayoutProps({
         breadcrumbs: [
             { title: 'Dashboard', href: '/dashboard' },
@@ -57,17 +65,20 @@ const AdminTeachersIndex = ({ teachers, stats, statusOptions }: Props) => {
         };
 
         if (state.sorting.length > 0) {
-            params.sort = state.sorting.map((s) => ({ id: s.id, desc: s.desc }));
+            params.sort = state.sorting.map((s) => ({
+                id: s.id,
+                desc: s.desc,
+            }));
         }
 
-        state.columnFilters.forEach((f) => {
-            params[f.id] = f.value;
-        });
-
-        router.get(TeacherController.index.url(), params as Record<string, string | number | boolean | undefined>, {
-            preserveState: true,
-            replace: true,
-        });
+        router.get(
+            TeacherController.index.url(),
+            params as Record<string, string | number | boolean | undefined>,
+            {
+                preserveState: true,
+                replace: true,
+            },
+        );
     };
 
     const columns = createTeacherColumns(setToDelete, handleEdit);
@@ -79,6 +90,12 @@ const AdminTeachersIndex = ({ teachers, stats, statusOptions }: Props) => {
             label: 'Status',
             options: statusOptions,
         },
+        {
+            type: 'select',
+            key: 'gender',
+            label: 'Jenis Kelamin',
+            options: genderOptions,
+        },
     ];
 
     return (
@@ -88,7 +105,9 @@ const AdminTeachersIndex = ({ teachers, stats, statusOptions }: Props) => {
             <div className="flex flex-col gap-4 p-2">
                 <div className="flex items-center justify-between px-2">
                     <div>
-                        <h1 className="text-xl font-semibold">Manajemen Guru</h1>
+                        <h1 className="text-xl font-semibold">
+                            Manajemen Guru
+                        </h1>
                         <p className="text-sm text-muted-foreground">
                             Kelola data guru sekolah.
                         </p>
@@ -110,6 +129,10 @@ const AdminTeachersIndex = ({ teachers, stats, statusOptions }: Props) => {
                         totalRows={teachers.meta.total}
                         searchPlaceholder="Cari nama atau email..."
                         filters={tableFilters}
+                        filterValues={
+                            filters as Record<string, string | undefined>
+                        }
+                        filterUrl={TeacherController.index.url()}
                         onStateChange={handleStateChange}
                     />
                 </div>

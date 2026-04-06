@@ -67,17 +67,20 @@ const AdminStudentsIndex = ({ students, filters }: Props) => {
         };
 
         if (state.sorting.length > 0) {
-            params.sort = state.sorting.map((s) => ({ id: s.id, desc: s.desc }));
+            params.sort = state.sorting.map((s) => ({
+                id: s.id,
+                desc: s.desc,
+            }));
         }
 
-        state.columnFilters.forEach((f) => {
-            params[f.id] = f.value;
-        });
-
-        router.get(StudentController.index.url(), params as Record<string, string | number | boolean | undefined>, {
-            preserveState: true,
-            replace: true,
-        });
+        router.get(
+            StudentController.index.url(),
+            params as Record<string, string | number | boolean | undefined>,
+            {
+                preserveState: true,
+                replace: true,
+            },
+        );
     };
 
     const columns = createStudentColumns(setToDelete, handleEdit);
@@ -98,13 +101,18 @@ const AdminStudentsIndex = ({ students, filters }: Props) => {
             <div className="flex flex-col gap-4 p-2">
                 <div className="flex items-center justify-between px-2">
                     <div>
-                        <h1 className="text-xl font-semibold">Manajemen Siswa</h1>
+                        <h1 className="text-xl font-semibold">
+                            Manajemen Siswa
+                        </h1>
                         <p className="text-sm text-muted-foreground">
                             Kelola data siswa sekolah.
                         </p>
                     </div>
                     <div className="flex items-center gap-2">
-                        <Button variant="outline" onClick={() => setConvertOpen(true)}>
+                        <Button
+                            variant="outline"
+                            onClick={() => setConvertOpen(true)}
+                        >
                             Konversi dari SPMB
                         </Button>
                         <Button asChild>
@@ -123,6 +131,10 @@ const AdminStudentsIndex = ({ students, filters }: Props) => {
                         totalRows={students.meta.total}
                         searchPlaceholder="Cari nama, NIS, atau NISN..."
                         filters={tableFilters}
+                        filterValues={
+                            filters as Record<string, string | undefined>
+                        }
+                        filterUrl={StudentController.index.url()}
                         onStateChange={handleStateChange}
                     />
                 </div>

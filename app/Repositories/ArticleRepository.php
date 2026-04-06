@@ -16,6 +16,33 @@ class ArticleRepository implements ArticleRepositoryInterface
     }
 
     /**
+     * @param  array<string, mixed>  $filters
+     * @return Collection<int, Article>
+     */
+    public function getAllFiltered(array $filters = []): Collection
+    {
+        $query = Article::with(['author', 'categories', 'seo'])->latest();
+
+        if (! empty($filters['search'])) {
+            $search = $filters['search'];
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('excerpt', 'like', "%{$search}%");
+            });
+        }
+
+        if (! empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        if (! empty($filters['category_id'])) {
+            $query->whereHas('categories', fn ($q) => $q->where('categories.id', $filters['category_id']));
+        }
+
+        return $query->get();
+    }
+
+    /**
      * @return LengthAwarePaginator<Article>
      */
     public function getPublished(?string $categorySlug = null): LengthAwarePaginator

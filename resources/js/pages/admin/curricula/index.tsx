@@ -3,6 +3,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { ConfirmationDelete } from '@/components/confirmation-delete';
 import { DataTable } from '@/components/data-table';
+import type { DataTableFilter } from '@/components/data-table';
 import * as CurriculumController from '@/actions/App/Http/Controllers/Admin/CurriculumController';
 import { createCurriculumColumns } from './components/curriculum-columns';
 import { CurriculumStatsCards } from './components/curriculum-stats-cards';
@@ -11,9 +12,10 @@ import { type CurriculumResource, type CurriculumStats } from '@/types';
 interface Props {
     curricula: CurriculumResource[];
     stats: CurriculumStats;
+    filters: { search?: string; status?: string };
 }
 
-const AdminCurriculaIndex = ({ curricula, stats }: Props) => {
+const AdminCurriculaIndex = ({ curricula, stats, filters }: Props) => {
     const [curriculumToDelete, setCurriculumToDelete] =
         useState<CurriculumResource | null>(null);
 
@@ -39,6 +41,18 @@ const AdminCurriculaIndex = ({ curricula, stats }: Props) => {
     }
 
     const columns = createCurriculumColumns(setCurriculumToDelete, handleEdit);
+
+    const tableFilters: DataTableFilter[] = [
+        {
+            type: 'select',
+            key: 'status',
+            label: 'Status',
+            options: [
+                { value: 'active', label: 'Aktif' },
+                { value: 'draft', label: 'Draft' },
+            ],
+        },
+    ];
 
     return (
         <>
@@ -68,6 +82,11 @@ const AdminCurriculaIndex = ({ curricula, stats }: Props) => {
                         columns={columns}
                         data={curricula}
                         searchPlaceholder="Cari kurikulum..."
+                        filters={tableFilters}
+                        filterValues={
+                            filters as Record<string, string | undefined>
+                        }
+                        filterUrl={CurriculumController.index.url()}
                     />
                 </div>
             </div>
