@@ -21,4 +21,6 @@ export const pages: Record<string, () => Promise<unknown>> = {
     'admission/success': () => import('./pages/admission/success'),
     'admission/check': () => import('./pages/admission/check'),
     'reports/submit': () => import('./pages/reports/submit'),
+    'public/visi-misi': () => import('./pages/public/visi-misi'),
+    'public/sejarah': () => import('./pages/public/sejarah'),
 };

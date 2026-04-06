@@ -250,3 +250,63 @@
 .dark .tiptap-content mark {
     background-color: oklch(0.4 0.1 100);
 }
+
+/* Facility card — subtle border, corner highlight on hover */
+.facility-card {
+    position: relative;
+    border: 1px solid oklch(0.922 0 0 / 60%);
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.dark .facility-card {
+    border-color: oklch(1 0 0 / 8%);
+}
+
+.facility-card::before,
+.facility-card::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Top-left & bottom-right corners via ::before */
+.facility-card::before {
+    background:
+        linear-gradient(oklch(0.508 0.118 165.612), oklch(0.508 0.118 165.612))
+            top left / 20% 1px no-repeat,
+        linear-gradient(oklch(0.508 0.118 165.612), oklch(0.508 0.118 165.612))
+            top left / 1px 20% no-repeat,
+        linear-gradient(oklch(0.508 0.118 165.612), oklch(0.508 0.118 165.612))
+            bottom right / 20% 1px no-repeat,
+        linear-gradient(oklch(0.508 0.118 165.612), oklch(0.508 0.118 165.612))
+            bottom right / 1px 20% no-repeat;
+}
+
+/* Top-right & bottom-left corners via ::after */
+.facility-card::after {
+    background:
+        linear-gradient(oklch(0.508 0.118 165.612), oklch(0.508 0.118 165.612))
+            top right / 20% 1px no-repeat,
+        linear-gradient(oklch(0.508 0.118 165.612), oklch(0.508 0.118 165.612))
+            top right / 1px 20% no-repeat,
+        linear-gradient(oklch(0.508 0.118 165.612), oklch(0.508 0.118 165.612))
+            bottom left / 20% 1px no-repeat,
+        linear-gradient(oklch(0.508 0.118 165.612), oklch(0.508 0.118 165.612))
+            bottom left / 1px 20% no-repeat;
+}
+
+.facility-card:hover::before,
+.facility-card:hover::after {
+    opacity: 1;
+}
+
+.facility-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px -4px oklch(0.508 0.118 165.612 / 15%);
+}

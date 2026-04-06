@@ -29,5 +29,7 @@ return [
         'admission/success',
         'admission/check',
         'reports/submit',
+        'public/visi-misi',
+        'public/sejarah',
     ],
 ];

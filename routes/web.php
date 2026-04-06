@@ -14,6 +14,8 @@ use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialControll
 use App\Http\Controllers\Admin\AdmissionPeriodController as AdminAdmissionPeriodController;
 use App\Http\Controllers\Public\AdmissionController;
 use App\Http\Controllers\Public\PublicTeacherController;
+use App\Http\Controllers\Public\PublicVisiMisiController;
+use App\Http\Controllers\Public\PublicSchoolHistoryController;
 use App\Http\Controllers\Admin\CustomFieldController as AdminCustomFieldController;
 use App\Http\Controllers\Admin\RegistrationController as AdminRegistrationController;
 use App\Http\Controllers\Admin\AlumniController as AdminAlumniController;
@@ -64,6 +66,8 @@ Route::get('/extracurriculars', [ExtracurricularController::class, 'index'])->na
 Route::get('/extracurriculars/{extracurricular:slug}', [ExtracurricularController::class, 'show'])->name('extracurriculars.show');
 Route::get('/organization', OrganizationController::class)->name('organization.index');
 Route::get('/teachers', PublicTeacherController::class)->name('teachers.index');
+Route::get('/visi-misi', PublicVisiMisiController::class)->name('visi-misi.index');
+Route::get('/sejarah', PublicSchoolHistoryController::class)->name('sejarah.index');
 Route::get('/gallery', [GalleryAlbumController::class, 'index'])->name('gallery.index');
 Route::get('/gallery/{galleryAlbum:slug}', [GalleryAlbumController::class, 'show'])->name('gallery.show');
 
