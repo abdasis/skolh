@@ -27,3 +27,4 @@ export type * from './student';
 export type * from './permission';
 export type * from './report';
 export type * from './dashboard';
+export type * from './installer';

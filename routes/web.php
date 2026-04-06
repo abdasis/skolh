@@ -45,8 +45,12 @@ use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\ContactPageController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Admin\ReportController as AdminReportController;
+use App\Http\Controllers\InstallController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/install', [InstallController::class, 'index'])->name('install.index');
+Route::post('/install', [InstallController::class, 'store'])->name('install.store');
 
 Route::get('/', WelcomeController::class)->name('home');
 Route::get('/contact', ContactPageController::class)->name('contact.index');

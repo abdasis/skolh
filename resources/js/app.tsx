@@ -6,6 +6,7 @@ import { initializeTheme } from '@/hooks/use-appearance';
 import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
 import GuestLayoutProxy from '@/lib/theme-layout-proxy';
+import InstallLayout from '@/layouts/install-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import SiteSettingsLayout from '@/layouts/site-settings-layout';
 
@@ -21,6 +22,7 @@ const isNonThemePage = (name: string): boolean =>
     name.startsWith('auth/') ||
     name.startsWith('settings/') ||
     name === 'dashboard' ||
+    name === 'install' ||
     name.startsWith('admin/');
 
 createInertiaApp({
@@ -61,6 +63,8 @@ createInertiaApp({
     },
     layout: (name, page: Page) => {
         switch (true) {
+            case name === 'install':
+                return InstallLayout;
             case name.startsWith('auth/'):
                 return AuthLayout;
             case name.startsWith('settings/'):
