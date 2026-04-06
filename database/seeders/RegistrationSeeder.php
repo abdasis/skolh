@@ -43,7 +43,7 @@ class RegistrationSeeder extends Seeder
         $activePeriod = AdmissionPeriod::query()->where('academic_year', '2025/2026')->first();
 
         if (! $activePeriod) {
-            $this->command->warn('Jalankan AdmissionPeriodSeeder terlebih dahulu.');
+            $this->command?->warn('Jalankan AdmissionPeriodSeeder terlebih dahulu.');
 
             return;
         }
@@ -119,7 +119,7 @@ class RegistrationSeeder extends Seeder
             ]);
         }
 
-        $this->command->info('Berhasil membuat ' . count($allNames) . ' data pendaftaran.');
+        $this->command?->info('Berhasil membuat ' . count($allNames) . ' data pendaftaran.');
     }
 
     private function generateNik(): string
