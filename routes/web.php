@@ -28,6 +28,8 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ContactMessageController as AdminContactMessageController;
 use App\Http\Controllers\Admin\CurriculumController as AdminCurriculumController;
 use App\Http\Controllers\Admin\FacilityController as AdminFacilityController;
+use App\Http\Controllers\Admin\PermissionController as AdminPermissionController;
+use App\Http\Controllers\Admin\RoleController as AdminRoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\SchoolHistoryController as AdminSchoolHistoryController;
 use App\Http\Controllers\Admin\VisiMisiController as AdminVisiMisiController;
@@ -74,7 +76,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
-    Route::resource('users', UserController::class);
+    Route::resource('users', UserController::class)->middleware(['permission:view users']);
+    Route::resource('roles', AdminRoleController::class)->except(['show'])->middleware(['permission:view roles']);
+    Route::get('permissions', [AdminPermissionController::class, 'index'])->name('permissions.index')->middleware(['permission:view roles']);
     Route::resource('agendas', AgendaController::class);
     Route::resource('facilities', AdminFacilityController::class);
     Route::resource('curricula', AdminCurriculumController::class);

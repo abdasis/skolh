@@ -13,6 +13,7 @@ import {
     HelpCircle,
     Home,
     Image,
+    KeyRound,
     LayoutGrid,
     MailOpen,
     MapPin,
@@ -24,6 +25,7 @@ import {
     Scroll,
     Settings2,
     ShieldCheck,
+    ShieldHalf,
     Star,
     Palette,
     Tag,
@@ -243,6 +245,16 @@ export function AppSidebar() {
                     title: 'Manajemen User',
                     href: '/admin/users',
                     icon: ShieldCheck,
+                },
+                {
+                    title: 'Roles',
+                    href: '/admin/roles',
+                    icon: ShieldHalf,
+                },
+                {
+                    title: 'Permissions',
+                    href: '/admin/permissions',
+                    icon: KeyRound,
                 },
                 {
                     title: 'Pengaturan Akun',

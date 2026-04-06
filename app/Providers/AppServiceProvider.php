@@ -41,6 +41,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
@@ -79,6 +80,17 @@ class AppServiceProvider extends ServiceProvider
         JsonResource::withoutWrapping();
         $this->configureDefaults();
         $this->configureRateLimiters();
+        $this->configureSuperAdmin();
+    }
+
+    /**
+     * Grant Super Admin role full access via Gate::before bypass.
+     */
+    protected function configureSuperAdmin(): void
+    {
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole('Super Admin') ? true : null;
+        });
     }
 
     /**
