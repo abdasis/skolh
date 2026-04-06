@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { Link } from '@inertiajs/react';
 import { type InertiaFormProps } from '@inertiajs/react';
 import {
@@ -7,7 +6,7 @@ import {
     FormSelect,
     FormMultiSelect,
     FormDatePicker,
-    FormLabel,
+    FormImagePicker,
     FormSubmit,
     type SelectOption,
     type MultiSelectOption,
@@ -16,7 +15,6 @@ import {
 } from '@/components/form';
 import { Button } from '@/components/ui/button';
 import { TiptapEditor } from '@/components/tiptap-editor';
-import InputError from '@/components/ui/input-error';
 import {
     type ArticleResource,
     type ArticleStatus,
@@ -33,14 +31,13 @@ export interface ArticleFormData {
     user_id: number | string;
     excerpt: string;
     content: string;
-    featured_image: File | null;
+    featured_image_url: string | null;
     status: ArticleStatus;
     published_at: string;
     category_ids: number[];
     meta_title: string;
     meta_description: string;
     meta_keywords: string;
-    og_image: File | null;
     _method?: string;
 }
 
@@ -70,8 +67,6 @@ const ArticleForm = ({
 }: Props) => {
     const { data, setData, errors, processing, recentlySuccessful, post } =
         form;
-    const featuredImageRef = useRef<HTMLInputElement>(null);
-    const ogImageRef = useRef<HTMLInputElement>(null);
 
     const userOptions: SelectOption[] = users.map((u) => ({
         value: String(u.id),
@@ -85,15 +80,11 @@ const ArticleForm = ({
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        post(url, { forceFormData: true, preserveScroll: true });
+        post(url, { preserveScroll: true });
     };
 
     return (
-        <form
-            onSubmit={handleSubmit}
-            className="flex flex-col gap-6"
-            encType="multipart/form-data"
-        >
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             {/* Main content */}
             <div className="flex flex-col gap-4">
                 <FormInput
@@ -133,31 +124,13 @@ const ArticleForm = ({
             </div>
 
             {/* Featured image */}
-            <div className="grid gap-2">
-                <FormLabel htmlFor="featured_image">Featured Image</FormLabel>
-                {article?.featured_image_url && (
-                    <img
-                        src={article.featured_image_url}
-                        alt="Featured image saat ini"
-                        className="h-32 w-auto rounded-lg object-cover"
-                    />
-                )}
-                <input
-                    ref={featuredImageRef}
-                    id="featured_image"
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp"
-                    onChange={(e) => {
-                        const file = e.target.files?.[0] ?? null;
-                        setData('featured_image', file);
-                    }}
-                    className="text-sm file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-muted file:px-3 file:py-1.5 file:text-sm file:font-medium"
-                />
-                <p className="text-xs text-muted-foreground">
-                    JPG, PNG, WEBP — maks. 2MB
-                </p>
-                <InputError message={errors.featured_image} />
-            </div>
+            <FormImagePicker
+                label="Featured Image"
+                value={data.featured_image_url}
+                onChange={(url) => setData('featured_image_url', url)}
+                folder="articles/featured"
+                error={errors.featured_image_url}
+            />
 
             {/* Categories, status, date */}
             <div className="grid gap-4 sm:grid-cols-2">
@@ -238,31 +211,19 @@ const ArticleForm = ({
                     error={errors.meta_keywords}
                 />
 
-                <div className="grid gap-2">
-                    <FormLabel htmlFor="og_image">OG Image</FormLabel>
-                    {article?.seo?.og_image_url && (
+                {data.featured_image_url && (
+                    <div className="grid gap-1">
+                        <p className="text-sm font-medium">OG Image</p>
+                        <p className="text-xs text-muted-foreground">
+                            Otomatis menggunakan featured image.
+                        </p>
                         <img
-                            src={article.seo.og_image_url}
-                            alt="OG image saat ini"
-                            className="h-24 w-auto rounded-lg object-cover"
+                            src={data.featured_image_url}
+                            alt="OG image preview"
+                            className="h-20 w-auto rounded-lg object-cover"
                         />
-                    )}
-                    <input
-                        ref={ogImageRef}
-                        id="og_image"
-                        type="file"
-                        accept="image/jpeg,image/png,image/webp"
-                        onChange={(e) => {
-                            const file = e.target.files?.[0] ?? null;
-                            setData('og_image', file);
-                        }}
-                        className="text-sm file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-muted file:px-3 file:py-1.5 file:text-sm file:font-medium"
-                    />
-                    <p className="text-xs text-muted-foreground">
-                        JPG, PNG, WEBP — maks. 2MB
-                    </p>
-                    <InputError message={errors.og_image} />
-                </div>
+                    </div>
+                )}
             </div>
 
             <div className="flex justify-end gap-2">

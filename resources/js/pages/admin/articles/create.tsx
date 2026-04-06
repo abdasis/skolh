@@ -27,14 +27,13 @@ const AdminArticlesCreate = ({ users, categories }: Props) => {
         user_id: '',
         excerpt: '',
         content: '',
-        featured_image: null,
+        featured_image_url: null,
         status: 'draft',
         published_at: '',
         category_ids: [],
         meta_title: '',
         meta_description: '',
         meta_keywords: '',
-        og_image: null,
     });
 
     return (

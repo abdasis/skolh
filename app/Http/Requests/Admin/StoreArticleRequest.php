@@ -22,7 +22,7 @@ class StoreArticleRequest extends FormRequest
             'user_id' => ['required', 'integer', 'exists:users,id'],
             'excerpt' => ['nullable', 'string'],
             'content' => ['nullable', 'string'],
-            'featured_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'featured_image_url' => ['nullable', 'string', 'url', 'max:2048'],
             'status' => ['required', 'in:published,draft'],
             'published_at' => ['nullable', 'date'],
             'category_ids' => ['nullable', 'array'],
@@ -30,7 +30,6 @@ class StoreArticleRequest extends FormRequest
             'meta_title' => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string'],
             'meta_keywords' => ['nullable', 'string', 'max:255'],
-            'og_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ];
     }
 }

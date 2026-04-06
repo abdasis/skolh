@@ -11,6 +11,7 @@ use App\Models\Testimonial;
 use App\Repositories\Contracts\AlumniRepositoryInterface;
 use App\Repositories\Contracts\CurriculumRepositoryInterface;
 use App\Services\SiteConfigService;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 use Laravel\Fortify\Features;
@@ -55,6 +56,18 @@ class WelcomeController extends Controller
                 ->latest('published_at')
                 ->limit($sections['articles']['limit'] ?? 5)
                 ->get(['id', 'title', 'slug', 'excerpt', 'featured_image', 'user_id', 'published_at'])
+                ->map(fn (Article $article) => [
+                    'id' => $article->id,
+                    'title' => $article->title,
+                    'slug' => $article->slug,
+                    'excerpt' => $article->excerpt,
+                    'featured_image' => $article->featured_image
+                        ? Storage::disk('public')->url($article->featured_image)
+                        : null,
+                    'published_at' => $article->published_at,
+                    'author' => ['id' => $article->author->id, 'name' => $article->author->name],
+                    'categories' => $article->categories->map(fn ($c) => ['id' => $c->id, 'name' => $c->name, 'slug' => $c->slug]),
+                ])
             : collect();
 
         $curricula = $sections['curricula']['enabled'] ?? true

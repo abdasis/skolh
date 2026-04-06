@@ -29,14 +29,13 @@ const AdminArticlesEdit = ({ article, users, categories }: Props) => {
         user_id: article.author.id,
         excerpt: article.excerpt ?? '',
         content: article.content ?? '',
-        featured_image: null,
+        featured_image_url: article.featured_image_url ?? null,
         status: article.status,
         published_at: article.published_at ?? '',
         category_ids: article.categories.map((c) => c.id),
         meta_title: article.seo?.meta_title ?? '',
         meta_description: article.seo?.meta_description ?? '',
         meta_keywords: article.seo?.meta_keywords ?? '',
-        og_image: null,
     });
 
     return (

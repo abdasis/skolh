@@ -3,7 +3,6 @@
 namespace App\Actions\Article;
 
 use App\Models\Article;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 class UpdateArticleAction
@@ -14,20 +13,15 @@ class UpdateArticleAction
     public function handle(Article $article, array $data): Article
     {
         $categoryIds = $data['category_ids'] ?? null;
-        $featuredImage = $data['featured_image'] ?? null;
-        $ogImage = $data['og_image'] ?? null;
+        $featuredImageUrl = $data['featured_image_url'] ?? null;
         $metaTitle = $data['meta_title'] ?? null;
         $metaDescription = $data['meta_description'] ?? null;
         $metaKeywords = $data['meta_keywords'] ?? null;
 
-        unset($data['category_ids'], $data['featured_image'], $data['og_image'], $data['meta_title'], $data['meta_description'], $data['meta_keywords']);
+        unset($data['category_ids'], $data['featured_image_url'], $data['meta_title'], $data['meta_description'], $data['meta_keywords']);
 
-        if ($featuredImage instanceof UploadedFile) {
-            if ($article->featured_image) {
-                Storage::disk('public')->delete($article->featured_image);
-            }
-            $data['featured_image'] = $featuredImage->store('articles', 'public');
-        }
+        $featuredImagePath = $this->urlToStoragePath($featuredImageUrl);
+        $data['featured_image'] = $featuredImagePath;
 
         $article->update($data);
 
@@ -35,21 +29,28 @@ class UpdateArticleAction
             $article->categories()->sync($categoryIds);
         }
 
-        $seoData = [
+        $article->seo()->updateOrCreate([], [
             'meta_title' => $metaTitle,
             'meta_description' => $metaDescription,
             'meta_keywords' => $metaKeywords,
-        ];
-
-        if ($ogImage instanceof UploadedFile) {
-            if ($article->seo?->og_image) {
-                Storage::disk('public')->delete($article->seo->og_image);
-            }
-            $seoData['og_image'] = $ogImage->store('articles/og', 'public');
-        }
-
-        $article->seo()->updateOrCreate([], $seoData);
+            'og_image' => $featuredImagePath,
+        ]);
 
         return $article;
+    }
+
+    private function urlToStoragePath(?string $url): ?string
+    {
+        if ($url === null) {
+            return null;
+        }
+
+        $storageUrl = Storage::disk('public')->url('');
+
+        if (str_starts_with($url, $storageUrl)) {
+            return ltrim(substr($url, strlen($storageUrl)), '/');
+        }
+
+        return null;
     }
 }
