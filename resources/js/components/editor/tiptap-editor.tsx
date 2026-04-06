@@ -7,6 +7,7 @@ import { createExtensions } from './extensions';
 import { SlashCommand } from './slash-command';
 import { Toolbar } from './toolbar';
 import { BubbleMenu } from './bubble-menu';
+import { ImageBubbleMenu } from './image-bubble-menu';
 
 interface TiptapEditorProps {
     label?: string;
@@ -16,9 +17,19 @@ interface TiptapEditorProps {
     required?: boolean;
     id?: string;
     placeholder?: string;
+    folder?: string;
 }
 
-const TiptapEditor = ({ label, content, onChange, error, required, id = 'tiptap-editor', placeholder }: TiptapEditorProps) => {
+const TiptapEditor = ({
+    label,
+    content,
+    onChange,
+    error,
+    required,
+    id = 'tiptap-editor',
+    placeholder,
+    folder,
+}: TiptapEditorProps) => {
     const editor = useEditor({
         extensions: [...createExtensions(placeholder), SlashCommand],
         content,
@@ -42,7 +53,11 @@ const TiptapEditor = ({ label, content, onChange, error, required, id = 'tiptap-
 
     return (
         <div className="grid gap-2">
-            {label && <FormLabel htmlFor={id} required={required}>{label}</FormLabel>}
+            {label && (
+                <FormLabel htmlFor={id} required={required}>
+                    {label}
+                </FormLabel>
+            )}
             <div
                 id={id}
                 aria-invalid={!!error}
@@ -51,8 +66,9 @@ const TiptapEditor = ({ label, content, onChange, error, required, id = 'tiptap-
                     error && 'border-rose-500',
                 )}
             >
-                {editor && <Toolbar editor={editor} />}
+                {editor && <Toolbar editor={editor} folder={folder} />}
                 {editor && <BubbleMenu editor={editor} />}
+                {editor && <ImageBubbleMenu editor={editor} />}
                 <EditorContent editor={editor} />
             </div>
             <InputError message={error} />

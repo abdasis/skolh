@@ -1,7 +1,12 @@
 import type { Editor } from '@tiptap/react';
 import { Toggle } from '@/components/ui/toggle';
 import { Separator } from '@/components/ui/separator';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -9,6 +14,8 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
+import { ImagePickerModal } from '@/components/image-picker/image-picker-modal';
+import { useMediaFiles } from '@/hooks/use-media-files';
 import {
     AlignCenter,
     AlignJustify,
@@ -36,10 +43,11 @@ import {
     Underline as UnderlineIcon,
     Undo,
 } from 'lucide-react';
-import { useCallback, type ReactNode } from 'react';
+import { useCallback, useState, type ReactNode } from 'react';
 
 interface ToolbarProps {
     editor: Editor;
+    folder?: string;
 }
 
 interface ToolbarButtonProps {
@@ -51,7 +59,14 @@ interface ToolbarButtonProps {
     children: ReactNode;
 }
 
-const ToolbarButton = ({ onClick, pressed, disabled, tooltip, shortcut, children }: ToolbarButtonProps) => (
+const ToolbarButton = ({
+    onClick,
+    pressed,
+    disabled,
+    tooltip,
+    shortcut,
+    children,
+}: ToolbarButtonProps) => (
     <Tooltip>
         <TooltipTrigger asChild>
             <Toggle
@@ -66,7 +81,11 @@ const ToolbarButton = ({ onClick, pressed, disabled, tooltip, shortcut, children
         </TooltipTrigger>
         <TooltipContent side="bottom" className="flex items-center gap-2">
             <span>{tooltip}</span>
-            {shortcut && <kbd className="rounded bg-foreground/10 px-1.5 py-0.5 font-mono text-[10px]">{shortcut}</kbd>}
+            {shortcut && (
+                <kbd className="rounded bg-foreground/10 px-1.5 py-0.5 font-mono text-[10px]">
+                    {shortcut}
+                </kbd>
+            )}
         </TooltipContent>
     </Tooltip>
 );
@@ -75,9 +94,17 @@ const ToolbarGroup = ({ children }: { children: ReactNode }) => (
     <div className="flex items-center gap-0.5">{children}</div>
 );
 
-const ToolbarDivider = () => <Separator orientation="vertical" className="mx-1.5 h-5" />;
+const ToolbarDivider = () => (
+    <Separator orientation="vertical" className="mx-1.5 h-5" />
+);
 
-const Toolbar = ({ editor }: ToolbarProps) => {
+const Toolbar = ({ editor, folder = 'editor' }: ToolbarProps) => {
+    const [imagePickerOpen, setImagePickerOpen] = useState(false);
+    const { files, loading, uploading, upload } = useMediaFiles(
+        folder,
+        imagePickerOpen,
+    );
+
     const setLink = useCallback(() => {
         const previousUrl = editor.getAttributes('link').href;
         const url = window.prompt('URL', previousUrl);
@@ -89,15 +116,22 @@ const Toolbar = ({ editor }: ToolbarProps) => {
             return;
         }
 
-        editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
+        editor
+            .chain()
+            .focus()
+            .extendMarkRange('link')
+            .setLink({ href: url })
+            .run();
     }, [editor]);
 
-    const addImage = useCallback(() => {
-        const url = window.prompt('URL gambar');
-        if (url) {
-            editor.chain().focus().setImage({ src: url }).run();
-        }
-    }, [editor]);
+    const handleImageSelect = useCallback(
+        (urls: string[]) => {
+            urls.forEach((url) => {
+                editor.chain().focus().setImage({ src: url }).run();
+            });
+        },
+        [editor],
+    );
 
     const activeHeading = editor.isActive('heading', { level: 1 })
         ? 'H1'
@@ -120,10 +154,20 @@ const Toolbar = ({ editor }: ToolbarProps) => {
             <div className="flex flex-wrap items-center gap-1 border-b bg-muted/30 px-2 py-1.5">
                 {/* Undo / Redo */}
                 <ToolbarGroup>
-                    <ToolbarButton onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()} tooltip="Undo" shortcut="Ctrl+Z">
+                    <ToolbarButton
+                        onClick={() => editor.chain().focus().undo().run()}
+                        disabled={!editor.can().undo()}
+                        tooltip="Undo"
+                        shortcut="Ctrl+Z"
+                    >
                         <Undo className="size-4" />
                     </ToolbarButton>
-                    <ToolbarButton onClick={() => editor.chain().focus().redo().run()} disabled={!editor.can().redo()} tooltip="Redo" shortcut="Ctrl+Y">
+                    <ToolbarButton
+                        onClick={() => editor.chain().focus().redo().run()}
+                        disabled={!editor.can().redo()}
+                        tooltip="Redo"
+                        shortcut="Ctrl+Y"
+                    >
                         <Redo className="size-4" />
                     </ToolbarButton>
                 </ToolbarGroup>
@@ -135,7 +179,11 @@ const Toolbar = ({ editor }: ToolbarProps) => {
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="sm" className="h-8 gap-1 px-2.5 text-xs font-medium">
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-8 gap-1 px-2.5 text-xs font-medium"
+                                >
                                     {activeHeading}
                                     <ChevronDown className="size-3 opacity-50" />
                                 </Button>
@@ -144,19 +192,47 @@ const Toolbar = ({ editor }: ToolbarProps) => {
                         <TooltipContent side="bottom">Tipe blok</TooltipContent>
                     </Tooltip>
                     <DropdownMenuContent align="start" className="min-w-40">
-                        <DropdownMenuItem onClick={() => editor.chain().focus().setParagraph().run()}>
+                        <DropdownMenuItem
+                            onClick={() =>
+                                editor.chain().focus().setParagraph().run()
+                            }
+                        >
                             <Pilcrow className="mr-2 size-4" />
                             <span>Teks</span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}>
+                        <DropdownMenuItem
+                            onClick={() =>
+                                editor
+                                    .chain()
+                                    .focus()
+                                    .toggleHeading({ level: 1 })
+                                    .run()
+                            }
+                        >
                             <Heading1 className="mr-2 size-4" />
                             <span>Heading 1</span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>
+                        <DropdownMenuItem
+                            onClick={() =>
+                                editor
+                                    .chain()
+                                    .focus()
+                                    .toggleHeading({ level: 2 })
+                                    .run()
+                            }
+                        >
                             <Heading2 className="mr-2 size-4" />
                             <span>Heading 2</span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}>
+                        <DropdownMenuItem
+                            onClick={() =>
+                                editor
+                                    .chain()
+                                    .focus()
+                                    .toggleHeading({ level: 3 })
+                                    .run()
+                            }
+                        >
                             <Heading3 className="mr-2 size-4" />
                             <span>Heading 3</span>
                         </DropdownMenuItem>
@@ -167,14 +243,30 @@ const Toolbar = ({ editor }: ToolbarProps) => {
 
                 {/* Inline formatting */}
                 <ToolbarGroup>
-                    <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()} pressed={editor.isActive('bold')} tooltip="Bold" shortcut="Ctrl+B">
+                    <ToolbarButton
+                        onClick={() =>
+                            editor.chain().focus().toggleBold().run()
+                        }
+                        pressed={editor.isActive('bold')}
+                        tooltip="Bold"
+                        shortcut="Ctrl+B"
+                    >
                         <Bold className="size-4" />
                     </ToolbarButton>
-                    <ToolbarButton onClick={() => editor.chain().focus().toggleItalic().run()} pressed={editor.isActive('italic')} tooltip="Italic" shortcut="Ctrl+I">
+                    <ToolbarButton
+                        onClick={() =>
+                            editor.chain().focus().toggleItalic().run()
+                        }
+                        pressed={editor.isActive('italic')}
+                        tooltip="Italic"
+                        shortcut="Ctrl+I"
+                    >
                         <Italic className="size-4" />
                     </ToolbarButton>
                     <ToolbarButton
-                        onClick={() => editor.chain().focus().toggleUnderline().run()}
+                        onClick={() =>
+                            editor.chain().focus().toggleUnderline().run()
+                        }
                         pressed={editor.isActive('underline')}
                         tooltip="Underline"
                         shortcut="Ctrl+U"
@@ -182,17 +274,27 @@ const Toolbar = ({ editor }: ToolbarProps) => {
                         <UnderlineIcon className="size-4" />
                     </ToolbarButton>
                     <ToolbarButton
-                        onClick={() => editor.chain().focus().toggleStrike().run()}
+                        onClick={() =>
+                            editor.chain().focus().toggleStrike().run()
+                        }
                         pressed={editor.isActive('strike')}
                         tooltip="Strikethrough"
                     >
                         <Strikethrough className="size-4" />
                     </ToolbarButton>
-                    <ToolbarButton onClick={() => editor.chain().focus().toggleCode().run()} pressed={editor.isActive('code')} tooltip="Inline code">
+                    <ToolbarButton
+                        onClick={() =>
+                            editor.chain().focus().toggleCode().run()
+                        }
+                        pressed={editor.isActive('code')}
+                        tooltip="Inline code"
+                    >
                         <Code className="size-4" />
                     </ToolbarButton>
                     <ToolbarButton
-                        onClick={() => editor.chain().focus().toggleHighlight().run()}
+                        onClick={() =>
+                            editor.chain().focus().toggleHighlight().run()
+                        }
                         pressed={editor.isActive('highlight')}
                         tooltip="Highlight"
                     >
@@ -207,27 +309,65 @@ const Toolbar = ({ editor }: ToolbarProps) => {
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="sm" className="size-8 p-0">
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="size-8 p-0"
+                                >
                                     <ActiveAlignIcon className="size-4" />
                                 </Button>
                             </DropdownMenuTrigger>
                         </TooltipTrigger>
-                        <TooltipContent side="bottom">Perataan teks</TooltipContent>
+                        <TooltipContent side="bottom">
+                            Perataan teks
+                        </TooltipContent>
                     </Tooltip>
                     <DropdownMenuContent align="start" className="min-w-36">
-                        <DropdownMenuItem onClick={() => editor.chain().focus().setTextAlign('left').run()}>
+                        <DropdownMenuItem
+                            onClick={() =>
+                                editor
+                                    .chain()
+                                    .focus()
+                                    .setTextAlign('left')
+                                    .run()
+                            }
+                        >
                             <AlignLeft className="mr-2 size-4" />
                             <span>Rata kiri</span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => editor.chain().focus().setTextAlign('center').run()}>
+                        <DropdownMenuItem
+                            onClick={() =>
+                                editor
+                                    .chain()
+                                    .focus()
+                                    .setTextAlign('center')
+                                    .run()
+                            }
+                        >
                             <AlignCenter className="mr-2 size-4" />
                             <span>Rata tengah</span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => editor.chain().focus().setTextAlign('right').run()}>
+                        <DropdownMenuItem
+                            onClick={() =>
+                                editor
+                                    .chain()
+                                    .focus()
+                                    .setTextAlign('right')
+                                    .run()
+                            }
+                        >
                             <AlignRight className="mr-2 size-4" />
                             <span>Rata kanan</span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => editor.chain().focus().setTextAlign('justify').run()}>
+                        <DropdownMenuItem
+                            onClick={() =>
+                                editor
+                                    .chain()
+                                    .focus()
+                                    .setTextAlign('justify')
+                                    .run()
+                            }
+                        >
                             <AlignJustify className="mr-2 size-4" />
                             <span>Rata kanan-kiri</span>
                         </DropdownMenuItem>
@@ -239,35 +379,45 @@ const Toolbar = ({ editor }: ToolbarProps) => {
                 {/* Lists & blocks */}
                 <ToolbarGroup>
                     <ToolbarButton
-                        onClick={() => editor.chain().focus().toggleBulletList().run()}
+                        onClick={() =>
+                            editor.chain().focus().toggleBulletList().run()
+                        }
                         pressed={editor.isActive('bulletList')}
                         tooltip="Bullet list"
                     >
                         <List className="size-4" />
                     </ToolbarButton>
                     <ToolbarButton
-                        onClick={() => editor.chain().focus().toggleOrderedList().run()}
+                        onClick={() =>
+                            editor.chain().focus().toggleOrderedList().run()
+                        }
                         pressed={editor.isActive('orderedList')}
                         tooltip="Numbered list"
                     >
                         <ListOrdered className="size-4" />
                     </ToolbarButton>
                     <ToolbarButton
-                        onClick={() => editor.chain().focus().toggleBlockquote().run()}
+                        onClick={() =>
+                            editor.chain().focus().toggleBlockquote().run()
+                        }
                         pressed={editor.isActive('blockquote')}
                         tooltip="Blockquote"
                     >
                         <Quote className="size-4" />
                     </ToolbarButton>
                     <ToolbarButton
-                        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+                        onClick={() =>
+                            editor.chain().focus().toggleCodeBlock().run()
+                        }
                         pressed={editor.isActive('codeBlock')}
                         tooltip="Code block"
                     >
                         <Code2 className="size-4" />
                     </ToolbarButton>
                     <ToolbarButton
-                        onClick={() => editor.chain().focus().setHorizontalRule().run()}
+                        onClick={() =>
+                            editor.chain().focus().setHorizontalRule().run()
+                        }
                         tooltip="Garis pembatas"
                     >
                         <Minus className="size-4" />
@@ -280,22 +430,43 @@ const Toolbar = ({ editor }: ToolbarProps) => {
                 <ToolbarGroup>
                     {editor.isActive('link') ? (
                         <ToolbarButton
-                            onClick={() => editor.chain().focus().unsetLink().run()}
+                            onClick={() =>
+                                editor.chain().focus().unsetLink().run()
+                            }
                             pressed
                             tooltip="Hapus link"
                         >
                             <Link2Off className="size-4" />
                         </ToolbarButton>
                     ) : (
-                        <ToolbarButton onClick={setLink} tooltip="Sisipkan link">
+                        <ToolbarButton
+                            onClick={setLink}
+                            tooltip="Sisipkan link"
+                        >
                             <LinkIcon className="size-4" />
                         </ToolbarButton>
                     )}
-                    <ToolbarButton onClick={addImage} tooltip="Sisipkan gambar">
+                    <ToolbarButton
+                        onClick={() => setImagePickerOpen(true)}
+                        tooltip="Sisipkan gambar"
+                    >
                         <ImageIcon className="size-4" />
                     </ToolbarButton>
                 </ToolbarGroup>
             </div>
+
+            <ImagePickerModal
+                open={imagePickerOpen}
+                onClose={() => setImagePickerOpen(false)}
+                onSelect={handleImageSelect}
+                mode="multiple"
+                folder={folder}
+                files={files}
+                loading={loading}
+                uploading={uploading}
+                onUpload={upload}
+                title="Sisipkan Gambar"
+            />
         </TooltipProvider>
     );
 };
