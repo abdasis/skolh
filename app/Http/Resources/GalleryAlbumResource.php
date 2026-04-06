@@ -10,6 +10,15 @@ use Illuminate\Support\Facades\Storage;
 /** @mixin GalleryAlbum */
 class GalleryAlbumResource extends JsonResource
 {
+    private function resolveImageUrl(string $path): string
+    {
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
+        }
+
+        return Storage::disk('public')->url($path);
+    }
+
     /**
      * @return array<string, mixed>
      */
@@ -21,7 +30,7 @@ class GalleryAlbumResource extends JsonResource
             'slug' => $this->slug,
             'description' => $this->description,
             'cover_image' => $this->cover_image,
-            'cover_image_url' => $this->cover_image ? Storage::disk('public')->url($this->cover_image) : null,
+            'cover_image_url' => $this->cover_image ? $this->resolveImageUrl($this->cover_image) : null,
             'status' => $this->status->value,
             'images_count' => $this->whenCounted('images', fn () => $this->images_count, fn () => $this->whenLoaded('images', fn () => $this->images->count())),
             'images' => GalleryImageResource::collection($this->whenLoaded('images')),

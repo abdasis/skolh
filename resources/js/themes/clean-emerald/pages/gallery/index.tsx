@@ -68,11 +68,11 @@ const GalleryIndex = ({ albums }: Props) => {
                 </div>
 
                 {albums.length === 0 ? (
-                    <p className="py-16 text-center text-muted-foreground">
+                    <p className="mt-12 py-16 text-center text-muted-foreground">
                         Belum ada album galeri yang tersedia.
                     </p>
                 ) : (
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         {albums.map((album) => (
                             <Link
                                 key={album.id}
