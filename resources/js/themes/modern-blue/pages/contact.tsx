@@ -28,31 +28,31 @@ const Contact = () => {
 
             <div className="mx-auto mt-[calc(1.75rem+3.75rem)] max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
                 <div className="relative">
-                    <div className="absolute -top-4 -left-4 h-24 w-24 rounded-full bg-emerald-100/60 blur-2xl dark:bg-emerald-900/30" />
-                    <div className="absolute top-2 left-32 h-12 w-12 rounded-full bg-teal-100/50 blur-xl dark:bg-teal-900/20" />
+                    <div className="absolute -top-4 -left-4 h-24 w-24 rounded-full bg-blue-100/60 blur-2xl dark:bg-blue-900/30" />
+                    <div className="absolute top-2 left-32 h-12 w-12 rounded-full bg-sky-100/50 blur-xl dark:bg-sky-900/20" />
 
                     <div className="relative">
-                        <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold tracking-widest text-emerald-700 uppercase dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
+                        <span className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-xs font-semibold tracking-widest text-blue-700 uppercase dark:border-blue-800 dark:bg-blue-950/50 dark:text-blue-400">
                             <span className="relative flex h-1.5 w-1.5">
-                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
+                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75" />
+                                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-blue-500 dark:bg-blue-400" />
                             </span>
                             Kontak
                         </span>
 
                         <div className="mt-3 flex items-start gap-4">
                             <div className="mt-1 flex shrink-0 flex-col items-center gap-1">
-                                <div className="h-6 w-0.5 rounded-full bg-emerald-500 dark:bg-emerald-400" />
-                                <div className="h-2 w-0.5 rounded-full bg-emerald-300 dark:bg-emerald-600" />
-                                <div className="h-1 w-0.5 rounded-full bg-emerald-200 dark:bg-emerald-700" />
+                                <div className="h-6 w-0.5 rounded-full bg-blue-500 dark:bg-blue-400" />
+                                <div className="h-2 w-0.5 rounded-full bg-blue-300 dark:bg-blue-600" />
+                                <div className="h-1 w-0.5 rounded-full bg-blue-200 dark:bg-blue-700" />
                             </div>
                             <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
                                 Hubungi{' '}
                                 <span className="relative inline-block">
-                                    <span className="relative z-10 text-emerald-600 dark:text-emerald-400">
+                                    <span className="relative z-10 text-blue-600 dark:text-blue-400">
                                         Kami
                                     </span>
-                                    <span className="absolute bottom-0.5 left-0 h-2 w-full rounded-full bg-emerald-100 dark:bg-emerald-900/50" />
+                                    <span className="absolute bottom-0.5 left-0 h-2 w-full rounded-full bg-blue-100 dark:bg-blue-900/50" />
                                 </span>
                             </h1>
                         </div>
@@ -74,9 +74,9 @@ const Contact = () => {
                             <div className="space-y-6">
                                 {identity?.address && (
                                     <div className="flex items-start gap-4">
-                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-950/50">
+                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-950/50">
                                             <svg
-                                                className="h-5 w-5 text-emerald-600 dark:text-emerald-400"
+                                                className="h-5 w-5 text-blue-600 dark:text-blue-400"
                                                 fill="none"
                                                 viewBox="0 0 24 24"
                                                 strokeWidth={1.5}
@@ -107,9 +107,9 @@ const Contact = () => {
 
                                 {identity?.phone && (
                                     <div className="flex items-start gap-4">
-                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-950/50">
+                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-950/50">
                                             <svg
-                                                className="h-5 w-5 text-emerald-600 dark:text-emerald-400"
+                                                className="h-5 w-5 text-blue-600 dark:text-blue-400"
                                                 fill="none"
                                                 viewBox="0 0 24 24"
                                                 strokeWidth={1.5}
@@ -135,9 +135,9 @@ const Contact = () => {
 
                                 {identity?.email && (
                                     <div className="flex items-start gap-4">
-                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-950/50">
+                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-950/50">
                                             <svg
-                                                className="h-5 w-5 text-emerald-600 dark:text-emerald-400"
+                                                className="h-5 w-5 text-blue-600 dark:text-blue-400"
                                                 fill="none"
                                                 viewBox="0 0 24 24"
                                                 strokeWidth={1.5}
@@ -163,9 +163,9 @@ const Contact = () => {
 
                                 {identity?.hours && (
                                     <div className="flex items-start gap-4">
-                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-950/50">
+                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-950/50">
                                             <svg
-                                                className="h-5 w-5 text-emerald-600 dark:text-emerald-400"
+                                                className="h-5 w-5 text-blue-600 dark:text-blue-400"
                                                 fill="none"
                                                 viewBox="0 0 24 24"
                                                 strokeWidth={1.5}
@@ -215,7 +215,7 @@ const Contact = () => {
                             </p>
 
                             {(wasSuccessful || flash?.success) && (
-                                <div className="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">
+                                <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-700 dark:border-blue-800 dark:bg-blue-950/50 dark:text-blue-400">
                                     {flash?.success ??
                                         'Pesan Anda berhasil dikirim!'}
                                 </div>
@@ -235,7 +235,7 @@ const Contact = () => {
                                         onChange={(e) =>
                                             setData('name', e.target.value)
                                         }
-                                        className="mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 transition outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:border-emerald-400"
+                                        className="mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 transition outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:border-blue-400"
                                         placeholder="Masukkan nama lengkap"
                                     />
                                     {errors.name && (
@@ -255,7 +255,7 @@ const Contact = () => {
                                         onChange={(e) =>
                                             setData('email', e.target.value)
                                         }
-                                        className="mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 transition outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:border-emerald-400"
+                                        className="mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 transition outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:border-blue-400"
                                         placeholder="contoh@email.com"
                                     />
                                     {errors.email && (
@@ -275,7 +275,7 @@ const Contact = () => {
                                         onChange={(e) =>
                                             setData('subject', e.target.value)
                                         }
-                                        className="mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 transition outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:border-emerald-400"
+                                        className="mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 transition outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:border-blue-400"
                                         placeholder="Subjek pesan"
                                     />
                                     {errors.subject && (
@@ -295,7 +295,7 @@ const Contact = () => {
                                         onChange={(e) =>
                                             setData('message', e.target.value)
                                         }
-                                        className="mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 transition outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:border-emerald-400"
+                                        className="mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 transition outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:border-blue-400"
                                         placeholder="Tulis pesan Anda..."
                                     />
                                     {errors.message && (
@@ -308,7 +308,7 @@ const Contact = () => {
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="w-full rounded-lg bg-emerald-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-60"
+                                    className="w-full rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:opacity-60"
                                 >
                                     {processing ? 'Mengirim...' : 'Kirim Pesan'}
                                 </button>

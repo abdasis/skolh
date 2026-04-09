@@ -1,6 +1,6 @@
 import { Head } from '@inertiajs/react';
 import { OrgChart } from '@/components/org-chart';
-import PageHero from '@/themes/clean-emerald/components/page-hero';
+import PageHero from '@/themes/modern-blue/components/page-hero';
 import { type OrganizationNodeResource } from '@/types';
 
 interface Props {
