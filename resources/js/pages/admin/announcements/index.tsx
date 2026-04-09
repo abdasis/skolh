@@ -11,7 +11,7 @@ import { type AnnouncementResource, type AnnouncementStats } from '@/types';
 
 interface Props {
     announcements: AnnouncementResource[];
-    stats: AnnouncementStats;
+    stats?: AnnouncementStats;
     filters: { status?: string; category_id?: string };
     categories: Array<{ id: number; name: string }>;
 }
@@ -66,7 +66,7 @@ const AdminAnnouncementsIndex = ({
             type: 'select',
             key: 'category_id',
             label: 'Kategori',
-            options: categories.map((c) => ({
+            options: (categories ?? []).map((c) => ({
                 value: String(c.id),
                 label: c.name,
             })),

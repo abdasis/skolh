@@ -8,7 +8,7 @@ import type { Theme } from '@/types';
 import { CheckCircle2, ImageIcon, Search, XCircle } from 'lucide-react';
 
 interface Props {
-    themes: Theme[];
+    themes?: Theme[];
 }
 
 const ThemesIndex = ({ themes }: Props) => {
@@ -21,7 +21,7 @@ const ThemesIndex = ({ themes }: Props) => {
 
     const [search, setSearch] = useState('');
 
-    const filtered = themes.filter(
+    const filtered = (themes ?? []).filter(
         (t) =>
             t.name.toLowerCase().includes(search.toLowerCase()) ||
             t.author.toLowerCase().includes(search.toLowerCase()) ||

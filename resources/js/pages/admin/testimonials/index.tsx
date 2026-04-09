@@ -14,7 +14,7 @@ interface PaginatedTestimonials {
 }
 
 interface Props {
-    testimonials: PaginatedTestimonials;
+    testimonials?: PaginatedTestimonials;
 }
 
 const AdminTestimonialsIndex = ({ testimonials }: Props) => {
@@ -82,9 +82,9 @@ const AdminTestimonialsIndex = ({ testimonials }: Props) => {
                 <div className="px-2">
                     <DataTable
                         columns={columns}
-                        data={testimonials.data}
+                        data={testimonials?.data}
                         mode="server"
-                        totalRows={testimonials.meta.total}
+                        totalRows={testimonials?.meta.total}
                         searchPlaceholder="Cari nama, peran, atau highlight..."
                         onStateChange={handleStateChange}
                     />

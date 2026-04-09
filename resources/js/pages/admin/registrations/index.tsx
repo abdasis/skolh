@@ -10,14 +10,14 @@ import RegistrationStatsCards from './components/registration-stats-cards';
 import { type AdmissionPeriod, type Registration, type RegistrationStats } from '@/types';
 
 interface Props {
-    registrations: {
+    registrations?: {
         data: Registration[];
         meta: { total: number; per_page: number; current_page: number };
     };
-    periods: { data: AdmissionPeriod[] };
-    activePeriod: AdmissionPeriod | null;
-    stats: RegistrationStats;
-    statusOptions: { value: string; label: string }[];
+    periods?: { data: AdmissionPeriod[] };
+    activePeriod?: AdmissionPeriod | null;
+    stats?: RegistrationStats;
+    statusOptions?: { value: string; label: string }[];
 }
 
 const AdminRegistrationsIndex = ({ registrations, periods, activePeriod, stats }: Props) => {
@@ -84,7 +84,7 @@ const AdminRegistrationsIndex = ({ registrations, periods, activePeriod, stats }
                                 <SelectValue placeholder="Pilih Periode" />
                             </SelectTrigger>
                             <SelectContent>
-                                {periods.data.map(p => (
+                                {(periods?.data ?? []).map(p => (
                                     <SelectItem key={p.id} value={p.id.toString()}>
                                         {p.academic_year}
                                     </SelectItem>
@@ -104,9 +104,9 @@ const AdminRegistrationsIndex = ({ registrations, periods, activePeriod, stats }
                 <div className="px-2">
                     <DataTable
                         columns={columns}
-                        data={registrations.data}
+                        data={registrations?.data}
                         mode="server"
-                        totalRows={registrations.meta.total}
+                        totalRows={registrations?.meta.total ?? 0}
                         searchPlaceholder="Cari nama, NIK, NISN, atau nomor pendaftaran..."
                         onStateChange={handleStateChange}
                     />

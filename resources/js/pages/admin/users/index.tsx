@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import { Users, UserCheck, UserX, UserPlus, XIcon } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/data-table/data-table';
 import {
@@ -24,8 +25,8 @@ interface Stats {
 }
 
 interface Props {
-    users: User[];
-    stats: Stats;
+    users?: User[];
+    stats?: Stats;
 }
 
 interface StatCard {
@@ -38,7 +39,42 @@ interface StatCard {
     sub: string;
 }
 
-function UserStatsCards({ stats }: { stats: Stats }) {
+const SKELETON_CARDS = [
+    { title: 'Total User' },
+    { title: 'User Aktif' },
+    { title: 'User Nonaktif' },
+    { title: 'Baru Bulan Ini' },
+];
+
+const UserStatsCardsSkeleton = () => (
+    <div className="grid grid-cols-2 gap-2 px-2 lg:grid-cols-4">
+        {SKELETON_CARDS.map((card, index) => (
+            <div
+                key={index}
+                className="overflow-hidden rounded-2xl bg-gradient-to-b from-muted/60 to-muted/30 p-1 ring-1 ring-foreground/8"
+            >
+                <div className="px-4 pt-3 pb-3">
+                    <p className="text-xs font-medium text-muted-foreground">{card.title}</p>
+                </div>
+                <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
+                    <div className="flex items-center gap-3 p-4">
+                        <Skeleton className="size-10 shrink-0 rounded-lg" />
+                        <div className="min-w-0 flex-1 space-y-2">
+                            <Skeleton className="h-7 w-12 rounded-md" />
+                            <Skeleton className="h-3 w-3/4 rounded-md" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        ))}
+    </div>
+);
+
+const UserStatsCards = ({ stats }: { stats?: Stats }) => {
+    if (!stats) {
+        return <UserStatsCardsSkeleton />;
+    }
+
     const cards: StatCard[] = [
         {
             title: 'Total User',
@@ -103,12 +139,12 @@ function UserStatsCards({ stats }: { stats: Stats }) {
             ))}
         </div>
     );
-}
+};
 
-export default function AdminUsersIndex({ users, stats }: Props) {
+const AdminUsersIndex = ({ users, stats }: Props) => {
     const [userToDelete, setUserToDelete] = useState<User | null>(null);
 
-    function handleDeleteConfirm() {
+    const handleDeleteConfirm = () => {
         if (!userToDelete) {
             return;
         }
@@ -140,7 +176,7 @@ export default function AdminUsersIndex({ users, stats }: Props) {
                 <div className="px-2">
                     <DataTable
                         columns={columns}
-                        data={users}
+                        data={users ?? []}
                         title="Daftar Pengguna"
                         description="Semua akun yang terdaftar di sistem"
                     />
@@ -202,6 +238,8 @@ export default function AdminUsersIndex({ users, stats }: Props) {
         </>
     );
 }
+
+export default AdminUsersIndex;
 
 AdminUsersIndex.layout = {
     breadcrumbs: [

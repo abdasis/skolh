@@ -67,10 +67,20 @@ export type DataTableFilter =
 
 export interface DataTableProps<TData> {
     columns: ColumnDef<TData>[];
-    data: TData[];
+    data?: TData[];
     mode?: ProcessingMode;
     totalRows?: number;
     onStateChange?: (state: DataTableState) => void;
+    /**
+     * Initial state yang di-hydrate dari server/URL (page, per_page, sort, search).
+     * Digunakan hanya saat mount pertama — perubahan setelahnya diabaikan.
+     */
+    initialState?: Partial<DataTableState>;
+    /**
+     * Debounce (ms) untuk emit onStateChange saat user mengubah filter/sort/pagination.
+     * Default: 300ms.
+     */
+    debounceMs?: number;
     isLoading?: boolean;
     searchPlaceholder?: string;
     title?: string;

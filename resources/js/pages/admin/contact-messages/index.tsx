@@ -11,7 +11,7 @@ import { type ContactMessageResource, type ContactMessageStats } from '@/types';
 interface Props {
     contactMessages: ContactMessageResource[];
     filters: { search?: string; is_read?: string };
-    stats: ContactMessageStats;
+    stats?: ContactMessageStats;
 }
 
 const AdminContactMessagesIndex = ({

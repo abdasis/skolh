@@ -20,7 +20,7 @@ interface PaginatedStudents {
 }
 
 interface Props {
-    students: PaginatedStudents;
+    students?: PaginatedStudents;
     filters: {
         search: string | null;
         status: string | null;
@@ -126,9 +126,9 @@ const AdminStudentsIndex = ({ students, filters }: Props) => {
                 <div className="px-2">
                     <DataTable
                         columns={columns}
-                        data={students.data}
+                        data={students?.data}
                         mode="server"
-                        totalRows={students.meta.total}
+                        totalRows={students?.meta.total ?? 0}
                         searchPlaceholder="Cari nama, NIS, atau NISN..."
                         filters={tableFilters}
                         filterValues={

@@ -13,14 +13,14 @@ interface StatCard {
 }
 
 interface FacilityStatsCardsProps {
-    stats: FacilityStats;
+    stats?: FacilityStats;
 }
 
 const FacilityStatsCards = ({ stats }: FacilityStatsCardsProps) => {
     const cards: StatCard[] = [
         {
             title: 'Total Fasilitas',
-            value: stats.total,
+            value: stats?.total ?? 0,
             icon: Building2,
             iconColor: 'text-blue-600 dark:text-blue-400',
             bgColor: 'bg-blue-50 dark:bg-blue-950/50',
@@ -29,7 +29,7 @@ const FacilityStatsCards = ({ stats }: FacilityStatsCardsProps) => {
         },
         {
             title: 'Dipublikasikan',
-            value: stats.public,
+            value: stats?.public ?? 0,
             icon: CheckCircle,
             iconColor: 'text-green-600 dark:text-green-400',
             bgColor: 'bg-green-50 dark:bg-green-950/50',
@@ -38,7 +38,7 @@ const FacilityStatsCards = ({ stats }: FacilityStatsCardsProps) => {
         },
         {
             title: 'Draft',
-            value: stats.draft,
+            value: stats?.draft ?? 0,
             icon: FileEdit,
             iconColor: 'text-amber-600 dark:text-amber-400',
             bgColor: 'bg-amber-50 dark:bg-amber-950/50',
@@ -47,7 +47,7 @@ const FacilityStatsCards = ({ stats }: FacilityStatsCardsProps) => {
         },
         {
             title: 'Dengan Gambar',
-            value: stats.with_image,
+            value: stats?.with_image ?? 0,
             icon: ImageIcon,
             iconColor: 'text-purple-600 dark:text-purple-400',
             bgColor: 'bg-purple-50 dark:bg-purple-950/50',

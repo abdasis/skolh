@@ -14,7 +14,7 @@ interface PaginatedAlumni {
 }
 
 interface Props {
-    alumni: PaginatedAlumni;
+    alumni?: PaginatedAlumni;
 }
 
 const AdminAlumniIndex = ({ alumni }: Props) => {
@@ -82,9 +82,9 @@ const AdminAlumniIndex = ({ alumni }: Props) => {
                 <div className="px-2">
                     <DataTable
                         columns={columns}
-                        data={alumni.data}
+                        data={alumni?.data}
                         mode="server"
-                        totalRows={alumni.meta.total}
+                        totalRows={alumni?.meta.total ?? 0}
                         searchPlaceholder="Cari nama, angkatan, atau tujuan..."
                         onStateChange={handleStateChange}
                     />

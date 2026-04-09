@@ -8,19 +8,19 @@ import { ReportDetailModal } from './components/report-detail-modal';
 import { createReportColumns } from './components/report-columns';
 
 interface Props {
-    reports: {
+    reports?: {
         data: Report[];
         meta: { total: number; per_page: number; current_page: number };
     };
-    stats: ReportStats;
-    filters: {
+    stats?: ReportStats;
+    filters?: {
         status?: string;
         category?: string;
         date_from?: string;
         date_to?: string;
         search?: string;
     };
-    statusOptions: { value: string; label: string }[];
+    statusOptions?: { value: string; label: string }[];
 }
 
 const AdminReportsIndex = ({
@@ -53,10 +53,10 @@ const AdminReportsIndex = ({
                 search: state.globalFilter || undefined,
                 per_page: state.pagination.pageSize,
                 page: state.pagination.pageIndex + 1,
-                status: filters.status,
-                category: filters.category,
-                date_from: filters.date_from,
-                date_to: filters.date_to,
+                status: filters?.status,
+                category: filters?.category,
+                date_from: filters?.date_from,
+                date_to: filters?.date_to,
             } as Record<string, string | number | undefined>,
             { preserveState: true, replace: true },
         );
@@ -116,7 +116,7 @@ const AdminReportsIndex = ({
                                         className="flex flex-col gap-1 p-4"
                                     >
                                         <p className="text-2xl leading-tight font-bold">
-                                            {stats.by_category?.[
+                                            {stats?.by_category?.[
                                                 key as keyof typeof stats.by_category
                                             ] ?? 0}
                                         </p>
@@ -133,9 +133,9 @@ const AdminReportsIndex = ({
                 <div className="px-2">
                     <DataTable
                         columns={columns}
-                        data={reports.data}
+                        data={reports?.data}
                         mode="server"
-                        totalRows={reports.meta.total}
+                        totalRows={reports?.meta.total}
                         searchPlaceholder="Cari laporan berdasarkan subjek..."
                         onStateChange={handleStateChange}
                         title="Daftar Laporan"
@@ -146,7 +146,7 @@ const AdminReportsIndex = ({
                                 key: 'status',
                                 label: 'Status',
                                 placeholder: 'Semua Status',
-                                options: statusOptions,
+                                options: statusOptions ?? [],
                             },
                             {
                                 type: 'select',
@@ -169,10 +169,10 @@ const AdminReportsIndex = ({
                             },
                         ]}
                         filterValues={{
-                            status: filters.status,
-                            category: filters.category,
-                            date_from: filters.date_from,
-                            date_to: filters.date_to,
+                            status: filters?.status,
+                            category: filters?.category,
+                            date_from: filters?.date_from,
+                            date_to: filters?.date_to,
                         }}
                         filterUrl={ReportController.index.url()}
                     />
@@ -183,7 +183,7 @@ const AdminReportsIndex = ({
                 report={selectedReport}
                 open={selectedReport !== null}
                 onClose={handleCloseModal}
-                statusOptions={statusOptions}
+                statusOptions={statusOptions ?? []}
             />
         </>
     );

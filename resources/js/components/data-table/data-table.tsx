@@ -37,27 +37,54 @@ export function DataTable<TData>({
     isLoading = false,
     searchPlaceholder = 'Cari...',
     onStateChange,
+    initialState,
+    debounceMs = 300,
     title,
     description,
     filters,
     filterValues,
     filterUrl,
 }: DataTableProps<TData>) {
-    const [globalFilter, setGlobalFilter] = React.useState('');
-    const [sorting, setSorting] = React.useState<SortingState>([]);
-    const [columnFilters, setColumnFilters] =
-        React.useState<ColumnFiltersState>([]);
+    const [globalFilter, setGlobalFilter] = React.useState<string>(
+        () => initialState?.globalFilter ?? '',
+    );
+    const [sorting, setSorting] = React.useState<SortingState>(
+        () => initialState?.sorting ?? [],
+    );
+    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+        () => initialState?.columnFilters ?? [],
+    );
     const [columnVisibility, setColumnVisibility] =
         React.useState<VisibilityState>({});
     const [columnPinning, setColumnPinning] =
         React.useState<ColumnPinningState>({});
-    const [pagination, setPagination] = React.useState<PaginationState>({
-        pageIndex: 0,
-        pageSize: 20,
+    const [pagination, setPagination] = React.useState<PaginationState>(() => {
+        const savedPageSize = parseInt(
+            localStorage.getItem('datatable_page_size') ?? '',
+            10,
+        );
+        const pageSize =
+            initialState?.pagination?.pageSize ??
+            (Number.isFinite(savedPageSize) ? savedPageSize : 10);
+        return { pageIndex: initialState?.pagination?.pageIndex ?? 0, pageSize };
     });
 
+    React.useEffect(() => {
+        localStorage.setItem(
+            'datatable_page_size',
+            String(pagination.pageSize),
+        );
+    }, [pagination.pageSize]);
+
+    // Simpan callback di ref supaya perubahan identitas tidak memicu ulang efek
+    // emisi di bawah — ini menghindari infinite loop saat parent tidak memoize.
+    const onStateChangeRef = React.useRef(onStateChange);
+    React.useEffect(() => {
+        onStateChangeRef.current = onStateChange;
+    }, [onStateChange]);
+
     const table = useReactTable({
-        data,
+        data: data ?? [],
         columns,
         state: {
             globalFilter,
@@ -84,19 +111,64 @@ export function DataTable<TData>({
         manualPagination: mode === 'server',
     });
 
+    // Skip emisi pertama (initial mount) — data untuk initial state sudah
+    // datang dari server lewat initialState. Emit hanya saat user benar-benar
+    // mengubah state (search, sort, paginate).
+    const isFirstEmit = React.useRef(true);
+    const lastSerialized = React.useRef<string>('');
+
     React.useEffect(() => {
-        if (mode === 'server' && onStateChange) {
-            const timeoutId = setTimeout(() => {
-                onStateChange({
-                    globalFilter,
-                    sorting,
-                    columnFilters,
-                    pagination,
-                } satisfies DataTableState);
-            }, 300);
-            return () => clearTimeout(timeoutId);
+        if (mode !== 'server') {
+            return;
         }
-    }, [globalFilter, sorting, columnFilters, pagination, mode, onStateChange]);
+
+        const serialized = JSON.stringify({
+            globalFilter,
+            sorting,
+            columnFilters,
+            pagination,
+        });
+
+        if (isFirstEmit.current) {
+            isFirstEmit.current = false;
+            lastSerialized.current = serialized;
+            return;
+        }
+
+        // Guard terhadap re-render yang tidak mengubah state efektif
+        // (misalnya parent re-render karena alasan lain).
+        if (serialized === lastSerialized.current) {
+            return;
+        }
+        lastSerialized.current = serialized;
+
+        const timeoutId = setTimeout(() => {
+            onStateChangeRef.current?.({
+                globalFilter,
+                sorting,
+                columnFilters,
+                pagination,
+            } satisfies DataTableState);
+        }, debounceMs);
+
+        return () => clearTimeout(timeoutId);
+    }, [globalFilter, sorting, columnFilters, pagination, mode, debounceMs]);
+
+    // Reset ke halaman 0 saat search/filter/sort berubah — standar UX datatable,
+    // supaya user tidak "terdampar" di halaman kosong setelah memfilter.
+    const isFirstResetCheck = React.useRef(true);
+    React.useEffect(() => {
+        if (mode !== 'server') {
+            return;
+        }
+        if (isFirstResetCheck.current) {
+            isFirstResetCheck.current = false;
+            return;
+        }
+        setPagination((prev) =>
+            prev.pageIndex === 0 ? prev : { ...prev, pageIndex: 0 },
+        );
+    }, [globalFilter, sorting, columnFilters, mode]);
 
     const headerGroups = table.getHeaderGroups();
     const rows = table.getRowModel().rows;
@@ -192,12 +264,12 @@ export function DataTable<TData>({
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {isLoading ? (
-                            Array.from({ length: 5 }).map((_, i) => (
+                        {isLoading || data === undefined ? (
+                            Array.from({ length: pagination.pageSize }).map((_, i) => (
                                 <TableRow key={i}>
                                     {columns.map((_, j) => (
                                         <TableCell key={j}>
-                                            <Skeleton className="h-4 w-full" />
+                                            <Skeleton className="h-4 w-full rounded-md" />
                                         </TableCell>
                                     ))}
                                 </TableRow>

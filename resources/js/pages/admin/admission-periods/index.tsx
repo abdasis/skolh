@@ -27,8 +27,8 @@ interface PaginatedPeriods {
 }
 
 interface Props {
-    periods: PaginatedPeriods;
-    activePeriod: AdmissionPeriod | null;
+    periods?: PaginatedPeriods;
+    activePeriod?: AdmissionPeriod | null;
 }
 
 type FormData = {
@@ -135,9 +135,9 @@ const AdminAdmissionPeriodsIndex = ({ periods, activePeriod }: Props) => {
                 <div className="px-2">
                     <DataTable
                         columns={columns}
-                        data={periods.data}
+                        data={periods?.data}
                         mode="server"
-                        totalRows={periods.meta.total}
+                        totalRows={periods?.meta.total ?? 0}
                         searchPlaceholder="Cari tahun ajaran atau keterangan..."
                         onStateChange={handleStateChange}
                     />

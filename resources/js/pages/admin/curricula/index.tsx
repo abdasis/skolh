@@ -10,8 +10,8 @@ import { CurriculumStatsCards } from './components/curriculum-stats-cards';
 import { type CurriculumResource, type CurriculumStats } from '@/types';
 
 interface Props {
-    curricula: CurriculumResource[];
-    stats: CurriculumStats;
+    curricula?: CurriculumResource[];
+    stats?: CurriculumStats;
     filters: { search?: string; status?: string };
 }
 
@@ -80,7 +80,7 @@ const AdminCurriculaIndex = ({ curricula, stats, filters }: Props) => {
                 <div className="px-2">
                     <DataTable
                         columns={columns}
-                        data={curricula}
+                        data={curricula ?? []}
                         searchPlaceholder="Cari kurikulum..."
                         filters={tableFilters}
                         filterValues={

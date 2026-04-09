@@ -20,10 +20,10 @@ interface Filters {
 }
 
 interface Props {
-    albums: GalleryAlbumResource[];
-    stats: GalleryAlbumStats;
+    albums?: GalleryAlbumResource[];
+    stats?: GalleryAlbumStats;
     filters: Filters;
-    statuses: EnumOption[];
+    statuses?: EnumOption[];
 }
 
 const AdminGalleryAlbumsIndex = ({
@@ -67,7 +67,7 @@ const AdminGalleryAlbumsIndex = ({
             type: 'select',
             key: 'status',
             label: 'Status',
-            options: statuses,
+            options: statuses ?? [],
         },
     ];
 

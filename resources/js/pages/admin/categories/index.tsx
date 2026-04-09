@@ -10,8 +10,8 @@ import { CategoryFormDialog } from './components/category-form-dialog';
 import { type CategoryResource, type CategoryStats } from '@/types';
 
 interface Props {
-    categories: CategoryResource[];
-    stats: CategoryStats;
+    categories?: CategoryResource[];
+    stats?: CategoryStats;
 }
 
 const AdminCategoriesIndex = ({ categories, stats }: Props) => {

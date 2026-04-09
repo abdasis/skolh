@@ -2,14 +2,14 @@ import { Globe, MapPin, Map, Trophy } from 'lucide-react';
 import { type AchievementStats } from '@/types';
 
 interface Props {
-    stats: AchievementStats;
+    stats?: AchievementStats;
 }
 
 const AchievementStatsCards = ({ stats }: Props) => {
     const cards = [
         {
             title: 'Total Prestasi',
-            value: stats.total,
+            value: stats?.total ?? 0,
             icon: Trophy,
             iconColor: 'text-blue-600 dark:text-blue-400',
             bgColor: 'bg-blue-50 dark:bg-blue-950/50',
@@ -18,7 +18,7 @@ const AchievementStatsCards = ({ stats }: Props) => {
         },
         {
             title: 'Internasional',
-            value: stats.by_level.international,
+            value: stats?.by_level?.international ?? 0,
             icon: Globe,
             iconColor: 'text-yellow-600 dark:text-yellow-400',
             bgColor: 'bg-yellow-50 dark:bg-yellow-950/50',
@@ -27,7 +27,7 @@ const AchievementStatsCards = ({ stats }: Props) => {
         },
         {
             title: 'Nasional',
-            value: stats.by_level.national,
+            value: stats?.by_level?.national ?? 0,
             icon: Map,
             iconColor: 'text-green-600 dark:text-green-400',
             bgColor: 'bg-green-50 dark:bg-green-950/50',
@@ -36,7 +36,7 @@ const AchievementStatsCards = ({ stats }: Props) => {
         },
         {
             title: 'Provinsi & Kab.',
-            value: stats.by_level.province + stats.by_level.district,
+            value: (stats?.by_level?.province ?? 0) + (stats?.by_level?.district ?? 0),
             icon: MapPin,
             iconColor: 'text-purple-600 dark:text-purple-400',
             bgColor: 'bg-purple-50 dark:bg-purple-950/50',

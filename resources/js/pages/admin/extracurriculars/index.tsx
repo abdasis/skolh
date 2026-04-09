@@ -25,7 +25,7 @@ interface Filters {
 
 interface Props {
     extracurriculars: ExtracurricularResource[];
-    stats: ExtracurricularStats;
+    stats?: ExtracurricularStats;
     filters: Filters;
     categories: EnumOption[];
     statuses: EnumOption[];

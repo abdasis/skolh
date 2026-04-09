@@ -72,7 +72,7 @@ const DataTableToolbarFilter = ({
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem value="all">Semua {filter.label}</SelectItem>
-                    {filter.options.map((opt) => (
+                    {(filter.options ?? []).map((opt) => (
                         <SelectItem key={opt.value} value={opt.value}>
                             {opt.label}
                         </SelectItem>

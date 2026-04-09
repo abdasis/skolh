@@ -1,11 +1,39 @@
 import { Activity, UserMinus, Users } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
 import { type TeacherStats } from '@/types';
 
+const SKELETON_LABELS = ['Total Guru', 'Aktif', 'Nonaktif'];
+
+const TeacherStatsCardsSkeleton = () => (
+    <div className="grid grid-cols-2 gap-2 px-2 lg:grid-cols-3">
+        {SKELETON_LABELS.map((label, index) => (
+            <div key={index} className="overflow-hidden rounded-2xl bg-gradient-to-b from-muted/60 to-muted/30 p-1 ring-1 ring-foreground/8">
+                <div className="px-4 pt-3 pb-3">
+                    <p className="text-xs font-medium text-muted-foreground">{label}</p>
+                </div>
+                <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
+                    <div className="flex items-center gap-3 p-4">
+                        <Skeleton className="size-10 shrink-0 rounded-lg" />
+                        <div className="min-w-0 flex-1 space-y-2">
+                            <Skeleton className="h-7 w-12 rounded-md" />
+                            <Skeleton className="h-3 w-3/4 rounded-md" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        ))}
+    </div>
+);
+
 interface Props {
-    stats: TeacherStats;
+    stats?: TeacherStats;
 }
 
 const TeacherStatsCards = ({ stats }: Props) => {
+    if (!stats) {
+        return <TeacherStatsCardsSkeleton />;
+    }
+
     const cards = [
         {
             title: 'Total Guru',

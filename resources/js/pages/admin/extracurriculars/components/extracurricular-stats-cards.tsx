@@ -1,11 +1,49 @@
 import { Activity, BookOpen, FileText, Users } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
 import { type ExtracurricularStats } from '@/types';
 
 interface Props {
-    stats: ExtracurricularStats;
+    stats?: ExtracurricularStats;
 }
 
+const SKELETON_CARDS = [
+    { title: 'Total Ekskul' },
+    { title: 'Aktif' },
+    { title: 'Draft' },
+    { title: 'Olahraga' },
+];
+
+const ExtracurricularStatsCardsSkeleton = () => (
+    <div className="grid grid-cols-2 gap-2 px-2 lg:grid-cols-4">
+        {SKELETON_CARDS.map((card, index) => (
+            <div
+                key={index}
+                className="overflow-hidden rounded-2xl bg-gradient-to-b from-muted/60 to-muted/30 p-1 ring-1 ring-foreground/8"
+            >
+                <div className="px-4 pt-3 pb-3">
+                    <p className="text-xs font-medium text-muted-foreground">
+                        {card.title}
+                    </p>
+                </div>
+                <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
+                    <div className="flex items-center gap-3 p-4">
+                        <Skeleton className="size-10 shrink-0 rounded-lg" />
+                        <div className="min-w-0 flex-1 space-y-2">
+                            <Skeleton className="h-7 w-12 rounded-md" />
+                            <Skeleton className="h-3 w-3/4 rounded-md" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        ))}
+    </div>
+);
+
 const ExtracurricularStatsCards = ({ stats }: Props) => {
+    if (!stats) {
+        return <ExtracurricularStatsCardsSkeleton />;
+    }
+
     const cards = [
         {
             title: 'Total Ekskul',

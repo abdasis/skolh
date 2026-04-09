@@ -20,11 +20,11 @@ interface PaginatedTeachers {
 }
 
 interface Props {
-    teachers: PaginatedTeachers;
-    stats: TeacherStats;
-    filters: { search?: string; status?: string; gender?: string };
-    statusOptions: EnumOption[];
-    genderOptions: EnumOption[];
+    teachers?: PaginatedTeachers;
+    stats?: TeacherStats;
+    filters?: { search?: string; status?: string; gender?: string };
+    statusOptions?: EnumOption[];
+    genderOptions?: EnumOption[];
 }
 
 const AdminTeachersIndex = ({
@@ -88,13 +88,13 @@ const AdminTeachersIndex = ({
             type: 'select',
             key: 'status',
             label: 'Status',
-            options: statusOptions,
+            options: statusOptions ?? [],
         },
         {
             type: 'select',
             key: 'gender',
             label: 'Jenis Kelamin',
-            options: genderOptions,
+            options: genderOptions ?? [],
         },
     ];
 
@@ -124,13 +124,13 @@ const AdminTeachersIndex = ({
                 <div className="px-2">
                     <DataTable
                         columns={columns}
-                        data={teachers.data}
+                        data={teachers?.data}
                         mode="server"
-                        totalRows={teachers.meta.total}
+                        totalRows={teachers?.meta.total ?? 0}
                         searchPlaceholder="Cari nama atau email..."
                         filters={tableFilters}
                         filterValues={
-                            filters as Record<string, string | undefined>
+                            (filters ?? {}) as Record<string, string | undefined>
                         }
                         filterUrl={TeacherController.index.url()}
                         onStateChange={handleStateChange}

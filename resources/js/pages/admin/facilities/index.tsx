@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { ConfirmationDelete } from '@/components/confirmation-delete';
@@ -9,14 +9,14 @@ import { FacilityStatsCards } from './components/facility-stats-cards';
 import { type FacilityResource, type FacilityStats } from '@/types';
 
 interface Props {
-    facilities: FacilityResource[];
-    stats: FacilityStats;
+    facilities?: FacilityResource[];
+    stats?: FacilityStats;
 }
 
-export default function AdminFacilitiesIndex({ facilities, stats }: Props) {
+const AdminFacilitiesIndex = ({ facilities, stats }: Props) => {
     const [facilityToDelete, setFacilityToDelete] = useState<FacilityResource | null>(null);
 
-    function handleDeleteConfirm() {
+    const handleDeleteConfirm = useCallback(() => {
         if (!facilityToDelete) {
             return;
         }
@@ -24,13 +24,16 @@ export default function AdminFacilitiesIndex({ facilities, stats }: Props) {
             preserveScroll: true,
             onFinish: () => setFacilityToDelete(null),
         });
-    }
+    }, [facilityToDelete]);
 
-    function handleEdit(facility: FacilityResource) {
+    const handleEdit = useCallback((facility: FacilityResource) => {
         router.visit(FacilityController.edit.url({ facility: facility.id }));
-    }
+    }, []);
 
-    const columns = createFacilityColumns(setFacilityToDelete, handleEdit);
+    const columns = useMemo(
+        () => createFacilityColumns(setFacilityToDelete, handleEdit),
+        [handleEdit],
+    );
 
     return (
         <>
@@ -52,7 +55,7 @@ export default function AdminFacilitiesIndex({ facilities, stats }: Props) {
                 <div className="px-2">
                     <DataTable
                         columns={columns}
-                        data={facilities}
+                        data={facilities ?? []}
                         searchPlaceholder="Cari fasilitas..."
                     />
                 </div>
@@ -60,14 +63,18 @@ export default function AdminFacilitiesIndex({ facilities, stats }: Props) {
 
             <ConfirmationDelete
                 open={facilityToDelete !== null}
-                onOpenChange={(open) => { if (!open) setFacilityToDelete(null); }}
+                onOpenChange={(open) => {
+                    if (!open) {
+                        setFacilityToDelete(null);
+                    }
+                }}
                 onConfirm={handleDeleteConfirm}
                 title="Hapus Fasilitas"
                 itemName={facilityToDelete?.title}
             />
         </>
     );
-}
+};
 
 AdminFacilitiesIndex.layout = {
     breadcrumbs: [
@@ -75,3 +82,5 @@ AdminFacilitiesIndex.layout = {
         { title: 'Fasilitas', href: FacilityController.index.url() },
     ],
 };
+
+export default AdminFacilitiesIndex;

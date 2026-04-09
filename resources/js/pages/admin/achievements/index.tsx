@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Head, Link, router, setLayoutProps } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { ConfirmationDelete } from '@/components/confirmation-delete';
@@ -30,11 +30,11 @@ interface PaginatedAchievements {
 }
 
 interface Props {
-    achievements: PaginatedAchievements;
-    stats: AchievementStats;
-    filters: Filters;
-    categories: EnumOption[];
-    levels: EnumOption[];
+    achievements?: PaginatedAchievements;
+    stats?: AchievementStats;
+    filters?: Filters;
+    categories?: EnumOption[];
+    levels?: EnumOption[];
 }
 
 const AdminAchievementsIndex = ({
@@ -53,7 +53,7 @@ const AdminAchievementsIndex = ({
 
     const [toDelete, setToDelete] = useState<AchievementResource | null>(null);
 
-    const handleDeleteConfirm = () => {
+    const handleDeleteConfirm = useCallback(() => {
         if (!toDelete) {
             return;
         }
@@ -64,35 +64,38 @@ const AdminAchievementsIndex = ({
                 onFinish: () => setToDelete(null),
             },
         );
-    };
+    }, [toDelete]);
 
-    const handleEdit = (achievement: AchievementResource) => {
+    const handleEdit = useCallback((achievement: AchievementResource) => {
         router.visit(
             AchievementController.edit.url({ achievement: achievement.id }),
         );
-    };
+    }, []);
 
-    const columns = createAchievementColumns(setToDelete, handleEdit);
+    const columns = useMemo(
+        () => createAchievementColumns(setToDelete, handleEdit),
+        [handleEdit],
+    );
 
-    const tableFilters: DataTableFilter[] = [
+    const tableFilters: DataTableFilter[] = useMemo(() => [
         {
             type: 'select',
             key: 'category',
             label: 'Kategori',
-            options: categories,
+            options: categories ?? [],
         },
         {
             type: 'select',
             key: 'level',
             label: 'Tingkat',
-            options: levels,
+            options: levels ?? [],
         },
         {
             type: 'year-range',
             key: 'year',
             label: 'Tahun',
         },
-    ];
+    ], [categories, levels]);
 
     return (
         <>
@@ -120,11 +123,11 @@ const AdminAchievementsIndex = ({
                 <div className="px-2">
                     <DataTable
                         columns={columns}
-                        data={achievements.data}
+                        data={achievements?.data ?? []}
                         searchPlaceholder="Cari prestasi..."
                         filters={tableFilters}
                         filterValues={
-                            filters as Record<string, string | undefined>
+                            (filters ?? {}) as Record<string, string | undefined>
                         }
                         filterUrl={AchievementController.index.url()}
                     />
