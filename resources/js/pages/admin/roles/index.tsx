@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Head, router, setLayoutProps } from '@inertiajs/react';
 import { ShieldCheck, ShieldOff, Lock, Plus, XIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { DataTable } from '@/components/data-table/data-table';
 import {
     Dialog,
@@ -22,8 +23,8 @@ interface Stats {
 }
 
 interface Props {
-    roles: Role[];
-    stats: Stats;
+    roles?: Role[];
+    stats?: Stats;
 }
 
 const AdminRolesIndex = ({ roles, stats }: Props) => {
@@ -70,57 +71,80 @@ const AdminRolesIndex = ({ roles, stats }: Props) => {
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 px-2">
-                    <div className="overflow-hidden rounded-2xl bg-gradient-to-b from-muted/60 to-muted/30 p-1 ring-1 ring-foreground/8">
-                        <div className="px-4 pt-3 pb-3">
-                            <p className="text-xs font-medium text-muted-foreground">
-                                Total Role
-                            </p>
-                        </div>
-                        <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
-                            <div className="flex items-center gap-3 p-4">
-                                <div className="shrink-0 rounded-lg bg-blue-50 p-2.5 dark:bg-blue-950/50">
-                                    <ShieldCheck className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                    {stats ? (
+                        <>
+                            <div className="overflow-hidden rounded-2xl bg-gradient-to-b from-muted/60 to-muted/30 p-1 ring-1 ring-foreground/8">
+                                <div className="px-4 pt-3 pb-3">
+                                    <p className="text-xs font-medium text-muted-foreground">
+                                        Total Role
+                                    </p>
                                 </div>
-                                <div className="min-w-0 flex-1">
-                                    <p className="text-2xl leading-tight font-bold">
-                                        {stats.total_roles}
-                                    </p>
-                                    <p className="truncate text-xs text-muted-foreground">
-                                        Role terdaftar
-                                    </p>
+                                <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
+                                    <div className="flex items-center gap-3 p-4">
+                                        <div className="shrink-0 rounded-lg bg-blue-50 p-2.5 dark:bg-blue-950/50">
+                                            <ShieldCheck className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                        </div>
+                                        <div className="min-w-0 flex-1">
+                                            <p className="text-2xl leading-tight font-bold">
+                                                {stats.total_roles}
+                                            </p>
+                                            <p className="truncate text-xs text-muted-foreground">
+                                                Role terdaftar
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <div className="overflow-hidden rounded-2xl bg-gradient-to-b from-muted/60 to-muted/30 p-1 ring-1 ring-foreground/8">
-                        <div className="px-4 pt-3 pb-3">
-                            <p className="text-xs font-medium text-muted-foreground">
-                                Total Permission
-                            </p>
-                        </div>
-                        <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
-                            <div className="flex items-center gap-3 p-4">
-                                <div className="shrink-0 rounded-lg bg-purple-50 p-2.5 dark:bg-purple-950/50">
-                                    <Lock className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                            <div className="overflow-hidden rounded-2xl bg-gradient-to-b from-muted/60 to-muted/30 p-1 ring-1 ring-foreground/8">
+                                <div className="px-4 pt-3 pb-3">
+                                    <p className="text-xs font-medium text-muted-foreground">
+                                        Total Permission
+                                    </p>
                                 </div>
-                                <div className="min-w-0 flex-1">
-                                    <p className="text-2xl leading-tight font-bold">
-                                        {stats.total_permissions}
-                                    </p>
-                                    <p className="truncate text-xs text-muted-foreground">
-                                        Permission aktif
-                                    </p>
+                                <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
+                                    <div className="flex items-center gap-3 p-4">
+                                        <div className="shrink-0 rounded-lg bg-purple-50 p-2.5 dark:bg-purple-950/50">
+                                            <Lock className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                                        </div>
+                                        <div className="min-w-0 flex-1">
+                                            <p className="text-2xl leading-tight font-bold">
+                                                {stats.total_permissions}
+                                            </p>
+                                            <p className="truncate text-xs text-muted-foreground">
+                                                Permission aktif
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </>
+                    ) : (
+                        <>
+                            {['Total Role', 'Total Permission'].map((label) => (
+                                <div key={label} className="overflow-hidden rounded-2xl bg-gradient-to-b from-muted/60 to-muted/30 p-1 ring-1 ring-foreground/8">
+                                    <div className="px-4 pt-3 pb-3">
+                                        <p className="text-xs font-medium text-muted-foreground">{label}</p>
+                                    </div>
+                                    <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
+                                        <div className="flex items-center gap-3 p-4">
+                                            <Skeleton className="size-10 shrink-0 rounded-lg" />
+                                            <div className="min-w-0 flex-1 space-y-2">
+                                                <Skeleton className="h-7 w-12 rounded-md" />
+                                                <Skeleton className="h-3 w-3/4 rounded-md" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </>
+                    )}
                 </div>
 
                 <div className="px-2">
                     <DataTable
                         columns={columns}
-                        data={roles}
+                        data={roles ?? []}
                         searchPlaceholder="Cari nama role..."
                     />
                 </div>

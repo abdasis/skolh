@@ -3,6 +3,7 @@ import { Head } from '@inertiajs/react';
 import { Lock, ShieldCheck } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface PermissionWithRoles {
     id: number;
@@ -20,8 +21,8 @@ interface Stats {
 }
 
 interface Props {
-    grouped_permissions: GroupedPermissions;
-    stats: Stats;
+    grouped_permissions?: GroupedPermissions;
+    stats?: Stats;
 }
 
 interface StatCard {
@@ -38,7 +39,7 @@ const AdminPermissionsIndex = ({ grouped_permissions, stats }: Props) => {
     const [search, setSearch] = useState('');
 
     const filtered = Object.entries(
-        grouped_permissions,
+        grouped_permissions ?? {},
     ).reduce<GroupedPermissions>((acc, [module, permissions]) => {
         const matched = permissions.filter(
             (p) =>
@@ -51,26 +52,28 @@ const AdminPermissionsIndex = ({ grouped_permissions, stats }: Props) => {
         return acc;
     }, {});
 
-    const cards: StatCard[] = [
-        {
-            title: 'Total Permission',
-            value: stats.total_permissions,
-            icon: Lock,
-            iconColor: 'text-purple-600 dark:text-purple-400',
-            bgColor: 'bg-purple-50 dark:bg-purple-950/50',
-            valueColor: '',
-            sub: 'Semua permission terdaftar',
-        },
-        {
-            title: 'Total Role',
-            value: stats.total_roles,
-            icon: ShieldCheck,
-            iconColor: 'text-blue-600 dark:text-blue-400',
-            bgColor: 'bg-blue-50 dark:bg-blue-950/50',
-            valueColor: '',
-            sub: 'Semua role terdaftar',
-        },
-    ];
+    const cards: StatCard[] = stats
+        ? [
+              {
+                  title: 'Total Permission',
+                  value: stats.total_permissions,
+                  icon: Lock,
+                  iconColor: 'text-purple-600 dark:text-purple-400',
+                  bgColor: 'bg-purple-50 dark:bg-purple-950/50',
+                  valueColor: '',
+                  sub: 'Semua permission terdaftar',
+              },
+              {
+                  title: 'Total Role',
+                  value: stats.total_roles,
+                  icon: ShieldCheck,
+                  iconColor: 'text-blue-600 dark:text-blue-400',
+                  bgColor: 'bg-blue-50 dark:bg-blue-950/50',
+                  valueColor: '',
+                  sub: 'Semua role terdaftar',
+              },
+          ]
+        : [];
 
     return (
         <>
@@ -87,39 +90,58 @@ const AdminPermissionsIndex = ({ grouped_permissions, stats }: Props) => {
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 px-2">
-                    {cards.map((card, index) => (
-                        <div
-                            key={index}
-                            className="overflow-hidden rounded-2xl bg-gradient-to-b from-muted/60 to-muted/30 p-1 ring-1 ring-foreground/8"
-                        >
-                            <div className="px-4 pt-3 pb-3">
-                                <p className="text-xs font-medium text-muted-foreground">
-                                    {card.title}
-                                </p>
-                            </div>
-                            <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
-                                <div className="flex items-center gap-3 p-4">
-                                    <div
-                                        className={`shrink-0 rounded-lg p-2.5 ${card.bgColor}`}
-                                    >
-                                        <card.icon
-                                            className={`h-5 w-5 ${card.iconColor}`}
-                                        />
-                                    </div>
-                                    <div className="min-w-0 flex-1">
-                                        <p
-                                            className={`text-2xl leading-tight font-bold ${card.valueColor}`}
+                    {stats ? (
+                        cards.map((card, index) => (
+                            <div
+                                key={index}
+                                className="overflow-hidden rounded-2xl bg-gradient-to-b from-muted/60 to-muted/30 p-1 ring-1 ring-foreground/8"
+                            >
+                                <div className="px-4 pt-3 pb-3">
+                                    <p className="text-xs font-medium text-muted-foreground">
+                                        {card.title}
+                                    </p>
+                                </div>
+                                <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
+                                    <div className="flex items-center gap-3 p-4">
+                                        <div
+                                            className={`shrink-0 rounded-lg p-2.5 ${card.bgColor}`}
                                         >
-                                            {card.value}
-                                        </p>
-                                        <p className="truncate text-xs text-muted-foreground">
-                                            {card.sub}
-                                        </p>
+                                            <card.icon
+                                                className={`h-5 w-5 ${card.iconColor}`}
+                                            />
+                                        </div>
+                                        <div className="min-w-0 flex-1">
+                                            <p
+                                                className={`text-2xl leading-tight font-bold ${card.valueColor}`}
+                                            >
+                                                {card.value}
+                                            </p>
+                                            <p className="truncate text-xs text-muted-foreground">
+                                                {card.sub}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                    ) : (
+                        ['Total Permission', 'Total Role'].map((label) => (
+                            <div key={label} className="overflow-hidden rounded-2xl bg-gradient-to-b from-muted/60 to-muted/30 p-1 ring-1 ring-foreground/8">
+                                <div className="px-4 pt-3 pb-3">
+                                    <p className="text-xs font-medium text-muted-foreground">{label}</p>
+                                </div>
+                                <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
+                                    <div className="flex items-center gap-3 p-4">
+                                        <Skeleton className="size-10 shrink-0 rounded-lg" />
+                                        <div className="min-w-0 flex-1 space-y-2">
+                                            <Skeleton className="h-7 w-12 rounded-md" />
+                                            <Skeleton className="h-3 w-3/4 rounded-md" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    )}
                 </div>
 
                 <div className="px-2">
