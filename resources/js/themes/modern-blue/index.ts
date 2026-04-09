@@ -11,6 +11,8 @@ export const pages: Record<string, () => Promise<unknown>> = {
     'extracurriculars/index': () => import('./pages/extracurriculars/index'),
     'extracurriculars/show': () => import('./pages/extracurriculars/show'),
     'facilities/show': () => import('./pages/facilities/show'),
+    'majors/index': () => import('./pages/majors/index'),
+    'majors/show': () => import('./pages/majors/show'),
     'curricula/show': () => import('./pages/curricula/show'),
     'gallery/index': () => import('./pages/gallery/index'),
     'gallery/show': () => import('./pages/gallery/show'),

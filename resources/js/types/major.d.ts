@@ -1,5 +1,13 @@
 export type MajorStatus = 'public' | 'draft';
 
+export interface MajorCardResource {
+    id: number;
+    title: string;
+    slug: string;
+    description: string;
+    featured_image_url: string | null;
+}
+
 export interface MajorResource {
     id: number;
     title: string;

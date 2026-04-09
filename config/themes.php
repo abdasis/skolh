@@ -20,6 +20,8 @@ return [
         'extracurriculars/index',
         'extracurriculars/show',
         'facilities/show',
+        'majors/index',
+        'majors/show',
         'curricula/show',
         'gallery/index',
         'gallery/show',
