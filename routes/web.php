@@ -31,6 +31,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ContactMessageController as AdminContactMessageController;
 use App\Http\Controllers\Admin\CurriculumController as AdminCurriculumController;
 use App\Http\Controllers\Admin\FacilityController as AdminFacilityController;
+use App\Http\Controllers\Admin\MajorController as AdminMajorController;
 use App\Http\Controllers\Admin\PermissionController as AdminPermissionController;
 use App\Http\Controllers\Admin\RoleController as AdminRoleController;
 use App\Http\Controllers\Admin\UserController;
@@ -98,6 +99,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('permissions', [AdminPermissionController::class, 'index'])->name('permissions.index')->middleware(['permission:view roles']);
     Route::resource('agendas', AgendaController::class);
     Route::resource('facilities', AdminFacilityController::class);
+    Route::resource('majors', AdminMajorController::class)->except(['show']);
     Route::resource('curricula', AdminCurriculumController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('announcements', AdminAnnouncementController::class);

@@ -52,6 +52,7 @@ import { index as galleryAlbumsIndex } from '@/actions/App/Http/Controllers/Admi
 import { index as themesIndex } from '@/actions/App/Http/Controllers/Admin/ThemeController';
 import { index as organizationNodesIndex } from '@/actions/App/Http/Controllers/Admin/OrganizationNodeController';
 import { index as facilitiesIndex } from '@/actions/App/Http/Controllers/Admin/FacilityController';
+import { index as majorsIndex } from '@/actions/App/Http/Controllers/Admin/MajorController';
 import { index as announcementsIndex } from '@/actions/App/Http/Controllers/Admin/AnnouncementController';
 import { index as articlesIndex } from '@/actions/App/Http/Controllers/Admin/ArticleController';
 import { index as categoriesIndex } from '@/actions/App/Http/Controllers/Admin/CategoryController';
@@ -130,6 +131,12 @@ export function AppSidebar() {
                     href: facilitiesIndex.url(),
                     icon: MapPin,
                     component: 'admin/facilities/index',
+                },
+                {
+                    title: 'Jurusan',
+                    href: majorsIndex.url(),
+                    icon: BookOpen,
+                    component: 'admin/majors/index',
                 },
                 {
                     title: 'Prestasi',
