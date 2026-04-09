@@ -1,0 +1,1876 @@
+import {
+    index as facilityIndex,
+    show as facilityShow,
+} from '@/actions/App/Http/Controllers/FacilityController';
+import {
+    index as articleIndex,
+    show as articleShow,
+} from '@/actions/App/Http/Controllers/ArticleController';
+import {
+    index as curriculumIndex,
+    show as curriculumShow,
+} from '@/actions/App/Http/Controllers/CurriculumController';
+import { store as contactMessageStore } from '@/actions/App/Http/Controllers/ContactMessageController';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import * as Icons from 'lucide-react';
+import {
+    BookOpenIcon,
+    BuildingIcon,
+    CalendarIcon,
+    GraduationCapIcon,
+    InfoIcon,
+    MailIcon,
+    MessageSquareQuoteIcon,
+    NewspaperIcon,
+} from 'lucide-react';
+import {
+    type Alumni,
+    type CurriculumCardResource,
+    type SiteConfig,
+    type Testimonial,
+} from '@/types';
+
+const COLOR_PRESETS = [
+    { blob: 'bg-yellow-300', ring: 'border-yellow-400', dot: 'bg-yellow-400' },
+    {
+        blob: 'bg-[#66ABFF]',
+        ring: 'border-[#3B8BFF]',
+        dot: 'bg-[#3B8BFF]',
+    },
+    { blob: 'bg-[#FFF566]', ring: 'border-[#FFF100]', dot: 'bg-[#FFF100]' },
+    { blob: 'bg-[#66ABFF]', ring: 'border-[#3B8BFF]', dot: 'bg-[#3B8BFF]' },
+];
+
+interface AgendaPreview {
+    id: number;
+    date: string;
+    title: string;
+    description: string | null;
+}
+
+interface FacilityCard {
+    id: number;
+    icon: string;
+    title: string;
+    slug: string;
+    description: string;
+}
+
+interface ArticlePreview {
+    id: number;
+    title: string;
+    slug: string;
+    excerpt: string | null;
+    featured_image: string | null;
+    published_at: string | null;
+    author: { id: number; name: string };
+    categories: { id: number; name: string; slug: string }[];
+}
+
+const getInitials = (name: string): string => {
+    const parts = name.trim().split(/\s+/);
+    const first = parts[0]?.[0] ?? '';
+    const last = parts.length > 1 ? (parts[parts.length - 1]?.[0] ?? '') : '';
+    return (first + last).toUpperCase();
+};
+
+const Welcome = ({
+    canRegister = true,
+    agendas = [],
+    facilities = [],
+    facilitiesTotal = 0,
+    articles = [],
+    articlesTotal = 0,
+    curricula = [],
+    testimonials = [],
+    alumni = [],
+}: {
+    canRegister?: boolean;
+    agendas?: AgendaPreview[];
+    facilities?: FacilityCard[];
+    facilitiesTotal?: number;
+    articles?: ArticlePreview[];
+    articlesTotal?: number;
+    curricula?: CurriculumCardResource[];
+    testimonials?: Testimonial[];
+    alumni?: Alumni[];
+}) => {
+    const { flash, siteConfig } = usePage<{
+        flash: { success: string | null; error: string | null };
+        siteConfig: SiteConfig | null;
+    }>().props;
+
+    const { data, setData, post, processing, errors, reset, wasSuccessful } =
+        useForm({
+            name: '',
+            email: '',
+            subject: '',
+            message: '',
+        });
+
+    const handleContactSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        post(contactMessageStore.url(), {
+            preserveScroll: true,
+            onSuccess: () => reset(),
+        });
+    };
+
+    return (
+        <>
+            <Head
+                title={
+                    siteConfig?.pageMeta?.title ??
+                    siteConfig?.identity?.name ??
+                    ''
+                }
+            >
+                <meta
+                    name="description"
+                    content={
+                        siteConfig?.pageMeta?.description ??
+                        siteConfig?.identity?.tagline ??
+                        undefined
+                    }
+                />
+                <meta
+                    property="og:title"
+                    content={
+                        siteConfig?.pageMeta?.title ??
+                        siteConfig?.identity?.name ??
+                        undefined
+                    }
+                />
+                <meta
+                    property="og:description"
+                    content={
+                        siteConfig?.pageMeta?.description ??
+                        siteConfig?.identity?.tagline ??
+                        undefined
+                    }
+                />
+                <meta property="og:type" content="website" />
+                <link
+                    rel="canonical"
+                    href={
+                        typeof window !== 'undefined'
+                            ? window.location.origin
+                            : ''
+                    }
+                />
+            </Head>
+            {/* Hero Section */}
+            {siteConfig?.sections?.hero?.enabled !== false && (
+                <section
+                    id="beranda"
+                    className="relative mt-[calc(1.75rem+3.75rem)] min-h-[560px] overflow-hidden sm:min-h-[600px] lg:min-h-[640px]"
+                >
+                    {/* Background image */}
+                    <div
+                        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                        style={{
+                            backgroundImage: siteConfig?.hero?.bg_image_url
+                                ? `url('${siteConfig.hero.bg_image_url}')`
+                                : "url('/images/hero.jpg')",
+                        }}
+                    />
+
+                    {/* Left gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#001F4D]/90 via-[#001F4D]/70 to-transparent" />
+                    {/* Extra dark overlay on very left for text legibility */}
+                    <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-[#001F4D]/60 to-transparent" />
+
+                    {/* Content */}
+                    <div className="relative flex h-full min-h-[560px] items-center sm:min-h-[600px] lg:min-h-[640px]">
+                        <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-8 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:px-12">
+                            {/* Left: text */}
+                            <div>
+                                {siteConfig?.hero?.subtitle && (
+                                    <p className="text-base font-medium text-white/80 sm:text-lg">
+                                        {siteConfig.hero.subtitle}
+                                    </p>
+                                )}
+
+                                <h1 className="mt-3 text-4xl leading-tight font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
+                                    {siteConfig?.hero?.title}{' '}
+                                    {siteConfig?.hero?.title_accent && (
+                                        <span className="text-[#FFF100]">
+                                            {siteConfig.hero.title_accent}
+                                        </span>
+                                    )}
+                                </h1>
+
+                                {siteConfig?.hero?.description && (
+                                    <p className="mt-5 max-w-md text-sm leading-relaxed text-white/75 sm:text-base">
+                                        {siteConfig.hero.description}
+                                    </p>
+                                )}
+
+                                <div className="mt-8 flex flex-wrap gap-3">
+                                    {siteConfig?.hero?.cta_buttons &&
+                                    siteConfig.hero.cta_buttons.length > 0
+                                        ? siteConfig.hero.cta_buttons.map(
+                                              (btn) => (
+                                                  <a
+                                                      key={btn.label}
+                                                      href={btn.href}
+                                                      className={
+                                                          btn.variant ===
+                                                          'primary'
+                                                              ? 'rounded-lg bg-[#FFF100] px-7 py-3 text-sm font-bold tracking-wide text-white uppercase shadow-sm transition hover:bg-[#E6D900]'
+                                                              : 'rounded-lg bg-[#003D99] px-7 py-3 text-sm font-bold tracking-wide text-white uppercase shadow-sm transition hover:bg-[#002966]'
+                                                      }
+                                                  >
+                                                      {btn.label}
+                                                  </a>
+                                              ),
+                                          )
+                                        : null}
+                                </div>
+
+                                {/* Stats strip */}
+                                {siteConfig?.hero?.stats &&
+                                    siteConfig.hero.stats.length > 0 && (
+                                        <div className="mt-12 flex flex-wrap gap-6">
+                                            {siteConfig.hero.stats.map(
+                                                (stat) => (
+                                                    <div
+                                                        key={stat.label}
+                                                        className="text-center"
+                                                    >
+                                                        <div className="text-2xl font-extrabold text-[#FFF100]">
+                                                            {stat.value}
+                                                        </div>
+                                                        <div className="mt-0.5 text-xs font-medium text-white/70">
+                                                            {stat.label}
+                                                        </div>
+                                                    </div>
+                                                ),
+                                            )}
+                                        </div>
+                                    )}
+                            </div>
+
+                            {/* Right: floating image with decorations */}
+                            <div className="hidden items-center justify-end lg:flex">
+                                <div className="relative pb-6">
+                                    {/* Decorative ring */}
+                                    <div className="absolute -inset-3 rounded-[2rem] border-2 border-white/20" />
+                                    {/* Decorative orange box bottom-right */}
+                                    <div className="absolute -right-4 -bottom-4 h-32 w-32 rounded-2xl bg-[#FFF100]/30 backdrop-blur-sm" />
+                                    {/* Decorative white box top-left */}
+                                    <div className="absolute -top-4 -left-4 h-20 w-20 rounded-xl bg-white/10 backdrop-blur-sm" />
+                                    {/* Image */}
+                                    <img
+                                        src={
+                                            siteConfig?.hero?.side_image_url ??
+                                            '/images/hero-right.jpg'
+                                        }
+                                        alt={siteConfig?.identity?.name ?? ''}
+                                        className="relative h-[420px] w-[340px] rounded-[1.75rem] object-cover object-center"
+                                    />
+                                    {/* Badge */}
+                                    {siteConfig?.hero?.badge_text && (
+                                        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 rounded-full bg-white px-5 py-2 text-xs font-bold whitespace-nowrap text-[#003D99] shadow-sm">
+                                            {siteConfig.hero.badge_text}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            {/* Tentang Section */}
+            {siteConfig?.sections?.about?.enabled !== false && (
+                <section id="tentang" className="py-20 sm:py-28">
+                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        <div className="grid items-stretch gap-12 lg:grid-cols-2 lg:gap-16">
+                            <div className="flex flex-col">
+                                <div>
+                                    <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest text-gray-500 uppercase dark:text-gray-400">
+                                        <InfoIcon className="h-3.5 w-3.5 text-[#006BFF] dark:text-[#3B8BFF]" />
+                                        Tentang{' '}
+                                        <span className="relative inline-block">
+                                            <span className="relative z-10 text-[#006BFF] dark:text-[#3B8BFF]">
+                                                Kami
+                                            </span>
+                                            <span className="absolute bottom-0.5 left-0 h-2 w-full rounded-full bg-[#CCE3FF] dark:bg-[#002966]/50" />
+                                        </span>
+                                    </span>
+                                </div>
+                                {siteConfig?.about?.heading && (
+                                    <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
+                                        {siteConfig.about.heading}
+                                    </h2>
+                                )}
+                                {siteConfig?.about?.paragraphs &&
+                                    siteConfig.about.paragraphs.length > 0 &&
+                                    siteConfig.about.paragraphs.map(
+                                        (paragraph, index) => (
+                                            <p
+                                                key={index}
+                                                className="mt-6 text-base leading-relaxed text-gray-600 dark:text-gray-400"
+                                            >
+                                                {paragraph}
+                                            </p>
+                                        ),
+                                    )}
+
+                                {siteConfig?.about?.feature_cards &&
+                                    siteConfig.about.feature_cards.length >
+                                        0 && (
+                                        <div className="mt-8 grid grid-cols-2 gap-4">
+                                            {siteConfig.about.feature_cards.map(
+                                                (card) => {
+                                                    const IconComponent =
+                                                        (Icons[
+                                                            card.icon as keyof typeof Icons
+                                                        ] ??
+                                                            BookIcon) as React.ComponentType<{
+                                                            className?: string;
+                                                        }>;
+                                                    return (
+                                                        <div
+                                                            key={card.title}
+                                                            className="relative overflow-hidden rounded-xl bg-[#006BFF] p-4 text-white dark:bg-[#0052CC]"
+                                                        >
+                                                            <IconComponent className="absolute right-3 bottom-3 h-16 w-16 text-white/10" />
+                                                            <h3 className="text-sm leading-tight font-semibold">
+                                                                {card.title}
+                                                            </h3>
+                                                            <p className="mt-1 text-[11px] leading-snug text-[#CCE3FF]/80">
+                                                                {
+                                                                    card.description
+                                                                }
+                                                            </p>
+                                                            <div className="mt-3 flex items-baseline gap-1.5">
+                                                                <span className="text-3xl leading-none font-extrabold">
+                                                                    {
+                                                                        card.stat_value
+                                                                    }
+                                                                </span>
+                                                                <span className="text-xs font-medium text-[#CCE3FF]/90">
+                                                                    {
+                                                                        card.stat_label
+                                                                    }
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                },
+                                            )}
+                                        </div>
+                                    )}
+                            </div>
+
+                            <div className="grid h-full grid-cols-1 gap-4 lg:grid-cols-5">
+                                {/* Gambar maskot - 3 col */}
+                                <div className="relative min-h-[280px] overflow-hidden rounded-3xl bg-gray-50 lg:col-span-3 dark:bg-gray-800/50">
+                                    <img
+                                        src="/images/maskot.png"
+                                        alt={siteConfig?.identity?.name ?? ''}
+                                        className="absolute inset-0 h-full w-full object-contain object-bottom"
+                                    />
+                                </div>
+
+                                {/* Right cards - 2 col */}
+                                <div className="grid grid-cols-2 gap-4 lg:col-span-2 lg:flex lg:flex-col">
+                                    {/* Visi card */}
+                                    <div className="relative flex flex-1 flex-col overflow-hidden rounded-3xl bg-gray-50 p-5 dark:bg-gray-800/60">
+                                        {/* Decorative shapes */}
+                                        <div className="absolute -top-6 -right-6 h-20 w-20 rounded-full bg-white/60 dark:bg-white/5" />
+                                        <div className="absolute -bottom-4 -left-4 h-16 w-16 rotate-45 rounded-2xl bg-white/50 dark:bg-white/5" />
+                                        <div className="absolute top-1/2 right-3 h-10 w-10 rounded-full border-2 border-white/40 dark:border-white/5" />
+
+                                        {/* Opportunity icon - background */}
+                                        <img
+                                            src="/images/opportunity.png"
+                                            alt=""
+                                            className="absolute right-2 bottom-2 h-16 w-16 object-contain opacity-15"
+                                        />
+
+                                        <div className="relative z-10">
+                                            <h4 className="text-sm font-bold text-gray-900 dark:text-white">
+                                                Visi Kami
+                                            </h4>
+                                            <p className="mt-2 flex-1 text-xs leading-relaxed text-gray-500 dark:text-gray-400">
+                                                Menjadi lembaga pendidikan Islam
+                                                terpadu yang unggul dalam
+                                                membentuk generasi Qurani,
+                                                berilmu, berakhlak mulia, dan
+                                                berprestasi.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {/* Stat card - dark */}
+                                    <div className="relative flex flex-1 flex-col overflow-hidden rounded-3xl bg-gray-900 p-5 dark:bg-gray-950">
+                                        {/* Decorative shapes */}
+                                        <div className="absolute -top-5 -right-5 h-18 w-18 rounded-full bg-gray-800 dark:bg-gray-800/80" />
+                                        <div className="absolute -bottom-3 -left-3 h-14 w-14 rotate-45 rounded-2xl bg-gray-800 dark:bg-gray-800/80" />
+                                        <div className="absolute right-4 bottom-1/2 h-8 w-8 rounded-full border-2 border-gray-700 dark:border-gray-700/80" />
+
+                                        <div className="relative z-10 flex items-baseline gap-1">
+                                            <span className="text-4xl font-extrabold text-white">
+                                                500
+                                            </span>
+                                            <span className="text-base font-semibold text-[#3B8BFF]">
+                                                +Siswa
+                                            </span>
+                                        </div>
+                                        <p className="relative z-10 mt-3 flex-1 text-xs leading-relaxed text-gray-400">
+                                            Siswa berprestasi yang telah
+                                            dibimbing dengan kurikulum terpadu
+                                            berbasis nilai-nilai Islam.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            {/* Program Unggulan */}
+            {curricula.length > 0 &&
+                siteConfig?.sections?.curricula?.enabled !== false && (
+                    <section
+                        id="program"
+                        className="bg-gray-50 py-20 sm:py-28 dark:bg-gray-900/50"
+                    >
+                        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                            <div className="text-center">
+                                <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest text-gray-500 uppercase dark:text-gray-400">
+                                    <BookOpenIcon className="h-3.5 w-3.5 text-[#006BFF] dark:text-[#3B8BFF]" />
+                                    Program{' '}
+                                    <span className="relative inline-block">
+                                        <span className="relative z-10 text-[#006BFF] dark:text-[#3B8BFF]">
+                                            Unggulan
+                                        </span>
+                                        <span className="absolute bottom-0.5 left-0 h-2 w-full rounded-full bg-[#CCE3FF] dark:bg-[#002966]/50" />
+                                    </span>
+                                </span>
+                                <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
+                                    {siteConfig?.sections?.curricula?.heading ??
+                                        'Kurikulum yang Komprehensif'}
+                                </h2>
+                                {siteConfig?.sections?.curricula
+                                    ?.description && (
+                                    <p className="mx-auto mt-4 max-w-2xl text-base text-gray-600 dark:text-gray-400">
+                                        {
+                                            siteConfig.sections.curricula
+                                                .description
+                                        }
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                                {curricula.map((curriculum, index) => {
+                                    const colors = [
+                                        'emerald',
+                                        'teal',
+                                        'orange',
+                                    ] as const;
+                                    const color = colors[index % colors.length];
+                                    const palette = {
+                                        emerald: {
+                                            gradient:
+                                                'from-[#E6F1FF]0/10 via-transparent to-transparent dark:from-[#E6F1FF]0/15',
+                                            iconBg: 'bg-[#CCE3FF] dark:bg-[#001F4D]',
+                                            iconText:
+                                                'text-[#006BFF] dark:text-[#3B8BFF]',
+                                            numText:
+                                                'text-[#99C7FF] dark:text-[#002966]',
+                                            line: 'bg-[#E6F1FF]0',
+                                            arrow: 'text-[#006BFF] dark:text-[#3B8BFF]',
+                                        },
+                                        teal: {
+                                            gradient:
+                                                'from-[#006BFF]/10 via-transparent to-transparent dark:from-[#006BFF]/15',
+                                            iconBg: 'bg-[#CCE3FF] dark:bg-[#001F4D]',
+                                            iconText:
+                                                'text-[#006BFF] dark:text-[#3B8BFF]',
+                                            numText:
+                                                'text-[#99C7FF] dark:text-[#002966]',
+                                            line: 'bg-[#006BFF]',
+                                            arrow: 'text-[#006BFF] dark:text-[#3B8BFF]',
+                                        },
+                                        orange: {
+                                            gradient:
+                                                'from-[#FFF100]/10 via-transparent to-transparent dark:from-[#FFF100]/15',
+                                            iconBg: 'bg-[#FFFBCC] dark:bg-[#332D00]',
+                                            iconText:
+                                                'text-[#E6D900] dark:text-[#FFF100]',
+                                            numText:
+                                                'text-[#FFF799] dark:text-[#4D4500]',
+                                            line: 'bg-[#FFF100]',
+                                            arrow: 'text-[#E6D900] dark:text-[#FFF100]',
+                                        },
+                                    };
+                                    const p = palette[color];
+                                    const num = String(index + 1).padStart(
+                                        2,
+                                        '0',
+                                    );
+                                    const IconComponent = (Icons[
+                                        curriculum.icon as keyof typeof Icons
+                                    ] ??
+                                        Icons.BookOpen) as React.ComponentType<{
+                                        className?: string;
+                                    }>;
+
+                                    return (
+                                        <Link
+                                            key={curriculum.id}
+                                            href={curriculumShow.url({
+                                                curriculum: curriculum.slug,
+                                            })}
+                                            className="group relative flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-gray-800 dark:bg-gray-900"
+                                        >
+                                            {/* Colored top bar */}
+                                            <div
+                                                className={`h-1 w-0 ${p.line} transition-all duration-500 ease-out group-hover:w-full`}
+                                            />
+
+                                            {/* Gradient wash */}
+                                            <div
+                                                className={`absolute inset-0 bg-gradient-to-br ${p.gradient} pointer-events-none`}
+                                            />
+
+                                            {/* Big background number */}
+                                            <span
+                                                className={`pointer-events-none absolute top-3 right-4 text-7xl leading-none font-black select-none ${p.numText} transition duration-300 group-hover:opacity-60`}
+                                            >
+                                                {num}
+                                            </span>
+
+                                            <div className="relative flex flex-1 flex-col p-6">
+                                                {/* Icon */}
+                                                <div
+                                                    className={`mt-5 inline-flex rounded-xl p-3 ${p.iconBg} w-fit shadow-sm`}
+                                                >
+                                                    <IconComponent
+                                                        className={`h-6 w-6 ${p.iconText}`}
+                                                    />
+                                                </div>
+
+                                                {/* Title */}
+                                                <h3 className="mt-4 text-lg leading-snug font-bold text-gray-900 dark:text-white">
+                                                    {curriculum.name}
+                                                </h3>
+
+                                                {/* Desc */}
+                                                <p className="mt-2 flex-1 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
+                                                    {curriculum.description
+                                                        .length > 120
+                                                        ? curriculum.description.slice(
+                                                              0,
+                                                              120,
+                                                          ) + '…'
+                                                        : curriculum.description}
+                                                </p>
+
+                                                {/* Footer link */}
+                                                <div className="mt-6 flex items-center gap-1.5 border-t border-gray-100 pt-4 dark:border-gray-800">
+                                                    <span
+                                                        className={`text-xs font-semibold ${p.arrow} transition-all duration-200 group-hover:underline`}
+                                                    >
+                                                        Selengkapnya
+                                                    </span>
+                                                    <svg
+                                                        className={`h-3.5 w-3.5 ${p.arrow} transition-transform duration-200 group-hover:translate-x-1`}
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        strokeWidth={2.5}
+                                                        stroke="currentColor"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                                                        />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </Link>
+                                    );
+                                })}
+                            </div>
+
+                            <div className="mt-10 text-center">
+                                <Link
+                                    href={curriculumIndex.url()}
+                                    className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-linear-to-r from-[#3B8BFF] to-[#006BFF] px-7 py-3 text-sm font-semibold text-white shadow-[0_2px_8px_rgba(0,107,255,0.3)] transition-all duration-300 hover:shadow-[0_4px_12px_rgba(0,107,255,0.35)] hover:brightness-110"
+                                >
+                                    <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-linear-to-b from-white/20 to-transparent" />
+                                    Lihat Semua Kurikulum
+                                    <Icons.ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                                </Link>
+                            </div>
+                        </div>
+                    </section>
+                )}
+
+            {/* Fasilitas */}
+            {siteConfig?.sections?.facilities?.enabled !== false && (
+                <section
+                    id="fasilitas"
+                    className="relative overflow-hidden py-24 sm:py-32"
+                >
+                    {/* Background image with light overlay */}
+                    <div
+                        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                        style={{
+                            backgroundImage: "url('/images/fasilitas-bg.jpg')",
+                        }}
+                    />
+                    <div className="absolute inset-0 bg-white/90 dark:bg-gray-950/90" />
+
+                    <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        {/* Header */}
+                        <div className="text-center">
+                            <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest text-gray-500 uppercase dark:text-gray-400">
+                                <BuildingIcon className="h-3.5 w-3.5 text-[#006BFF] dark:text-[#3B8BFF]" />
+                                <span className="relative inline-block">
+                                    <span className="relative z-10 text-[#006BFF] dark:text-[#3B8BFF]">
+                                        Fasilitas
+                                    </span>
+                                    <span className="absolute bottom-0.5 left-0 h-2 w-full rounded-full bg-[#CCE3FF] dark:bg-[#002966]/50" />
+                                </span>
+                            </span>
+                            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
+                                {siteConfig?.sections?.facilities?.heading ??
+                                    'Fasilitas'}
+                            </h2>
+                            {siteConfig?.sections?.facilities?.description && (
+                                <p className="mx-auto mt-4 max-w-xl text-base text-gray-600 dark:text-gray-400">
+                                    {siteConfig.sections.facilities.description}
+                                </p>
+                            )}
+                        </div>
+
+                        {/* Cards */}
+                        {facilities.length === 0 ? null : (
+                            <>
+                                <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                                    {facilities.map((facility) => {
+                                        const IconComponent = (Icons[
+                                            facility.icon as keyof typeof Icons
+                                        ] ??
+                                            Icons.Building2) as React.ComponentType<{
+                                            className?: string;
+                                        }>;
+                                        return (
+                                            <Link
+                                                key={facility.id}
+                                                href={facilityShow.url({
+                                                    facility: facility.slug,
+                                                })}
+                                                className="group relative overflow-hidden rounded-2xl bg-[#006BFF] p-5 text-white transition duration-300 hover:-translate-y-1 dark:bg-[#0052CC]"
+                                            >
+                                                {/* Decorative curved lines - top right */}
+                                                <svg
+                                                    className="text-[#E6F1FF]0/30 pointer-events-none absolute -top-3 -right-3 h-20 w-20"
+                                                    fill="none"
+                                                    viewBox="0 0 80 80"
+                                                    strokeWidth={1.5}
+                                                    stroke="currentColor"
+                                                >
+                                                    <path d="M80 0 C80 44.18 44.18 80 0 80" />
+                                                    <path d="M80 12 C80 49.56 49.56 80 12 80" />
+                                                    <path d="M80 24 C80 54.93 54.93 80 24 80" />
+                                                </svg>
+
+                                                {/* Decorative circle - bottom left */}
+                                                <div className="border-[#E6F1FF]0/20 pointer-events-none absolute -bottom-6 -left-6 h-20 w-20 rounded-full border-2" />
+                                                <div className="border-[#E6F1FF]0/15 pointer-events-none absolute -bottom-3 -left-3 h-14 w-14 rounded-full border-2" />
+
+                                                {/* Diagonal accent line */}
+                                                <div className="pointer-events-none absolute top-0 right-12 h-full w-px origin-top rotate-12 bg-gradient-to-b from-[#3B8BFF]/20 via-[#3B8BFF]/10 to-transparent" />
+
+                                                <div className="relative">
+                                                    {/* Icon */}
+                                                    <div className="inline-flex rounded-xl bg-white/15 p-3">
+                                                        <IconComponent className="h-6 w-6 text-white" />
+                                                    </div>
+
+                                                    <h3 className="mt-4 text-sm font-bold text-white">
+                                                        {facility.title}
+                                                    </h3>
+                                                    <p className="mt-1 text-xs text-[#CCE3FF]/70">
+                                                        {facility.description}
+                                                    </p>
+
+                                                    {/* Bottom accent line */}
+                                                    <div className="mt-4 h-px w-0 bg-gradient-to-r from-white/40 to-transparent transition-all duration-300 group-hover:w-full" />
+                                                </div>
+                                            </Link>
+                                        );
+                                    })}
+                                </div>
+
+                                {facilitiesTotal > facilities.length && (
+                                    <div className="mt-10 text-center">
+                                        <Link
+                                            href={facilityIndex.url()}
+                                            className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-linear-to-r from-[#3B8BFF] to-[#006BFF] px-7 py-3 text-sm font-semibold text-white shadow-[0_2px_8px_rgba(0,107,255,0.3)] transition-all duration-300 hover:shadow-[0_4px_12px_rgba(0,107,255,0.35)] hover:brightness-110"
+                                        >
+                                            <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-linear-to-b from-white/20 to-transparent" />
+                                            Lihat Semua Fasilitas
+                                            <Icons.ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                                        </Link>
+                                    </div>
+                                )}
+                            </>
+                        )}
+                    </div>
+                </section>
+            )}
+
+            {/* Berita Terbaru */}
+            {siteConfig?.sections?.articles?.enabled !== false && (
+                <section
+                    id="berita"
+                    className="bg-gray-50 py-20 sm:py-28 dark:bg-gray-900/50"
+                >
+                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+                            <div>
+                                <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest text-gray-500 uppercase dark:text-gray-400">
+                                    <NewspaperIcon className="h-3.5 w-3.5 text-[#006BFF] dark:text-[#3B8BFF]" />
+                                    Berita &{' '}
+                                    <span className="relative inline-block">
+                                        <span className="relative z-10 text-[#006BFF] dark:text-[#3B8BFF]">
+                                            Kegiatan
+                                        </span>
+                                        <span className="absolute bottom-0.5 left-0 h-2 w-full rounded-full bg-[#CCE3FF] dark:bg-[#002966]/50" />
+                                    </span>
+                                </span>
+                                <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
+                                    {siteConfig?.sections?.articles?.heading ??
+                                        'Berita Terbaru'}
+                                </h2>
+                                {siteConfig?.sections?.articles
+                                    ?.description && (
+                                    <p className="mt-4 max-w-xl text-base text-gray-600 dark:text-gray-400">
+                                        {
+                                            siteConfig.sections.articles
+                                                .description
+                                        }
+                                    </p>
+                                )}
+                            </div>
+                            {articlesTotal > articles.length && (
+                                <Link
+                                    href={articleIndex.url()}
+                                    className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-[#99C7FF] px-4 py-2 text-sm font-semibold text-[#0052CC] transition hover:bg-[#E6F1FF] dark:border-[#003D99] dark:text-[#3B8BFF] dark:hover:bg-[#001F4D]/50"
+                                >
+                                    Lihat Semua Berita
+                                    <Icons.ArrowRight className="h-4 w-4" />
+                                </Link>
+                            )}
+                        </div>
+
+                        {articles.length === 0 ? null : (
+                            <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                                {articles.map((article) => {
+                                    const firstCategory = article.categories[0];
+                                    const formattedDate = article.published_at
+                                        ? new Date(
+                                              article.published_at,
+                                          ).toLocaleDateString('id-ID', {
+                                              day: 'numeric',
+                                              month: 'long',
+                                              year: 'numeric',
+                                          })
+                                        : null;
+                                    const initials = getInitials(
+                                        article.author.name,
+                                    );
+
+                                    return (
+                                        <article
+                                            key={article.id}
+                                            className="group flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-[0_1px_4px_rgba(0,0,0,0.04)] transition hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)] dark:border-gray-800 dark:bg-gray-900 dark:shadow-[0_1px_4px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_4px_16px_rgba(0,0,0,0.25)]"
+                                        >
+                                            <div className="relative overflow-hidden">
+                                                <div className="aspect-[16/9] bg-[#E6F1FF] dark:bg-[#001F4D]/30">
+                                                    {article.featured_image ? (
+                                                        <img
+                                                            src={
+                                                                article.featured_image
+                                                            }
+                                                            alt={article.title}
+                                                            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                                                        />
+                                                    ) : (
+                                                        <div className="flex h-full w-full items-center justify-center">
+                                                            <Icons.Newspaper className="h-12 w-12 text-[#99C7FF] dark:text-[#003D99]" />
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                {firstCategory && (
+                                                    <div className="absolute top-4 left-4">
+                                                        <span className="inline-flex items-center rounded-full bg-[#006BFF] px-3 py-1 text-xs font-semibold text-white">
+                                                            {firstCategory.name}
+                                                        </span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <div className="flex flex-1 flex-col p-6">
+                                                {formattedDate && (
+                                                    <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
+                                                        <svg
+                                                            className="h-3.5 w-3.5"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            strokeWidth={1.8}
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                                d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"
+                                                            />
+                                                        </svg>
+                                                        <span>
+                                                            {formattedDate}
+                                                        </span>
+                                                    </div>
+                                                )}
+                                                <h3 className="mt-3 text-base leading-snug font-bold text-gray-900 transition group-hover:text-[#0052CC] dark:text-white dark:group-hover:text-[#3B8BFF]">
+                                                    {article.title}
+                                                </h3>
+                                                {article.excerpt && (
+                                                    <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+                                                        {article.excerpt}
+                                                    </p>
+                                                )}
+                                                <div className="mt-5 flex items-center justify-between border-t border-gray-100 pt-4 dark:border-gray-800">
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#CCE3FF] text-[10px] font-bold text-[#0052CC] dark:bg-[#001F4D] dark:text-[#3B8BFF]">
+                                                            {initials}
+                                                        </div>
+                                                        <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                                                            {
+                                                                article.author
+                                                                    .name
+                                                            }
+                                                        </span>
+                                                    </div>
+                                                    <Link
+                                                        href={
+                                                            articleShow({
+                                                                article:
+                                                                    article.slug,
+                                                            }).url
+                                                        }
+                                                        className="flex items-center gap-1 text-xs font-semibold text-[#006BFF] transition hover:text-[#0052CC] dark:text-[#3B8BFF]"
+                                                    >
+                                                        Baca selengkapnya
+                                                        <Icons.ArrowRight className="h-3.5 w-3.5" />
+                                                    </Link>
+                                                </div>
+                                            </div>
+                                        </article>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
+                </section>
+            )}
+
+            {/* Agenda */}
+            {siteConfig?.sections?.agenda?.enabled !== false && (
+                <section
+                    id="agenda"
+                    className="bg-[#E6F1FF]/60 py-20 sm:py-28 dark:bg-[#001F4D]/10"
+                >
+                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        {/* Header */}
+                        <div className="text-center">
+                            <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest text-gray-500 uppercase dark:text-gray-400">
+                                <CalendarIcon className="h-3.5 w-3.5 text-[#006BFF] dark:text-[#3B8BFF]" />
+                                <span className="relative inline-block">
+                                    <span className="relative z-10 text-[#006BFF] dark:text-[#3B8BFF]">
+                                        Agenda
+                                    </span>
+                                    <span className="absolute bottom-0.5 left-0 h-2 w-full rounded-full bg-[#CCE3FF] dark:bg-[#002966]/50" />
+                                </span>
+                            </span>
+                            <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl dark:text-white">
+                                {siteConfig?.sections?.agenda?.heading ??
+                                    'Agenda Kegiatan'}
+                            </h2>
+                            {siteConfig?.sections?.agenda?.description && (
+                                <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-gray-600 dark:text-gray-400">
+                                    {siteConfig.sections.agenda.description}
+                                </p>
+                            )}
+                        </div>
+
+                        {/* Agenda grid */}
+                        {agendas.length === 0 && (
+                            <p className="mt-8 text-center text-sm text-gray-400">
+                                Belum ada agenda yang dijadwalkan.
+                            </p>
+                        )}
+                        <div className="mt-16 grid gap-x-10 gap-y-8 sm:grid-cols-2">
+                            {agendas.map((item) => {
+                                const d = new Date(item.date);
+                                const agenda = {
+                                    day: d
+                                        .getDate()
+                                        .toString()
+                                        .padStart(2, '0'),
+                                    month: d.toLocaleString('id-ID', {
+                                        month: 'short',
+                                    }),
+                                    year: d.getFullYear().toString(),
+                                    title: item.title,
+                                    desc: item.description ?? '',
+                                };
+                                return (
+                                    <div
+                                        key={item.id}
+                                        className="flex items-center gap-5"
+                                    >
+                                        {/* Date box */}
+                                        <div className="dark:border-[#E6F1FF]0/30 relative flex h-28 w-28 flex-shrink-0 flex-col items-center justify-center overflow-hidden rounded-2xl border-2 border-[#0052CC]/30 bg-[#006BFF] text-white dark:bg-[#0052CC]">
+                                            {/* Decorative curved lines top-right */}
+                                            <svg
+                                                className="text-[#E6F1FF]0/30 pointer-events-none absolute -top-2 -right-2 h-16 w-16"
+                                                fill="none"
+                                                viewBox="0 0 60 60"
+                                                strokeWidth={1.5}
+                                                stroke="currentColor"
+                                            >
+                                                <path d="M60 0 C60 33.14 33.14 60 0 60" />
+                                                <path d="M60 10 C60 37.61 37.61 60 10 60" />
+                                                <path d="M60 20 C60 42.09 42.09 60 20 60" />
+                                            </svg>
+                                            <svg
+                                                className="relative h-6 w-6 text-[#99C7FF]/70"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                strokeWidth={1.5}
+                                                stroke="currentColor"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"
+                                                />
+                                            </svg>
+                                            <span className="relative mt-1 text-2xl leading-none font-extrabold">
+                                                {agenda.day} {agenda.month}
+                                            </span>
+                                            <span className="relative mt-0.5 text-xs font-medium text-[#99C7FF]/80">
+                                                {agenda.year}
+                                            </span>
+                                        </div>
+
+                                        {/* Content */}
+                                        <div className="flex-1">
+                                            <h3 className="text-lg leading-snug font-bold text-gray-900 dark:text-white">
+                                                {agenda.title}
+                                            </h3>
+                                            <p className="mt-1.5 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
+                                                {agenda.desc}
+                                            </p>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            {/* Testimoni Wali Murid */}
+            {siteConfig?.sections?.testimonials?.enabled !== false && (
+                <section id="testimoni" className="py-20 sm:py-28">
+                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        {/* Header */}
+                        <div className="text-center">
+                            <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest text-gray-500 uppercase dark:text-gray-400">
+                                <MessageSquareQuoteIcon className="h-3.5 w-3.5 text-[#006BFF] dark:text-[#3B8BFF]" />
+                                <span className="relative inline-block">
+                                    <span className="relative z-10 text-[#006BFF] dark:text-[#3B8BFF]">
+                                        Testimoni
+                                    </span>
+                                    <span className="absolute bottom-0.5 left-0 h-2 w-full rounded-full bg-[#CCE3FF] dark:bg-[#002966]/50" />
+                                </span>
+                            </span>
+                            <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl dark:text-white">
+                                {siteConfig?.sections?.testimonials?.heading ??
+                                    'Apa Kata Wali Murid'}
+                            </h2>
+                            {siteConfig?.sections?.testimonials
+                                ?.description && (
+                                <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-gray-600 dark:text-gray-400">
+                                    {
+                                        siteConfig.sections.testimonials
+                                            .description
+                                    }
+                                </p>
+                            )}
+                        </div>
+
+                        {/* Testimonial grid */}
+                        {testimonials.length === 0 ? (
+                            <div className="mt-16 flex flex-col items-center justify-center gap-6 rounded-3xl border border-dashed border-[#99C7FF] bg-[#E6F1FF]/50 px-8 py-20 text-center dark:border-[#003D99]/50 dark:bg-[#001F4D]/10">
+                                {/* Decorative quote marks */}
+                                <div className="relative flex items-center justify-center">
+                                    <div className="absolute h-20 w-20 rounded-full bg-[#CCE3FF] dark:bg-[#002966]/30" />
+                                    <svg
+                                        className="relative h-10 w-10 text-[#3B8BFF] dark:text-[#006BFF]"
+                                        fill="currentColor"
+                                        viewBox="0 0 32 32"
+                                    >
+                                        <path d="M10 8C6.686 8 4 10.686 4 14v10h10V14H7.5c0-1.379 1.121-2.5 2.5-2.5V8zm14 0c-3.314 0-6 2.686-6 6v10h10V14h-6.5c0-1.379 1.121-2.5 2.5-2.5V8z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p className="text-base font-semibold text-gray-700 dark:text-gray-300">
+                                        Belum ada testimoni
+                                    </p>
+                                    <p className="mt-1.5 max-w-sm text-sm text-gray-500 dark:text-gray-400">
+                                        Testimoni dari wali murid akan tampil di
+                                        sini setelah ditambahkan.
+                                    </p>
+                                </div>
+                                {/* Decorative ghost cards */}
+                                <div className="mt-2 grid w-full max-w-2xl grid-cols-3 gap-3 opacity-40">
+                                    {[1, 2, 3].map((i) => (
+                                        <div
+                                            key={i}
+                                            className="h-24 rounded-2xl bg-[#CCE3FF] dark:bg-[#002966]/30"
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                                {testimonials.map((item) => (
+                                    <div
+                                        key={item.id}
+                                        className="group relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.1),0_20px_25px_-5px_rgba(0,0,0,0.05)] dark:bg-gray-900 dark:shadow-[0_2px_15px_-3px_rgba(0,0,0,0.3),0_10px_20px_-2px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.4),0_20px_25px_-5px_rgba(0,0,0,0.3)]"
+                                    >
+                                        {/* Top accent bar */}
+                                        <div className="bg-[#E6F1FF]0 h-1 w-0 transition-all duration-500 ease-out group-hover:w-full" />
+
+                                        <div className="flex flex-1 flex-col p-6">
+                                            {/* Stars */}
+                                            <div className="flex items-center gap-0.5">
+                                                {Array.from({ length: 5 }).map(
+                                                    (_, i) => (
+                                                        <svg
+                                                            key={i}
+                                                            className="h-4 w-4 text-[#FFF100]"
+                                                            fill="currentColor"
+                                                            viewBox="0 0 20 20"
+                                                        >
+                                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                        </svg>
+                                                    ),
+                                                )}
+                                            </div>
+
+                                            {/* Quote mark */}
+                                            <svg
+                                                className="mt-4 h-8 w-8 text-[#CCE3FF] dark:text-[#002966]/50"
+                                                fill="currentColor"
+                                                viewBox="0 0 32 32"
+                                            >
+                                                <path d="M10 8C6.686 8 4 10.686 4 14v10h10V14H7.5c0-1.379 1.121-2.5 2.5-2.5V8zm14 0c-3.314 0-6 2.686-6 6v10h10V14h-6.5c0-1.379 1.121-2.5 2.5-2.5V8z" />
+                                            </svg>
+
+                                            {/* Quote text */}
+                                            <p className="mt-3 flex-1 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+                                                {item.quote}
+                                            </p>
+
+                                            {/* Highlight tag */}
+                                            <div className="mt-5">
+                                                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#E6F1FF] px-3 py-1 text-[11px] font-semibold text-[#0052CC] dark:bg-[#001F4D]/60 dark:text-[#3B8BFF]">
+                                                    <span className="bg-[#E6F1FF]0 h-1 w-1 rounded-full dark:bg-[#3B8BFF]" />
+                                                    {item.highlight}
+                                                </span>
+                                            </div>
+
+                                            {/* Divider */}
+                                            <div className="mt-5 border-t border-gray-100 pt-5 dark:border-gray-800">
+                                                {/* Avatar + identity */}
+                                                <div className="flex items-center gap-3">
+                                                    {item.avatar_url ? (
+                                                        <img
+                                                            src={
+                                                                item.avatar_url
+                                                            }
+                                                            alt={item.name}
+                                                            className="h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-[#99C7FF] dark:ring-[#003D99]"
+                                                        />
+                                                    ) : (
+                                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#CCE3FF] text-xs font-extrabold text-[#0052CC] dark:bg-[#001F4D] dark:text-[#3B8BFF]">
+                                                            {getInitials(
+                                                                item.name,
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                    <div>
+                                                        <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                                                            {item.name}
+                                                        </p>
+                                                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                            {item.role}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </section>
+            )}
+
+            {/* Alumni */}
+            {alumni.length > 0 &&
+                siteConfig?.sections?.alumni?.enabled !== false && (
+                    <section
+                        id="alumni"
+                        className="bg-gray-50 py-20 sm:py-28 dark:bg-gray-900/50"
+                    >
+                        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                            {/* Header */}
+                            <div className="text-center">
+                                <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest text-gray-500 uppercase dark:text-gray-400">
+                                    <GraduationCapIcon className="h-3.5 w-3.5 text-[#006BFF] dark:text-[#3B8BFF]" />
+                                    <span className="relative inline-block">
+                                        <span className="relative z-10 text-[#006BFF] dark:text-[#3B8BFF]">
+                                            Alumni
+                                        </span>
+                                        <span className="absolute bottom-0.5 left-0 h-2 w-full rounded-full bg-[#CCE3FF] dark:bg-[#002966]/50" />
+                                    </span>
+                                </span>
+                                <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
+                                    {siteConfig?.sections?.alumni?.heading ??
+                                        'Jejak Prestasi Alumni Kami'}
+                                </h2>
+                                {siteConfig?.sections?.alumni?.description && (
+                                    <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-gray-600 dark:text-gray-400">
+                                        {siteConfig.sections.alumni.description}
+                                    </p>
+                                )}
+                            </div>
+
+                            {/* Alumni cards grid - 2 columns */}
+                            <div className="mt-16 grid gap-6 sm:grid-cols-2">
+                                {alumni.map((alumniItem, index) => {
+                                    const preset =
+                                        COLOR_PRESETS[
+                                            index % COLOR_PRESETS.length
+                                        ]!;
+                                    return (
+                                        <div
+                                            key={alumniItem.id}
+                                            className="group relative flex overflow-hidden rounded-2xl bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-[#006BFF]/5 dark:bg-gray-900"
+                                        >
+                                            {/* Left: photo area with layered decorative shapes */}
+                                            <div className="relative w-36 shrink-0 overflow-hidden sm:w-44">
+                                                {/* Base fill */}
+                                                <div className="absolute inset-0 bg-gray-50 dark:bg-gray-800" />
+
+                                                {/* Large organic blob — bottom-left anchor */}
+                                                <div
+                                                    className={`absolute -bottom-8 -left-8 h-40 w-40 rounded-[40%_60%_55%_45%/45%_55%_60%_40%] ${preset.blob} opacity-90`}
+                                                />
+
+                                                {/* Secondary smaller blob — top-right accent */}
+                                                <div
+                                                    className={`absolute -top-6 -right-6 h-20 w-20 rounded-[60%_40%_45%_55%/50%_60%_40%_50%] ${preset.blob} opacity-40`}
+                                                />
+
+                                                {/* Ring circle — mid overlay */}
+                                                <div
+                                                    className={`absolute bottom-6 left-1/2 h-28 w-28 -translate-x-1/2 rounded-full border-4 ${preset.ring} opacity-30`}
+                                                />
+
+                                                {/* Small dot cluster */}
+                                                <div
+                                                    className={`absolute top-4 left-4 h-2.5 w-2.5 rounded-full ${preset.dot} opacity-60`}
+                                                />
+                                                <div
+                                                    className={`absolute top-8 left-7 h-1.5 w-1.5 rounded-full ${preset.dot} opacity-40`}
+                                                />
+                                                <div
+                                                    className={`absolute top-5 left-9 h-1 w-1 rounded-full ${preset.dot} opacity-30`}
+                                                />
+
+                                                {/* Photo */}
+                                                <div className="relative z-10 flex h-full items-end justify-center pt-6 pb-3 pl-3">
+                                                    <div className="h-28 w-24 overflow-hidden rounded-2xl shadow-lg ring-2 ring-white/60 sm:h-36 sm:w-28">
+                                                        {alumniItem.avatar_url ? (
+                                                            <img
+                                                                src={
+                                                                    alumniItem.avatar_url
+                                                                }
+                                                                alt={
+                                                                    alumniItem.name
+                                                                }
+                                                                className="h-full w-full object-cover object-top"
+                                                            />
+                                                        ) : (
+                                                            <div className="flex h-full w-full items-center justify-center bg-gray-200 dark:bg-gray-700">
+                                                                <Icons.User className="h-10 w-10 text-gray-400" />
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Right: content */}
+                                            <div className="flex flex-1 flex-col justify-between p-6 pl-5">
+                                                {/* Quote */}
+                                                <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+                                                    {alumniItem.quote}
+                                                </p>
+
+                                                {/* Name + batch */}
+                                                <div className="mt-4">
+                                                    <p className="inline rounded bg-[#006BFF] px-2 py-0.5 text-sm font-bold text-white">
+                                                        {alumniItem.name}
+                                                    </p>
+                                                    <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                                        {alumniItem.batch}
+                                                    </p>
+                                                </div>
+
+                                                {/* Destination badge */}
+                                                <div className="mt-4">
+                                                    <div className="inline-flex items-center gap-2 rounded-lg bg-[#002966] px-4 py-2 text-xs font-semibold text-white dark:bg-[#003D99]">
+                                                        <svg
+                                                            className="h-3.5 w-3.5 shrink-0 text-[#66ABFF]"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            strokeWidth={2}
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                                d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5"
+                                                            />
+                                                        </svg>
+                                                        {alumniItem.destination}
+                                                    </div>
+                                                </div>
+
+                                                {/* Social links */}
+                                                {alumniItem.socials.length >
+                                                    0 && (
+                                                    <div className="mt-3 flex items-center gap-2">
+                                                        {alumniItem.socials.map(
+                                                            (social) => (
+                                                                <a
+                                                                    key={
+                                                                        social.id
+                                                                    }
+                                                                    href={
+                                                                        social.url
+                                                                    }
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="rounded-md p-1 text-gray-400 transition hover:text-[#006BFF] dark:hover:text-[#3B8BFF]"
+                                                                    aria-label={
+                                                                        social.platform
+                                                                    }
+                                                                >
+                                                                    <Icons.Link2 className="h-4 w-4" />
+                                                                </a>
+                                                            ),
+                                                        )}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    </section>
+                )}
+
+            {/* CTA Banner */}
+            <section className="relative bg-slate-100 dark:bg-slate-900">
+                {/* Dot-grid texture */}
+                <div
+                    className="absolute inset-0 opacity-[0.04]"
+                    style={{
+                        backgroundImage:
+                            'radial-gradient(circle, #0f172a 1px, transparent 1px)',
+                        backgroundSize: '24px 24px',
+                    }}
+                />
+
+                <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    {/* Student image — anchored inside container */}
+                    <img
+                        src="/images/cta-student.png"
+                        alt={siteConfig?.identity?.name ?? ''}
+                        className="pointer-events-none absolute bottom-0 left-4 z-20 hidden object-contain object-bottom drop-shadow-2xl sm:left-6 sm:block lg:left-8"
+                        style={{ height: 'calc(100% + 160px)', width: '420px' }}
+                    />
+
+                    {/* Right: text + CTA */}
+                    <div className="flex flex-1 flex-col justify-center py-12 sm:py-14 sm:pl-[440px]">
+                        {siteConfig?.identity?.tagline && (
+                            <p className="max-w-lg text-lg leading-relaxed text-slate-500 dark:text-slate-400">
+                                {siteConfig.identity.tagline}
+                            </p>
+                        )}
+                        <p className="mt-3 max-w-lg text-2xl leading-snug font-extrabold text-slate-800 sm:text-3xl dark:text-white">
+                            {siteConfig?.identity?.name
+                                ? `Bergabung bersama ${siteConfig.identity.name}`
+                                : 'Mari bergabung bersama kami.'}
+                        </p>
+                        {canRegister && (
+                            <div className="mt-8">
+                                <a
+                                    href="#kontak"
+                                    className="inline-flex items-center gap-2 rounded-xl bg-[#003D99] px-8 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-[#002966] dark:bg-[#0052CC] dark:hover:bg-[#006BFF]"
+                                >
+                                    Daftar Sekarang
+                                    <svg
+                                        className="h-4 w-4"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth={2.5}
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                                        />
+                                    </svg>
+                                </a>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </section>
+
+            {/* Kontak */}
+            {siteConfig?.sections?.contact?.enabled !== false && (
+                <section
+                    id="kontak"
+                    className="bg-gray-50 py-20 sm:py-28 dark:bg-gray-900/50"
+                >
+                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        <div className="grid gap-12 lg:grid-cols-2">
+                            <div>
+                                <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest text-gray-500 uppercase dark:text-gray-400">
+                                    <MailIcon className="h-3.5 w-3.5 text-[#006BFF] dark:text-[#3B8BFF]" />
+                                    <span className="relative inline-block">
+                                        <span className="relative z-10 text-[#006BFF] dark:text-[#3B8BFF]">
+                                            Kontak
+                                        </span>
+                                        <span className="absolute bottom-0.5 left-0 h-2 w-full rounded-full bg-[#CCE3FF] dark:bg-[#002966]/50" />
+                                    </span>
+                                </span>
+                                <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
+                                    {siteConfig?.sections?.contact?.heading ??
+                                        'Hubungi Kami'}
+                                </h2>
+                                {siteConfig?.sections?.contact?.description && (
+                                    <p className="mt-4 text-base text-gray-600 dark:text-gray-400">
+                                        {
+                                            siteConfig.sections.contact
+                                                .description
+                                        }
+                                    </p>
+                                )}
+
+                                <div className="mt-8 space-y-6">
+                                    <div className="flex items-start gap-4">
+                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#E6F1FF] dark:bg-[#001F4D]/50">
+                                            <svg
+                                                className="h-5 w-5 text-[#006BFF] dark:text-[#3B8BFF]"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                strokeWidth={1.5}
+                                                stroke="currentColor"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                                                />
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+                                                />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                                                Alamat
+                                            </h3>
+                                            <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                                                {siteConfig?.identity
+                                                    ?.address ?? '-'}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-start gap-4">
+                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#E6F1FF] dark:bg-[#001F4D]/50">
+                                            <svg
+                                                className="h-5 w-5 text-[#006BFF] dark:text-[#3B8BFF]"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                strokeWidth={1.5}
+                                                stroke="currentColor"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
+                                                />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                                                Telepon
+                                            </h3>
+                                            <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                                                {siteConfig?.identity?.phone ??
+                                                    '-'}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-start gap-4">
+                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#E6F1FF] dark:bg-[#001F4D]/50">
+                                            <svg
+                                                className="h-5 w-5 text-[#006BFF] dark:text-[#3B8BFF]"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                strokeWidth={1.5}
+                                                stroke="currentColor"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
+                                                />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                                                Email
+                                            </h3>
+                                            <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                                                {siteConfig?.identity?.email ??
+                                                    '-'}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-start gap-4">
+                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#E6F1FF] dark:bg-[#001F4D]/50">
+                                            <svg
+                                                className="h-5 w-5 text-[#006BFF] dark:text-[#3B8BFF]"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                strokeWidth={1.5}
+                                                stroke="currentColor"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                                />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                                                Jam Operasional
+                                            </h3>
+                                            <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                                                {siteConfig?.identity?.hours ??
+                                                    '-'}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="rounded-2xl border border-gray-100 bg-white p-8 dark:border-gray-800 dark:bg-gray-900">
+                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                                    Kirim Pesan
+                                </h3>
+                                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                    Isi formulir di bawah ini dan kami akan
+                                    segera menghubungi Anda.
+                                </p>
+
+                                {(wasSuccessful || flash?.success) && (
+                                    <div className="mt-4 rounded-lg border border-[#99C7FF] bg-[#E6F1FF] px-4 py-3 text-sm text-[#0052CC] dark:border-[#003D99] dark:bg-[#001F4D]/50 dark:text-[#3B8BFF]">
+                                        {flash?.success ??
+                                            'Pesan Anda berhasil dikirim!'}
+                                    </div>
+                                )}
+
+                                <form
+                                    className="mt-6 space-y-4"
+                                    onSubmit={handleContactSubmit}
+                                >
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                            Nama Lengkap
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={data.name}
+                                            onChange={(e) =>
+                                                setData('name', e.target.value)
+                                            }
+                                            className="focus:border-[#E6F1FF]0 focus:ring-[#E6F1FF]0/20 mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 transition outline-none focus:ring-2 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:border-[#3B8BFF]"
+                                            placeholder="Masukkan nama lengkap"
+                                        />
+                                        {errors.name && (
+                                            <p className="mt-1 text-xs text-red-500">
+                                                {errors.name}
+                                            </p>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                            Email
+                                        </label>
+                                        <input
+                                            type="email"
+                                            value={data.email}
+                                            onChange={(e) =>
+                                                setData('email', e.target.value)
+                                            }
+                                            className="focus:border-[#E6F1FF]0 focus:ring-[#E6F1FF]0/20 mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 transition outline-none focus:ring-2 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:border-[#3B8BFF]"
+                                            placeholder="contoh@email.com"
+                                        />
+                                        {errors.email && (
+                                            <p className="mt-1 text-xs text-red-500">
+                                                {errors.email}
+                                            </p>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                            Subjek
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={data.subject}
+                                            onChange={(e) =>
+                                                setData(
+                                                    'subject',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            className="focus:border-[#E6F1FF]0 focus:ring-[#E6F1FF]0/20 mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 transition outline-none focus:ring-2 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:border-[#3B8BFF]"
+                                            placeholder="Subjek pesan"
+                                        />
+                                        {errors.subject && (
+                                            <p className="mt-1 text-xs text-red-500">
+                                                {errors.subject}
+                                            </p>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                            Pesan
+                                        </label>
+                                        <textarea
+                                            rows={4}
+                                            value={data.message}
+                                            onChange={(e) =>
+                                                setData(
+                                                    'message',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            className="focus:border-[#E6F1FF]0 focus:ring-[#E6F1FF]0/20 mt-1.5 w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 transition outline-none focus:ring-2 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:border-[#3B8BFF]"
+                                            placeholder="Tulis pesan Anda..."
+                                        />
+                                        {errors.message && (
+                                            <p className="mt-1 text-xs text-red-500">
+                                                {errors.message}
+                                            </p>
+                                        )}
+                                    </div>
+                                    <button
+                                        type="submit"
+                                        disabled={processing}
+                                        className="w-full rounded-lg bg-[#006BFF] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0052CC] disabled:opacity-60"
+                                    >
+                                        {processing
+                                            ? 'Mengirim...'
+                                            : 'Kirim Pesan'}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        '@context': 'https://schema.org',
+                        '@type': 'EducationalOrganization',
+                        name: siteConfig?.identity?.name ?? undefined,
+                        description: siteConfig?.identity?.tagline ?? undefined,
+                        url:
+                            typeof window !== 'undefined'
+                                ? window.location.origin
+                                : undefined,
+                        address: siteConfig?.identity?.address ?? undefined,
+                        telephone: siteConfig?.identity?.phone ?? undefined,
+                        email: siteConfig?.identity?.email ?? undefined,
+                    }),
+                }}
+            />
+        </>
+    );
+};
+
+export default Welcome;
+
+// Icon Components
+
+function BookIcon({ className }: { className?: string }) {
+    return (
+        <svg
+            className={className}
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"
+            />
+        </svg>
+    );
+}
+
+function HeartIcon({ className }: { className?: string }) {
+    return (
+        <svg
+            className={className}
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+            />
+        </svg>
+    );
+}
+
+function StarIcon({ className }: { className?: string }) {
+    return (
+        <svg
+            className={className}
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
+            />
+        </svg>
+    );
+}
+
+function UsersIcon({ className }: { className?: string }) {
+    return (
+        <svg
+            className={className}
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"
+            />
+        </svg>
+    );
+}
+
+function ClassroomIcon({ className }: { className?: string }) {
+    return (
+        <svg
+            className={className}
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3H21m-3.75 3H21"
+            />
+        </svg>
+    );
+}
+
+function ComputerIcon({ className }: { className?: string }) {
+    return (
+        <svg
+            className={className}
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25A2.25 2.25 0 0 1 5.25 3h13.5A2.25 2.25 0 0 1 21 5.25Z"
+            />
+        </svg>
+    );
+}
+
+function LibraryIcon({ className }: { className?: string }) {
+    return (
+        <svg
+            className={className}
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z"
+            />
+        </svg>
+    );
+}
+
+function MosqueIcon({ className }: { className?: string }) {
+    return (
+        <svg
+            className={className}
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 3v1.5M12 4.5C9 4.5 6 7.5 6 10.5V21h12V10.5c0-3-3-6-6-6ZM6 21H3v-6a3 3 0 0 1 3-3m12 9h3v-6a3 3 0 0 0-3-3m-6-6V3m0 1.5c0-1 .5-1.5.5-1.5S12 2 12 3"
+            />
+        </svg>
+    );
+}
+
+function SportIcon({ className }: { className?: string }) {
+    return (
+        <svg
+            className={className}
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3 3v18h18M9 17V9m4 8V5m4 12v-4"
+            />
+        </svg>
+    );
+}
+
+function FoodIcon({ className }: { className?: string }) {
+    return (
+        <svg
+            className={className}
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.871c1.355 0 2.697.056 4.024.166C17.155 8.51 18 9.473 18 10.608v2.513M15 8.25v-1.5m-6 1.5v-1.5m12 9.75-1.5.75a3.354 3.354 0 0 1-3 0 3.354 3.354 0 0 0-3 0 3.354 3.354 0 0 1-3 0 3.354 3.354 0 0 0-3 0 3.354 3.354 0 0 1-3 0L3 16.5m15-3.379a48.474 48.474 0 0 0-6-.371c-2.032 0-4.034.126-6 .371m12 0c.39.049.777.102 1.163.16 1.07.16 1.837 1.094 1.837 2.175v5.17c0 .62-.504 1.124-1.125 1.124H4.125A1.125 1.125 0 0 1 3 20.625v-5.17c0-1.08.768-2.014 1.837-2.174A47.78 47.78 0 0 1 6 13.12"
+            />
+        </svg>
+    );
+}
+
+function HealthIcon({ className }: { className?: string }) {
+    return (
+        <svg
+            className={className}
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+            />
+        </svg>
+    );
+}
+
+function PlaygroundIcon({ className }: { className?: string }) {
+    return (
+        <svg
+            className={className}
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z"
+            />
+        </svg>
+    );
+}
