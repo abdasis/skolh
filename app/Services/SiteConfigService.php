@@ -54,12 +54,7 @@ class SiteConfigService
             ['label' => 'Daftar Sekarang', 'href' => '#kontak', 'variant' => 'primary'],
             ['label' => 'Program Kami', 'href' => '#program', 'variant' => 'secondary'],
         ],
-        'stats' => [
-            ['value' => '500+', 'label' => 'Siswa Aktif'],
-            ['value' => '50+', 'label' => 'Pendidik'],
-            ['value' => '15+', 'label' => 'Tahun Berdiri'],
-            ['value' => '98%', 'label' => 'Kelulusan'],
-        ],
+        'stats' => [],
     ];
 
     /**

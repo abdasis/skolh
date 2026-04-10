@@ -412,19 +412,27 @@ const Welcome = ({
                                         <div className="absolute -bottom-3 -left-3 h-14 w-14 rotate-45 rounded-2xl bg-gray-800 dark:bg-gray-800/80" />
                                         <div className="absolute right-4 bottom-1/2 h-8 w-8 rounded-full border-2 border-gray-700 dark:border-gray-700/80" />
 
-                                        <div className="relative z-10 flex items-baseline gap-1">
-                                            <span className="text-4xl font-extrabold text-white">
-                                                500
-                                            </span>
-                                            <span className="text-base font-semibold text-emerald-400">
-                                                +Siswa
-                                            </span>
-                                        </div>
-                                        <p className="relative z-10 mt-3 flex-1 text-xs leading-relaxed text-gray-400">
-                                            Siswa berprestasi yang telah
-                                            dibimbing dengan kurikulum terpadu
-                                            berbasis nilai-nilai Islam.
-                                        </p>
+                                        {siteConfig?.hero?.stats &&
+                                            siteConfig.hero.stats.length >
+                                                0 && (
+                                                <div className="relative z-10 flex flex-col gap-3">
+                                                    {siteConfig.hero.stats.map(
+                                                        (stat) => (
+                                                            <div
+                                                                key={stat.label}
+                                                                className="flex items-baseline gap-1"
+                                                            >
+                                                                <span className="text-2xl font-extrabold text-white">
+                                                                    {stat.value}
+                                                                </span>
+                                                                <span className="text-xs font-semibold text-emerald-400">
+                                                                    {stat.label}
+                                                                </span>
+                                                            </div>
+                                                        ),
+                                                    )}
+                                                </div>
+                                            )}
                                     </div>
                                 </div>
                             </div>
