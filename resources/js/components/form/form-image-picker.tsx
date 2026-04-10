@@ -32,7 +32,10 @@ const FormImagePicker = ({
 }: FormImagePickerProps) => {
     const inputId = id ?? label.toLowerCase().replace(/\s+/g, '-');
     const [open, setOpen] = useState(false);
-    const { files, loading, uploading, upload } = useMediaFiles(folder, open);
+    const { files, loading, uploading, uploadProgress, upload } = useMediaFiles(
+        folder,
+        open,
+    );
 
     const handleSelect = (urls: string[]) => {
         onChange(urls[0] ?? null);
@@ -41,7 +44,9 @@ const FormImagePicker = ({
 
     return (
         <div className="grid gap-2">
-            <FormLabel htmlFor={inputId} required={required}>{label}</FormLabel>
+            <FormLabel htmlFor={inputId} required={required}>
+                {label}
+            </FormLabel>
             <Button
                 id={inputId}
                 type="button"
@@ -51,11 +56,16 @@ const FormImagePicker = ({
                 className={cn(
                     'w-full justify-start gap-2 font-normal',
                     !value && 'text-muted-foreground',
-                    error && 'border-rose-500 focus-visible:border-rose-500 focus-visible:ring-rose-500/20',
+                    error &&
+                        'border-rose-500 focus-visible:border-rose-500 focus-visible:ring-rose-500/20',
                 )}
             >
                 {value ? (
-                    <img src={value} alt="preview" className="h-5 w-5 rounded object-cover" />
+                    <img
+                        src={value}
+                        alt="preview"
+                        className="h-5 w-5 rounded object-cover"
+                    />
                 ) : (
                     <ImageIcon className="size-4 shrink-0" />
                 )}
@@ -67,12 +77,15 @@ const FormImagePicker = ({
                     <img
                         src={value}
                         alt="Preview"
-                        className={cn('rounded-md object-cover', previewClassName ?? 'h-32 w-auto')}
+                        className={cn(
+                            'rounded-md object-cover',
+                            previewClassName ?? 'h-32 w-auto',
+                        )}
                     />
                     <button
                         type="button"
                         onClick={() => onChange(null)}
-                        className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-destructive-foreground ring-1 ring-background"
+                        className="text-destructive-foreground absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-destructive ring-1 ring-background"
                     >
                         <X className="size-3" />
                     </button>
@@ -90,6 +103,7 @@ const FormImagePicker = ({
                 files={files}
                 loading={loading}
                 uploading={uploading}
+                uploadProgress={uploadProgress}
                 onUpload={upload}
             />
         </div>

@@ -1,5 +1,13 @@
 import { useRef, useState } from 'react';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -18,6 +26,7 @@ interface ImagePickerModalProps {
     files: MediaFileResource[];
     loading: boolean;
     uploading: boolean;
+    uploadProgress?: number;
     onUpload: (file: File) => Promise<void>;
     title?: string;
 }
@@ -43,6 +52,7 @@ const ImagePickerModal = ({
     files,
     loading,
     uploading,
+    uploadProgress = 0,
     onUpload,
     title = 'Pilih Gambar',
 }: ImagePickerModalProps) => {
@@ -52,9 +62,10 @@ const ImagePickerModal = ({
     const uploadInputRef = useRef<HTMLInputElement>(null);
 
     const filtered = search.trim()
-        ? files.filter((f) =>
-              f.name.toLowerCase().includes(search.toLowerCase()) ||
-              f.path.toLowerCase().includes(search.toLowerCase()),
+        ? files.filter(
+              (f) =>
+                  f.name.toLowerCase().includes(search.toLowerCase()) ||
+                  f.path.toLowerCase().includes(search.toLowerCase()),
           )
         : files;
 
@@ -81,7 +92,9 @@ const ImagePickerModal = ({
         setSelected(new Set());
     };
 
-    const handleUploadChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleUploadChange = async (
+        e: React.ChangeEvent<HTMLInputElement>,
+    ) => {
         const file = e.target.files?.[0];
         if (!file) {
             return;
@@ -101,20 +114,33 @@ const ImagePickerModal = ({
     };
 
     return (
-        <Dialog open={open} onOpenChange={(o) => { if (!o) { handleClose(); } }}>
+        <Dialog
+            open={open}
+            onOpenChange={(o) => {
+                if (!o) {
+                    handleClose();
+                }
+            }}
+        >
             <DialogContent
                 showCloseButton={false}
-                className="w-full sm:max-w-4xl overflow-hidden rounded-2xl border-0 bg-gradient-to-b from-muted/60 to-muted/30 p-2 shadow-xl ring-1 ring-foreground/8 backdrop-blur-sm"
+                className="w-full overflow-hidden rounded-2xl border-0 bg-gradient-to-b from-muted/60 to-muted/30 p-2 shadow-xl ring-1 ring-foreground/8 backdrop-blur-sm sm:max-w-4xl"
             >
                 <div className="flex flex-col gap-0 overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
-
                     <DialogHeader className="flex flex-row items-center justify-between gap-2 border-b border-foreground/6 bg-muted/30 px-5 py-4">
                         <div className="flex flex-col gap-0.5">
                             <DialogTitle>{title}</DialogTitle>
-                            <DialogDescription>Pilih dari galeri atau upload gambar baru.</DialogDescription>
+                            <DialogDescription>
+                                Pilih dari galeri atau upload gambar baru.
+                            </DialogDescription>
                         </div>
                         <DialogClose asChild>
-                            <Button variant="ghost" size="icon" className="size-7 shrink-0" onClick={handleClose}>
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="size-7 shrink-0"
+                                onClick={handleClose}
+                            >
                                 <X className="size-4" />
                                 <span className="sr-only">Tutup</span>
                             </Button>
@@ -123,24 +149,34 @@ const ImagePickerModal = ({
 
                     <div className="max-h-[70vh] overflow-y-auto">
                         <div className="p-5">
-                            <Tabs value={activeTab} onValueChange={setActiveTab}>
+                            <Tabs
+                                value={activeTab}
+                                onValueChange={setActiveTab}
+                            >
                                 <div className="flex items-center gap-3">
                                     <TabsList>
-                                        <TabsTrigger value="browse">Pilih Foto</TabsTrigger>
-                                        <TabsTrigger value="upload">Upload Baru</TabsTrigger>
+                                        <TabsTrigger value="browse">
+                                            Pilih Foto
+                                        </TabsTrigger>
+                                        <TabsTrigger value="upload">
+                                            Upload Baru
+                                        </TabsTrigger>
                                     </TabsList>
                                     {activeTab === 'browse' && (
                                         <>
                                             <Input
                                                 placeholder="Cari nama atau folder..."
                                                 value={search}
-                                                onChange={(e) => setSearch(e.target.value)}
+                                                onChange={(e) =>
+                                                    setSearch(e.target.value)
+                                                }
                                                 className="h-8 max-w-xs"
                                             />
                                             {!loading && (
                                                 <span className="ml-auto shrink-0 text-xs text-muted-foreground">
                                                     {filtered.length} gambar
-                                                    {search && ` dari ${files.length}`}
+                                                    {search &&
+                                                        ` dari ${files.length}`}
                                                 </span>
                                             )}
                                         </>
@@ -151,9 +187,14 @@ const ImagePickerModal = ({
                                     <ScrollArea className="h-[420px] pr-1">
                                         {loading ? (
                                             <div className="grid grid-cols-4 gap-2 md:grid-cols-6">
-                                                {Array.from({ length: 12 }).map((_, i) => (
-                                                    <Skeleton key={i} className="aspect-square rounded-md" />
-                                                ))}
+                                                {Array.from({ length: 12 }).map(
+                                                    (_, i) => (
+                                                        <Skeleton
+                                                            key={i}
+                                                            className="aspect-square rounded-md"
+                                                        />
+                                                    ),
+                                                )}
                                             </div>
                                         ) : filtered.length === 0 ? (
                                             <div className="flex h-64 flex-col items-center justify-center gap-2 text-muted-foreground">
@@ -167,12 +208,17 @@ const ImagePickerModal = ({
                                         ) : (
                                             <div className="grid grid-cols-4 gap-2 md:grid-cols-6">
                                                 {filtered.map((file) => {
-                                                    const isSelected = selected.has(file.url);
+                                                    const isSelected =
+                                                        selected.has(file.url);
                                                     return (
                                                         <button
                                                             key={file.path}
                                                             type="button"
-                                                            onClick={() => handleThumbnailClick(file.url)}
+                                                            onClick={() =>
+                                                                handleThumbnailClick(
+                                                                    file.url,
+                                                                )
+                                                            }
                                                             className={cn(
                                                                 'group relative aspect-square overflow-hidden rounded-md ring-2 transition-all',
                                                                 isSelected
@@ -188,14 +234,18 @@ const ImagePickerModal = ({
 
                                                             {/* Overlay info saat hover */}
                                                             <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/70 via-black/20 to-transparent p-1.5 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                                                                <p className="truncate text-[10px] font-medium leading-tight text-white">
+                                                                <p className="truncate text-[10px] leading-tight font-medium text-white">
                                                                     {file.name}
                                                                 </p>
                                                                 <p className="text-[9px] leading-tight text-white/70">
-                                                                    {formatBytes(file.size)}
+                                                                    {formatBytes(
+                                                                        file.size,
+                                                                    )}
                                                                 </p>
                                                                 <p className="truncate text-[9px] leading-tight text-white/60">
-                                                                    {folderLabel(file.path)}
+                                                                    {folderLabel(
+                                                                        file.path,
+                                                                    )}
                                                                 </p>
                                                             </div>
 
@@ -218,15 +268,20 @@ const ImagePickerModal = ({
                                         htmlFor="media-upload-input"
                                         className={cn(
                                             'flex h-48 cursor-pointer flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed border-muted-foreground/30 transition-colors hover:border-primary/50 hover:bg-muted/50',
-                                            uploading && 'pointer-events-none opacity-60',
+                                            uploading &&
+                                                'pointer-events-none opacity-60',
                                         )}
                                     >
                                         <Upload className="size-8 text-muted-foreground" />
                                         <div className="text-center">
                                             <p className="text-sm font-medium">
-                                                {uploading ? 'Mengupload...' : 'Klik untuk memilih gambar'}
+                                                {uploading
+                                                    ? 'Mengupload...'
+                                                    : 'Klik untuk memilih gambar'}
                                             </p>
-                                            <p className="text-xs text-muted-foreground">JPG, PNG, WEBP — maks. 4MB</p>
+                                            <p className="text-xs text-muted-foreground">
+                                                JPG, PNG, WEBP — maks. 4MB
+                                            </p>
                                         </div>
                                         <input
                                             ref={uploadInputRef}
@@ -238,6 +293,23 @@ const ImagePickerModal = ({
                                             disabled={uploading}
                                         />
                                     </label>
+
+                                    {uploading && uploadProgress > 0 && (
+                                        <div className="mt-3 space-y-1.5">
+                                            <div className="flex items-center justify-between text-xs text-muted-foreground">
+                                                <span>Mengupload...</span>
+                                                <span>{uploadProgress}%</span>
+                                            </div>
+                                            <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
+                                                <div
+                                                    className="h-full rounded-full bg-primary transition-all duration-300"
+                                                    style={{
+                                                        width: `${uploadProgress}%`,
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
                                 </TabsContent>
                             </Tabs>
                         </div>
@@ -246,14 +318,18 @@ const ImagePickerModal = ({
                     {mode === 'multiple' && selected.size > 0 && (
                         <DialogFooter className="-mx-0 -mb-0 rounded-b-xl border-t border-foreground/6 bg-muted/30 px-5 py-4">
                             <DialogClose asChild>
-                                <Button variant="outline" onClick={handleClose}>Batal</Button>
+                                <Button variant="outline" onClick={handleClose}>
+                                    Batal
+                                </Button>
                             </DialogClose>
-                            <Button type="button" onClick={handleConfirmMultiple}>
+                            <Button
+                                type="button"
+                                onClick={handleConfirmMultiple}
+                            >
                                 Pilih ({selected.size})
                             </Button>
                         </DialogFooter>
                     )}
-
                 </div>
             </DialogContent>
         </Dialog>

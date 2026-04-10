@@ -127,6 +127,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         ->name('gallery-images.destroy');
     Route::get('media', [AdminMediaController::class, 'index'])->name('media.index');
     Route::post('media', [AdminMediaController::class, 'store'])->name('media.store');
+    Route::post('media/chunks', [AdminMediaController::class, 'uploadChunk'])->name('media.chunks');
     Route::get('themes', [AdminThemeController::class, 'index'])->name('themes.index');
     Route::post('themes/{slug}/activate', [AdminThemeController::class, 'activate'])->name('themes.activate');
     Route::post('testimonials/reorder', [AdminTestimonialController::class, 'reorder'])->name('testimonials.reorder');

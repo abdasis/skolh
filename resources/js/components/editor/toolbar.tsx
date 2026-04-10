@@ -100,7 +100,7 @@ const ToolbarDivider = () => (
 
 const Toolbar = ({ editor, folder = 'editor' }: ToolbarProps) => {
     const [imagePickerOpen, setImagePickerOpen] = useState(false);
-    const { files, loading, uploading, upload } = useMediaFiles(
+    const { files, loading, uploading, uploadProgress, upload } = useMediaFiles(
         folder,
         imagePickerOpen,
     );
@@ -464,6 +464,7 @@ const Toolbar = ({ editor, folder = 'editor' }: ToolbarProps) => {
                 files={files}
                 loading={loading}
                 uploading={uploading}
+                uploadProgress={uploadProgress}
                 onUpload={upload}
                 title="Sisipkan Gambar"
             />

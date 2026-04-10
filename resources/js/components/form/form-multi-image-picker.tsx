@@ -30,7 +30,10 @@ const FormMultiImagePicker = ({
 }: FormMultiImagePickerProps) => {
     const inputId = id ?? label.toLowerCase().replace(/\s+/g, '-');
     const [open, setOpen] = useState(false);
-    const { files, loading, uploading, upload } = useMediaFiles(folder, open);
+    const { files, loading, uploading, uploadProgress, upload } = useMediaFiles(
+        folder,
+        open,
+    );
 
     const handleSelect = (urls: string[]) => {
         // merge dan deduplikasi berdasarkan URL
@@ -45,7 +48,9 @@ const FormMultiImagePicker = ({
 
     return (
         <div className="grid gap-2">
-            <FormLabel htmlFor={inputId} required={required}>{label}</FormLabel>
+            <FormLabel htmlFor={inputId} required={required}>
+                {label}
+            </FormLabel>
             <Button
                 id={inputId}
                 type="button"
@@ -55,11 +60,14 @@ const FormMultiImagePicker = ({
                 className={cn(
                     'w-full justify-start gap-2 font-normal',
                     value.length === 0 && 'text-muted-foreground',
-                    error && 'border-rose-500 focus-visible:border-rose-500 focus-visible:ring-rose-500/20',
+                    error &&
+                        'border-rose-500 focus-visible:border-rose-500 focus-visible:ring-rose-500/20',
                 )}
             >
                 <Images className="size-4 shrink-0" />
-                {value.length > 0 ? `${value.length} gambar dipilih — Tambah / Ubah` : 'Pilih Gambar...'}
+                {value.length > 0
+                    ? `${value.length} gambar dipilih — Tambah / Ubah`
+                    : 'Pilih Gambar...'}
             </Button>
 
             {value.length > 0 && (
@@ -74,7 +82,7 @@ const FormMultiImagePicker = ({
                             <button
                                 type="button"
                                 onClick={() => handleRemove(url)}
-                                className="absolute -right-1.5 -top-1.5 hidden h-5 w-5 items-center justify-center rounded-full bg-destructive text-destructive-foreground ring-1 ring-background group-hover:flex"
+                                className="text-destructive-foreground absolute -top-1.5 -right-1.5 hidden h-5 w-5 items-center justify-center rounded-full bg-destructive ring-1 ring-background group-hover:flex"
                             >
                                 <X className="size-3" />
                             </button>
@@ -94,6 +102,7 @@ const FormMultiImagePicker = ({
                 files={files}
                 loading={loading}
                 uploading={uploading}
+                uploadProgress={uploadProgress}
                 onUpload={upload}
                 title="Pilih Foto"
             />
