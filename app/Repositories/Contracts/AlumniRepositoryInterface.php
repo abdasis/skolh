@@ -20,4 +20,9 @@ interface AlumniRepositoryInterface
      * @return Collection<int, Alumni>
      */
     public function forWelcomePage(): Collection;
+
+    /**
+     * @return Collection<int, Alumni>
+     */
+    public function forPublicPage(): Collection;
 }

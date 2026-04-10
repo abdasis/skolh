@@ -48,6 +48,7 @@ use App\Http\Controllers\ContactPageController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\InstallController;
+use App\Http\Controllers\Public\PublicAlumniController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -76,6 +77,7 @@ Route::get('/organization', OrganizationController::class)->name('organization.i
 Route::get('/teachers', PublicTeacherController::class)->name('teachers.index');
 Route::get('/visi-misi', PublicVisiMisiController::class)->name('visi-misi.index');
 Route::get('/sejarah', PublicSchoolHistoryController::class)->name('sejarah.index');
+Route::get('/alumni', PublicAlumniController::class)->name('alumni.index');
 Route::get('/gallery', [GalleryAlbumController::class, 'index'])->name('gallery.index');
 Route::get('/gallery/{galleryAlbum:slug}', [GalleryAlbumController::class, 'show'])->name('gallery.show');
 

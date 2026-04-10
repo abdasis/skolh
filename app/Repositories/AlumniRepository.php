@@ -45,4 +45,16 @@ final class AlumniRepository implements AlumniRepositoryInterface
             ->limit(4)
             ->get();
     }
+
+    /**
+     * @return Collection<int, Alumni>
+     */
+    public function forPublicPage(): Collection
+    {
+        return Alumni::query()
+            ->with('socials')
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->get();
+    }
 }
