@@ -10,16 +10,17 @@ import type {
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type DashboardProps = {
     auth: Auth;
-    totalStudents: number;
-    totalTeachers: number;
-    todayAgendas: DashboardAgenda[];
-    recentAnnouncements: DashboardAnnouncement[];
-    recentAchievements: DashboardAchievement[];
-    totalReports: number;
-    reportSummary: DashboardReportSummary[];
+    totalStudents?: number;
+    totalTeachers?: number;
+    todayAgendas?: DashboardAgenda[];
+    recentAnnouncements?: DashboardAnnouncement[];
+    recentAchievements?: DashboardAchievement[];
+    totalReports?: number;
+    reportSummary?: DashboardReportSummary[];
 };
 
 function getGreeting(): string {
@@ -73,6 +74,15 @@ const Dashboard = () => {
         totalReports,
         reportSummary,
     } = usePage<DashboardProps>().props;
+
+    const isLoading =
+        totalStudents === undefined ||
+        totalTeachers === undefined ||
+        todayAgendas === undefined ||
+        recentAnnouncements === undefined ||
+        recentAchievements === undefined ||
+        totalReports === undefined ||
+        reportSummary === undefined;
 
     return (
         <>
@@ -139,78 +149,111 @@ const Dashboard = () => {
                 </div>
 
                 {/* Stats Cards */}
-                <div className="grid grid-cols-2 gap-2 px-2 lg:grid-cols-4">
-                    {[
-                        {
-                            title: 'Total Siswa',
-                            value: totalStudents.toString(),
-                            sub: 'Siswa aktif',
-                            icon: StudentsIcon,
-                            iconColor: 'text-emerald-600 dark:text-emerald-400',
-                            bgColor: 'bg-emerald-50 dark:bg-emerald-950/50',
-                            valueColor: '',
-                        },
-                        {
-                            title: 'Total Guru',
-                            value: totalTeachers.toString(),
-                            sub: 'Guru aktif',
-                            icon: TeachersIcon,
-                            iconColor: 'text-blue-600 dark:text-blue-400',
-                            bgColor: 'bg-blue-50 dark:bg-blue-950/50',
-                            valueColor: '',
-                        },
-                        {
-                            title: 'Kelas Aktif',
-                            value: '18',
-                            sub: '6 tingkat',
-                            icon: ClassIcon,
-                            iconColor: 'text-orange-600 dark:text-orange-400',
-                            bgColor: 'bg-orange-50 dark:bg-orange-950/50',
-                            valueColor: '',
-                        },
-                        {
-                            title: 'Kehadiran Hari Ini',
-                            value: '96%',
-                            sub: 'Rata-rata kehadiran',
-                            icon: AttendanceIcon,
-                            iconColor: 'text-teal-600 dark:text-teal-400',
-                            bgColor: 'bg-teal-50 dark:bg-teal-950/50',
-                            valueColor: 'text-teal-700 dark:text-teal-400',
-                        },
-                    ].map((card) => (
-                        <div
-                            key={card.title}
-                            className="overflow-hidden rounded-2xl bg-gradient-to-b from-muted/60 to-muted/30 p-1 ring-1 ring-foreground/8"
-                        >
-                            <div className="px-4 pt-3 pb-3">
-                                <p className="text-xs font-medium text-muted-foreground">
-                                    {card.title}
-                                </p>
-                            </div>
-                            <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
-                                <div className="flex items-center gap-3 p-4">
-                                    <div
-                                        className={`shrink-0 rounded-lg p-2.5 ${card.bgColor}`}
-                                    >
-                                        <card.icon
-                                            className={`h-5 w-5 ${card.iconColor}`}
-                                        />
-                                    </div>
-                                    <div className="min-w-0 flex-1">
-                                        <p
-                                            className={`text-2xl leading-tight font-bold ${card.valueColor}`}
-                                        >
-                                            {card.value}
-                                        </p>
-                                        <p className="truncate text-xs text-muted-foreground">
-                                            {card.sub}
-                                        </p>
+                {isLoading ? (
+                    <div className="grid grid-cols-2 gap-2 px-2 lg:grid-cols-4">
+                        {[
+                            'Total Siswa',
+                            'Total Guru',
+                            'Kelas Aktif',
+                            'Kehadiran Hari Ini',
+                        ].map((label) => (
+                            <div
+                                key={label}
+                                className="overflow-hidden rounded-2xl bg-gradient-to-b from-muted/60 to-muted/30 p-1 ring-1 ring-foreground/8"
+                            >
+                                <div className="px-4 pt-3 pb-3">
+                                    <p className="text-xs font-medium text-muted-foreground">
+                                        {label}
+                                    </p>
+                                </div>
+                                <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
+                                    <div className="flex items-center gap-3 p-4">
+                                        <Skeleton className="size-10 shrink-0 rounded-lg" />
+                                        <div className="min-w-0 flex-1 space-y-2">
+                                            <Skeleton className="h-7 w-12 rounded-md" />
+                                            <Skeleton className="h-3 w-3/4 rounded-md" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-2 gap-2 px-2 lg:grid-cols-4">
+                        {[
+                            {
+                                title: 'Total Siswa',
+                                value: (totalStudents ?? 0).toString(),
+                                sub: 'Siswa aktif',
+                                icon: StudentsIcon,
+                                iconColor:
+                                    'text-emerald-600 dark:text-emerald-400',
+                                bgColor: 'bg-emerald-50 dark:bg-emerald-950/50',
+                                valueColor: '',
+                            },
+                            {
+                                title: 'Total Guru',
+                                value: (totalTeachers ?? 0).toString(),
+                                sub: 'Guru aktif',
+                                icon: TeachersIcon,
+                                iconColor: 'text-blue-600 dark:text-blue-400',
+                                bgColor: 'bg-blue-50 dark:bg-blue-950/50',
+                                valueColor: '',
+                            },
+                            {
+                                title: 'Kelas Aktif',
+                                value: '18',
+                                sub: '6 tingkat',
+                                icon: ClassIcon,
+                                iconColor:
+                                    'text-orange-600 dark:text-orange-400',
+                                bgColor: 'bg-orange-50 dark:bg-orange-950/50',
+                                valueColor: '',
+                            },
+                            {
+                                title: 'Kehadiran Hari Ini',
+                                value: '96%',
+                                sub: 'Rata-rata kehadiran',
+                                icon: AttendanceIcon,
+                                iconColor: 'text-teal-600 dark:text-teal-400',
+                                bgColor: 'bg-teal-50 dark:bg-teal-950/50',
+                                valueColor: 'text-teal-700 dark:text-teal-400',
+                            },
+                        ].map((card) => (
+                            <div
+                                key={card.title}
+                                className="overflow-hidden rounded-2xl bg-gradient-to-b from-muted/60 to-muted/30 p-1 ring-1 ring-foreground/8"
+                            >
+                                <div className="px-4 pt-3 pb-3">
+                                    <p className="text-xs font-medium text-muted-foreground">
+                                        {card.title}
+                                    </p>
+                                </div>
+                                <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
+                                    <div className="flex items-center gap-3 p-4">
+                                        <div
+                                            className={`shrink-0 rounded-lg p-2.5 ${card.bgColor}`}
+                                        >
+                                            <card.icon
+                                                className={`h-5 w-5 ${card.iconColor}`}
+                                            />
+                                        </div>
+                                        <div className="min-w-0 flex-1">
+                                            <p
+                                                className={`text-2xl leading-tight font-bold ${card.valueColor}`}
+                                            >
+                                                {card.value}
+                                            </p>
+                                            <p className="truncate text-xs text-muted-foreground">
+                                                {card.sub}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
 
                 {/* Two column layout */}
                 <div className="grid gap-4 lg:grid-cols-3">
@@ -227,41 +270,43 @@ const Dashboard = () => {
                                     </p>
                                 </div>
                                 <Badge variant="outline" className="text-xs">
-                                    {todayAgendas.length} kegiatan
+                                    {(todayAgendas ?? []).length} kegiatan
                                 </Badge>
                             </div>
                             <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
-                                {todayAgendas.length === 0 ? (
+                                {(todayAgendas ?? []).length === 0 ? (
                                     <div className="px-5 py-8 text-center text-sm text-muted-foreground">
                                         Tidak ada agenda hari ini
                                     </div>
                                 ) : (
                                     <div className="divide-y divide-foreground/6">
-                                        {todayAgendas.map((agenda, index) => (
-                                            <div
-                                                key={agenda.id}
-                                                className="flex items-start gap-4 px-5 py-4"
-                                            >
-                                                <div className="flex flex-col items-center gap-1">
-                                                    <span className="text-sm font-bold tabular-nums">
-                                                        {agenda.time}
-                                                    </span>
-                                                    <div
-                                                        className={`h-2 w-2 rounded-full ${AGENDA_COLORS[index % AGENDA_COLORS.length]}`}
-                                                    />
-                                                </div>
-                                                <div className="min-w-0 flex-1">
-                                                    <p className="truncate text-sm font-semibold">
-                                                        {agenda.title}
-                                                    </p>
-                                                    {agenda.desc && (
-                                                        <p className="mt-0.5 truncate text-xs text-muted-foreground">
-                                                            {agenda.desc}
+                                        {(todayAgendas ?? []).map(
+                                            (agenda, index) => (
+                                                <div
+                                                    key={agenda.id}
+                                                    className="flex items-start gap-4 px-5 py-4"
+                                                >
+                                                    <div className="flex flex-col items-center gap-1">
+                                                        <span className="text-sm font-bold tabular-nums">
+                                                            {agenda.time}
+                                                        </span>
+                                                        <div
+                                                            className={`h-2 w-2 rounded-full ${AGENDA_COLORS[index % AGENDA_COLORS.length]}`}
+                                                        />
+                                                    </div>
+                                                    <div className="min-w-0 flex-1">
+                                                        <p className="truncate text-sm font-semibold">
+                                                            {agenda.title}
                                                         </p>
-                                                    )}
+                                                        {agenda.desc && (
+                                                            <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                                                                {agenda.desc}
+                                                            </p>
+                                                        )}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        ))}
+                                            ),
+                                        )}
                                     </div>
                                 )}
                             </div>
@@ -284,29 +329,31 @@ const Dashboard = () => {
                                     variant="default"
                                     className="bg-orange-500 text-[10px] text-white hover:bg-orange-600"
                                 >
-                                    {recentAnnouncements.length} terbaru
+                                    {(recentAnnouncements ?? []).length} terbaru
                                 </Badge>
                             </div>
                             <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
-                                {recentAnnouncements.length === 0 ? (
+                                {(recentAnnouncements ?? []).length === 0 ? (
                                     <div className="px-5 py-8 text-center text-sm text-muted-foreground">
                                         Belum ada pengumuman
                                     </div>
                                 ) : (
                                     <div className="divide-y divide-foreground/6">
-                                        {recentAnnouncements.map((item) => (
-                                            <div
-                                                key={item.id}
-                                                className="px-5 py-4"
-                                            >
-                                                <p className="text-sm leading-snug font-semibold">
-                                                    {item.title}
-                                                </p>
-                                                <p className="mt-1 text-xs text-muted-foreground">
-                                                    {item.date}
-                                                </p>
-                                            </div>
-                                        ))}
+                                        {(recentAnnouncements ?? []).map(
+                                            (item) => (
+                                                <div
+                                                    key={item.id}
+                                                    className="px-5 py-4"
+                                                >
+                                                    <p className="text-sm leading-snug font-semibold">
+                                                        {item.title}
+                                                    </p>
+                                                    <p className="mt-1 text-xs text-muted-foreground">
+                                                        {item.date}
+                                                    </p>
+                                                </div>
+                                            ),
+                                        )}
                                     </div>
                                 )}
                             </div>
@@ -328,18 +375,18 @@ const Dashboard = () => {
                                 </p>
                             </div>
                             <Badge variant="outline" className="text-xs">
-                                {totalReports} total
+                                {totalReports ?? 0} total
                             </Badge>
                         </div>
                         <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
                             <div className="p-5">
-                                {totalReports === 0 ? (
+                                {(totalReports ?? 0) === 0 ? (
                                     <p className="py-4 text-center text-sm text-muted-foreground">
                                         Belum ada laporan masuk
                                     </p>
                                 ) : (
                                     <div className="space-y-4">
-                                        {reportSummary.map((item) => (
+                                        {(reportSummary ?? []).map((item) => (
                                             <div key={item.status}>
                                                 <div className="mb-1.5 flex items-center justify-between">
                                                     <div className="flex items-center gap-2">
@@ -356,9 +403,10 @@ const Dashboard = () => {
                                                 </div>
                                                 <Progress
                                                     value={
-                                                        totalReports > 0
+                                                        (totalReports ?? 0) > 0
                                                             ? (item.count /
-                                                                  totalReports) *
+                                                                  (totalReports ??
+                                                                      1)) *
                                                               100
                                                             : 0
                                                     }
@@ -385,13 +433,13 @@ const Dashboard = () => {
                             </div>
                         </div>
                         <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
-                            {recentAchievements.length === 0 ? (
+                            {(recentAchievements ?? []).length === 0 ? (
                                 <div className="px-5 py-8 text-center text-sm text-muted-foreground">
                                     Belum ada prestasi tercatat
                                 </div>
                             ) : (
                                 <div className="divide-y divide-foreground/6">
-                                    {recentAchievements.map((item) => (
+                                    {(recentAchievements ?? []).map((item) => (
                                         <div
                                             key={item.id}
                                             className="flex items-center gap-3 px-5 py-3.5"
