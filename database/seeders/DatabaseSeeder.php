@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             AgendaSeeder::class,
             CurriculumSeeder::class,
             GallerySeeder::class,
+            MajorSeeder::class,
         ]);
 
         // User::factory(10)->create();
