@@ -9,6 +9,13 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog';
+import {
     ChevronRight,
     ChevronDown,
     GripVertical,
@@ -16,6 +23,9 @@ import {
     Trash2,
     ArrowRight,
     ArrowLeft,
+    BookOpen,
+    Copy,
+    Check,
 } from 'lucide-react';
 import type { SiteNavItem, FooterGroup } from '@/types/site-config';
 
@@ -27,6 +37,129 @@ interface FlatItem {
 }
 
 const MAX_DEPTH = 3;
+
+const PUBLIC_LINKS = [
+    { label: 'Beranda', href: '/', description: 'Halaman utama' },
+    {
+        label: 'Pengumuman',
+        href: '/announcements',
+        description: 'Daftar pengumuman',
+    },
+    {
+        label: 'Artikel',
+        href: '/articles',
+        description: 'Daftar artikel / berita',
+    },
+    {
+        label: 'Prestasi',
+        href: '/achievements',
+        description: 'Daftar prestasi sekolah',
+    },
+    {
+        label: 'Ekstrakurikuler',
+        href: '/extracurriculars',
+        description: 'Daftar ekstrakurikuler',
+    },
+    {
+        label: 'Fasilitas',
+        href: '/facilities',
+        description: 'Daftar fasilitas',
+    },
+    { label: 'Jurusan', href: '/majors', description: 'Daftar jurusan' },
+    { label: 'Kurikulum', href: '/curricula', description: 'Daftar kurikulum' },
+    { label: 'Galeri', href: '/gallery', description: 'Galeri foto' },
+    { label: 'Alumni', href: '/alumni', description: 'Halaman publik alumni' },
+    {
+        label: 'Guru & Staf',
+        href: '/teachers',
+        description: 'Daftar guru dan staf',
+    },
+    {
+        label: 'Struktur Organisasi',
+        href: '/organization',
+        description: 'Bagan organisasi sekolah',
+    },
+    {
+        label: 'Visi & Misi',
+        href: '/visi-misi',
+        description: 'Visi dan misi sekolah',
+    },
+    { label: 'Sejarah', href: '/sejarah', description: 'Sejarah sekolah' },
+    { label: 'Kontak', href: '/contact', description: 'Halaman kontak' },
+    {
+        label: 'Pendaftaran (PPDB)',
+        href: '/admission',
+        description: 'Formulir pendaftaran siswa baru',
+    },
+    {
+        label: 'Laporan',
+        href: '/reports/submit',
+        description: 'Form pengaduan / laporan',
+    },
+];
+
+const PublicLinksModal = () => {
+    const [copied, setCopied] = useState<string | null>(null);
+
+    const handleCopy = (href: string) => {
+        navigator.clipboard.writeText(href);
+        setCopied(href);
+        setTimeout(() => setCopied(null), 1500);
+    };
+
+    return (
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button type="button" variant="outline" size="sm">
+                    <BookOpen className="mr-1.5 h-3.5 w-3.5" />
+                    Panduan Link
+                </Button>
+            </DialogTrigger>
+            <DialogContent className="max-h-[80vh] overflow-y-auto sm:max-w-lg">
+                <DialogHeader>
+                    <DialogTitle>Link Halaman Publik</DialogTitle>
+                </DialogHeader>
+                <p className="text-sm text-muted-foreground">
+                    Salin link di bawah ini ke kolom URL pada item navigasi.
+                </p>
+                <div className="mt-2 divide-y rounded-xl border">
+                    {PUBLIC_LINKS.map((link) => (
+                        <div
+                            key={link.href}
+                            className="flex items-center justify-between gap-3 px-4 py-2.5"
+                        >
+                            <div className="min-w-0">
+                                <p className="truncate text-sm font-medium">
+                                    {link.label}
+                                </p>
+                                <p className="truncate text-xs text-muted-foreground">
+                                    {link.description}
+                                </p>
+                            </div>
+                            <div className="flex shrink-0 items-center gap-2">
+                                <code className="rounded bg-muted px-2 py-0.5 text-xs">
+                                    {link.href}
+                                </code>
+                                <button
+                                    type="button"
+                                    onClick={() => handleCopy(link.href)}
+                                    className="rounded p-1 text-muted-foreground transition hover:text-foreground"
+                                    title="Salin link"
+                                >
+                                    {copied === link.href ? (
+                                        <Check className="h-3.5 w-3.5 text-emerald-500" />
+                                    ) : (
+                                        <Copy className="h-3.5 w-3.5" />
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </DialogContent>
+        </Dialog>
+    );
+};
 
 const flattenItems = (
     items: SiteNavItem[],
@@ -547,15 +680,18 @@ const NavigationPage = ({ headerItems, footerGroups }: Props) => {
                             <p className="text-base font-semibold">
                                 Menu Header
                             </p>
-                            <Button
-                                type="button"
-                                variant="outline"
-                                size="sm"
-                                onClick={handleAdd}
-                            >
-                                <Plus className="mr-1.5 h-3.5 w-3.5" />
-                                Tambah Menu
-                            </Button>
+                            <div className="flex items-center gap-2">
+                                <PublicLinksModal />
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={handleAdd}
+                                >
+                                    <Plus className="mr-1.5 h-3.5 w-3.5" />
+                                    Tambah Menu
+                                </Button>
+                            </div>
                         </div>
                         <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
                             <div className="space-y-2 p-5">
