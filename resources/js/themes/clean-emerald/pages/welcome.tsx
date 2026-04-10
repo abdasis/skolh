@@ -365,7 +365,11 @@ const Welcome = ({
                                 {/* Gambar maskot - 3 col */}
                                 <div className="relative min-h-[280px] overflow-hidden rounded-3xl bg-gray-50 lg:col-span-3 dark:bg-gray-800/50">
                                     <img
-                                        src="/images/maskot.png"
+                                        src={
+                                            siteConfig?.about
+                                                ?.mascot_image_url ??
+                                            '/images/maskot.png'
+                                        }
                                         alt={siteConfig?.identity?.name ?? ''}
                                         className="absolute inset-0 h-full w-full object-contain object-bottom"
                                     />

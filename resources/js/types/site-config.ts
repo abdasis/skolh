@@ -52,6 +52,7 @@ export type SiteAbout = {
     heading: string;
     content: string;
     feature_cards: FeatureCard[];
+    mascot_image_url: string | null;
 };
 
 export type SiteNavItem = {

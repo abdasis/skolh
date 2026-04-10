@@ -29,3 +29,4 @@ export type * from './report';
 export type * from './dashboard';
 export type * from './installer';
 export type * from './major';
+export type * from './agenda';
