@@ -77,10 +77,7 @@ class SiteConfigService
      */
     private const DEFAULT_ABOUT = [
         'heading' => 'Pendidikan Berkualitas dengan Nilai-Nilai Islam',
-        'paragraphs' => [
-            'SDIT Al-Aziz adalah sekolah dasar Islam terpadu yang berkomitmen untuk memberikan pendidikan berkualitas tinggi dengan landasan nilai-nilai Islam yang kuat.',
-            'Dengan tenaga pendidik yang profesional dan berpengalaman, kami membimbing setiap siswa untuk mencapai potensi terbaik mereka dalam aspek akademik dan karakter.',
-        ],
+        'content' => '<p>SDIT Al-Aziz adalah sekolah dasar Islam terpadu yang berkomitmen untuk memberikan pendidikan berkualitas tinggi dengan landasan nilai-nilai Islam yang kuat.</p><p>Dengan tenaga pendidik yang profesional dan berpengalaman, kami membimbing setiap siswa untuk mencapai potensi terbaik mereka dalam aspek akademik dan karakter.</p>',
         'feature_cards' => [
             ['icon' => 'BookOpen', 'title' => 'Kurikulum Terpadu', 'description' => 'Kurikulum nasional terintegrasi keislaman', 'stat_value' => '6', 'stat_label' => 'Tahun'],
             ['icon' => 'Heart', 'title' => 'Pembinaan Akhlak', 'description' => 'Pembiasaan ibadah dan akhlak mulia', 'stat_value' => '15+', 'stat_label' => 'Program'],

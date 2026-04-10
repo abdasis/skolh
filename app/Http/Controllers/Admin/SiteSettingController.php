@@ -101,7 +101,7 @@ class SiteSettingController extends Controller
                 'cta_buttons' => [], 'stats' => [],
             ], is_array($hero) ? $hero : []),
             'about' => array_merge([
-                'heading' => '', 'paragraphs' => [], 'feature_cards' => [],
+                'heading' => '', 'content' => '', 'feature_cards' => [],
             ], is_array($about) ? $about : []),
             'cta' => array_merge([
                 'title' => null, 'subtitle' => null,

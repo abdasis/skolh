@@ -305,18 +305,14 @@ const Welcome = ({
                                         {siteConfig.about.heading}
                                     </h2>
                                 )}
-                                {siteConfig?.about?.paragraphs &&
-                                    siteConfig.about.paragraphs.length > 0 &&
-                                    siteConfig.about.paragraphs.map(
-                                        (paragraph, index) => (
-                                            <p
-                                                key={index}
-                                                className="mt-6 text-base leading-relaxed text-gray-600 dark:text-gray-400"
-                                            >
-                                                {paragraph}
-                                            </p>
-                                        ),
-                                    )}
+                                {siteConfig?.about?.content && (
+                                    <div
+                                        className="prose prose-sm dark:prose-invert mt-6 max-w-none text-base leading-relaxed text-gray-600 dark:text-gray-400"
+                                        dangerouslySetInnerHTML={{
+                                            __html: siteConfig.about.content,
+                                        }}
+                                    />
+                                )}
 
                                 {siteConfig?.about?.feature_cards &&
                                     siteConfig.about.feature_cards.length >

@@ -50,7 +50,7 @@ export type FeatureCard = {
 
 export type SiteAbout = {
     heading: string;
-    paragraphs: string[];
+    content: string;
     feature_cards: FeatureCard[];
 };
 

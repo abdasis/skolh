@@ -31,7 +31,7 @@ interface FormData {
     };
     about: {
         heading: string;
-        paragraphs: string[];
+        content: string;
         feature_cards: {
             icon: string;
             title: string;
@@ -75,7 +75,7 @@ const WelcomeContentPage = ({
         },
         about: {
             heading: about.heading ?? '',
-            paragraphs: about.paragraphs ?? [],
+            content: about.content ?? '',
             feature_cards: about.feature_cards ?? [],
         },
         cta: {
