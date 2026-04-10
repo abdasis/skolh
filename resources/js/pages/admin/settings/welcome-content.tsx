@@ -13,6 +13,7 @@ interface Props {
     heroBgImageUrl: string | null;
     heroSideImageUrl: string | null;
     ctaImageUrl: string | null;
+    aboutMascotImageUrl: string | null;
 }
 
 interface FormData {
@@ -43,6 +44,7 @@ interface FormData {
     cta: Omit<SiteCta, 'image_url'>;
     hero_bg_image_url: string | null;
     hero_side_image_url: string | null;
+    about_mascot_image_url: string | null;
     cta_image_url: string | null;
     _method: string;
 }
@@ -54,6 +56,7 @@ const WelcomeContentPage = ({
     heroBgImageUrl,
     heroSideImageUrl,
     ctaImageUrl,
+    aboutMascotImageUrl,
 }: Props) => {
     setLayoutProps({
         breadcrumbs: [
@@ -86,6 +89,7 @@ const WelcomeContentPage = ({
         },
         hero_bg_image_url: heroBgImageUrl,
         hero_side_image_url: heroSideImageUrl,
+        about_mascot_image_url: aboutMascotImageUrl,
         cta_image_url: ctaImageUrl,
         _method: 'PUT',
     });
@@ -102,7 +106,7 @@ const WelcomeContentPage = ({
                 <div className="px-2">
                     <h1 className="text-xl font-semibold">Konten Beranda</h1>
                     <p className="text-sm text-muted-foreground">
-                        Kelola konten seksi hero dan tentang pada halaman
+                        Kelola konten bagian hero dan tentang pada halaman
                         beranda.
                     </p>
                 </div>
@@ -127,8 +131,12 @@ const WelcomeContentPage = ({
 
                     <AboutSection
                         data={data.about}
+                        mascotImageUrl={data.about_mascot_image_url}
                         errors={errors}
                         onChange={(about) => setData('about', about)}
+                        onMascotImageChange={(url) =>
+                            setData('about_mascot_image_url', url)
+                        }
                     />
 
                     <CtaSection

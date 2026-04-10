@@ -41,15 +41,28 @@ const HeroSection = ({
 
     const addCtaButton = () => {
         if (data.cta_buttons.length < 3) {
-            onChange({ ...data, cta_buttons: [...data.cta_buttons, { label: '', href: '', variant: 'primary' }] });
+            onChange({
+                ...data,
+                cta_buttons: [
+                    ...data.cta_buttons,
+                    { label: '', href: '', variant: 'primary' },
+                ],
+            });
         }
     };
 
     const removeCtaButton = (index: number) => {
-        onChange({ ...data, cta_buttons: data.cta_buttons.filter((_, i) => i !== index) });
+        onChange({
+            ...data,
+            cta_buttons: data.cta_buttons.filter((_, i) => i !== index),
+        });
     };
 
-    const updateStat = (index: number, field: 'value' | 'label', value: string) => {
+    const updateStat = (
+        index: number,
+        field: 'value' | 'label',
+        value: string,
+    ) => {
         const stats = [...data.stats];
         stats[index] = { ...stats[index], [field]: value };
         onChange({ ...data, stats });
@@ -57,7 +70,10 @@ const HeroSection = ({
 
     const addStat = () => {
         if (data.stats.length < 6) {
-            onChange({ ...data, stats: [...data.stats, { value: '', label: '' }] });
+            onChange({
+                ...data,
+                stats: [...data.stats, { value: '', label: '' }],
+            });
         }
     };
 
@@ -68,8 +84,10 @@ const HeroSection = ({
     return (
         <div className="overflow-hidden rounded-2xl bg-gradient-to-b from-muted/60 to-muted/30 p-1 ring-1 ring-foreground/8">
             <div className="px-5 py-4">
-                <p className="text-base font-semibold">Seksi Hero</p>
-                <p className="text-sm text-muted-foreground">Konten utama yang tampil paling atas halaman beranda.</p>
+                <p className="text-base font-semibold">Bagian Hero</p>
+                <p className="text-sm text-muted-foreground">
+                    Konten utama yang tampil paling atas halaman beranda.
+                </p>
             </div>
             <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
                 <div className="space-y-5 p-5">
@@ -77,14 +95,21 @@ const HeroSection = ({
                         <FormInput
                             label="Subtitle"
                             value={data.subtitle}
-                            onChange={(e) => onChange({ ...data, subtitle: e.target.value })}
+                            onChange={(e) =>
+                                onChange({ ...data, subtitle: e.target.value })
+                            }
                             placeholder="Pendekatan Baru dalam"
                             error={errors['hero.subtitle']}
                         />
                         <FormInput
                             label="Badge Gambar Samping"
                             value={data.badge_text}
-                            onChange={(e) => onChange({ ...data, badge_text: e.target.value })}
+                            onChange={(e) =>
+                                onChange({
+                                    ...data,
+                                    badge_text: e.target.value,
+                                })
+                            }
                             placeholder="Lingkungan Belajar Islami"
                             description="Teks kecil di bawah gambar samping hero."
                             error={errors['hero.badge_text']}
@@ -95,14 +120,21 @@ const HeroSection = ({
                         <FormInput
                             label="Judul"
                             value={data.title}
-                            onChange={(e) => onChange({ ...data, title: e.target.value })}
+                            onChange={(e) =>
+                                onChange({ ...data, title: e.target.value })
+                            }
                             placeholder="Pendidikan Islam"
                             error={errors['hero.title']}
                         />
                         <FormInput
                             label="Judul Aksen"
                             value={data.title_accent}
-                            onChange={(e) => onChange({ ...data, title_accent: e.target.value })}
+                            onChange={(e) =>
+                                onChange({
+                                    ...data,
+                                    title_accent: e.target.value,
+                                })
+                            }
                             placeholder="Terpadu"
                             description="Ditampilkan dengan warna berbeda setelah judul."
                             error={errors['hero.title_accent']}
@@ -112,7 +144,9 @@ const HeroSection = ({
                     <FormTextarea
                         label="Deskripsi"
                         value={data.description}
-                        onChange={(e) => onChange({ ...data, description: e.target.value })}
+                        onChange={(e) =>
+                            onChange({ ...data, description: e.target.value })
+                        }
                         rows={3}
                         placeholder="Deskripsi singkat tentang sekolah..."
                         error={errors['hero.description']}
@@ -141,8 +175,13 @@ const HeroSection = ({
                     <div>
                         <div className="mb-3 flex items-center justify-between">
                             <div>
-                                <p className="text-sm font-medium">Tombol CTA</p>
-                                <p className="text-xs text-muted-foreground">Maks. 3 tombol. Tampil di bawah deskripsi hero.</p>
+                                <p className="text-sm font-medium">
+                                    Tombol CTA
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                    Maks. 3 tombol. Tampil di bawah deskripsi
+                                    hero.
+                                </p>
                             </div>
                             <Button
                                 type="button"
@@ -161,33 +200,65 @@ const HeroSection = ({
                                 </p>
                             )}
                             {data.cta_buttons.map((btn, i) => (
-                                <div key={i} className="flex items-end gap-2 rounded-lg border bg-muted/20 p-3">
+                                <div
+                                    key={i}
+                                    className="flex items-end gap-2 rounded-lg border bg-muted/20 p-3"
+                                >
                                     <FormInput
                                         label="Label"
                                         value={btn.label}
-                                        onChange={(e) => updateCtaButton(i, 'label', e.target.value)}
+                                        onChange={(e) =>
+                                            updateCtaButton(
+                                                i,
+                                                'label',
+                                                e.target.value,
+                                            )
+                                        }
                                         placeholder="Daftar Sekarang"
                                         className="flex-1"
                                     />
                                     <FormInput
                                         label="URL / Anchor"
                                         value={btn.href}
-                                        onChange={(e) => updateCtaButton(i, 'href', e.target.value)}
+                                        onChange={(e) =>
+                                            updateCtaButton(
+                                                i,
+                                                'href',
+                                                e.target.value,
+                                            )
+                                        }
                                         placeholder="#kontak"
                                         className="flex-1"
                                     />
                                     <div className="grid gap-2">
-                                        <p className="text-sm font-medium">Gaya</p>
+                                        <p className="text-sm font-medium">
+                                            Gaya
+                                        </p>
                                         <select
                                             value={btn.variant}
-                                            onChange={(e) => updateCtaButton(i, 'variant', e.target.value)}
+                                            onChange={(e) =>
+                                                updateCtaButton(
+                                                    i,
+                                                    'variant',
+                                                    e.target.value,
+                                                )
+                                            }
                                             className="h-9 rounded-md border bg-background px-2 py-1 text-sm"
                                         >
-                                            <option value="primary">Primary</option>
-                                            <option value="secondary">Secondary</option>
+                                            <option value="primary">
+                                                Primary
+                                            </option>
+                                            <option value="secondary">
+                                                Secondary
+                                            </option>
                                         </select>
                                     </div>
-                                    <Button type="button" variant="ghost" size="sm" onClick={() => removeCtaButton(i)}>
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => removeCtaButton(i)}
+                                    >
                                         Hapus
                                     </Button>
                                 </div>
@@ -200,7 +271,9 @@ const HeroSection = ({
                         <div className="mb-3 flex items-center justify-between">
                             <div>
                                 <p className="text-sm font-medium">Statistik</p>
-                                <p className="text-xs text-muted-foreground">Maks. 6. Tampil di bawah tombol CTA.</p>
+                                <p className="text-xs text-muted-foreground">
+                                    Maks. 6. Tampil di bawah tombol CTA.
+                                </p>
                             </div>
                             <Button
                                 type="button"
@@ -219,22 +292,42 @@ const HeroSection = ({
                                 </p>
                             )}
                             {data.stats.map((stat, i) => (
-                                <div key={i} className="flex items-end gap-2 rounded-lg border bg-muted/20 p-2">
+                                <div
+                                    key={i}
+                                    className="flex items-end gap-2 rounded-lg border bg-muted/20 p-2"
+                                >
                                     <FormInput
                                         label="Nilai"
                                         value={stat.value}
-                                        onChange={(e) => updateStat(i, 'value', e.target.value)}
+                                        onChange={(e) =>
+                                            updateStat(
+                                                i,
+                                                'value',
+                                                e.target.value,
+                                            )
+                                        }
                                         placeholder="500+"
                                         className="w-24"
                                     />
                                     <FormInput
                                         label="Label"
                                         value={stat.label}
-                                        onChange={(e) => updateStat(i, 'label', e.target.value)}
+                                        onChange={(e) =>
+                                            updateStat(
+                                                i,
+                                                'label',
+                                                e.target.value,
+                                            )
+                                        }
                                         placeholder="Siswa Aktif"
                                         className="flex-1"
                                     />
-                                    <Button type="button" variant="ghost" size="sm" onClick={() => removeStat(i)}>
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => removeStat(i)}
+                                    >
                                         Hapus
                                     </Button>
                                 </div>

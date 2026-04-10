@@ -93,6 +93,7 @@ class SiteSettingController extends Controller
         $bgPath = SiteSetting::get('site_hero_bg_image');
         $sidePath = SiteSetting::get('site_hero_side_image');
         $ctaImagePath = SiteSetting::get('site_cta_image');
+        $mascotPath = SiteSetting::get('site_about_mascot_image');
 
         return Inertia::render('admin/settings/welcome-content', [
             'hero' => array_merge([
@@ -110,6 +111,7 @@ class SiteSettingController extends Controller
             'heroBgImageUrl' => $bgPath ? Storage::disk('public')->url($bgPath) : null,
             'heroSideImageUrl' => $sidePath ? Storage::disk('public')->url($sidePath) : null,
             'ctaImageUrl' => $ctaImagePath ? Storage::disk('public')->url($ctaImagePath) : null,
+            'aboutMascotImageUrl' => $mascotPath ? Storage::disk('public')->url($mascotPath) : null,
         ]);
     }
 
@@ -127,6 +129,8 @@ class SiteSettingController extends Controller
         if (isset($data['about'])) {
             SiteSetting::set('welcome_about', json_encode($data['about']));
         }
+
+        $this->updateImageSetting($data['about_mascot_image_url'] ?? null, 'site_about_mascot_image');
 
         if (isset($data['cta'])) {
             SiteSetting::set('welcome_cta', json_encode($data['cta']));

@@ -380,7 +380,12 @@ class SiteConfigService
         $raw = SiteSetting::get('welcome_about');
         $data = $raw ? json_decode($raw, true) : [];
 
-        return is_array($data) && !empty($data) ? array_merge(self::DEFAULT_ABOUT, $data) : self::DEFAULT_ABOUT;
+        $about = is_array($data) && !empty($data) ? array_merge(self::DEFAULT_ABOUT, $data) : self::DEFAULT_ABOUT;
+
+        $mascotPath = SiteSetting::get('site_about_mascot_image');
+        $about['mascot_image_url'] = $mascotPath ? Storage::disk('public')->url($mascotPath) : null;
+
+        return $about;
     }
 
     /**

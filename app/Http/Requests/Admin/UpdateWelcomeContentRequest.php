@@ -47,6 +47,7 @@ class UpdateWelcomeContentRequest extends FormRequest
             'cta.subtitle' => ['nullable', 'string', 'max:200'],
             'cta.button_label' => ['nullable', 'string', 'max:50'],
             'cta.button_href' => ['nullable', 'string', 'max:200'],
+            'about_mascot_image_url' => ['nullable', 'string', 'max:500'],
             'cta_image_url' => ['nullable', 'string', 'max:500'],
         ];
     }

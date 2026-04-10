@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { FormInput } from '@/components/form/form-input';
 import { FormIconPicker } from '@/components/form/form-icon-picker';
+import { FormImagePicker } from '@/components/form/form-image-picker';
 import { TiptapEditor } from '@/components/editor';
 import type { FeatureCard } from '@/types';
 
@@ -12,11 +13,19 @@ interface AboutData {
 
 interface AboutSectionProps {
     data: AboutData;
+    mascotImageUrl: string | null;
     errors: Partial<Record<string, string>>;
     onChange: (about: AboutData) => void;
+    onMascotImageChange: (url: string | null) => void;
 }
 
-const AboutSection = ({ data, errors, onChange }: AboutSectionProps) => {
+const AboutSection = ({
+    data,
+    mascotImageUrl,
+    errors,
+    onChange,
+    onMascotImageChange,
+}: AboutSectionProps) => {
     const updateFeatureCard = (
         index: number,
         field: keyof FeatureCard,
@@ -55,7 +64,7 @@ const AboutSection = ({ data, errors, onChange }: AboutSectionProps) => {
     return (
         <div className="overflow-hidden rounded-2xl bg-gradient-to-b from-muted/60 to-muted/30 p-1 ring-1 ring-foreground/8">
             <div className="px-5 py-4">
-                <p className="text-base font-semibold">Seksi Tentang</p>
+                <p className="text-base font-semibold">Bagian Tentang</p>
                 <p className="text-sm text-muted-foreground">
                     Konten pengenalan sekolah di bawah hero.
                 </p>
@@ -63,7 +72,7 @@ const AboutSection = ({ data, errors, onChange }: AboutSectionProps) => {
             <div className="overflow-hidden rounded-xl bg-background/90 ring-1 ring-foreground/6">
                 <div className="space-y-5 p-5">
                     <FormInput
-                        label="Judul Seksi"
+                        label="Judul Bagian"
                         value={data.heading}
                         onChange={(e) =>
                             onChange({ ...data, heading: e.target.value })
@@ -81,6 +90,14 @@ const AboutSection = ({ data, errors, onChange }: AboutSectionProps) => {
                         folder="about"
                         placeholder="Tuliskan deskripsi tentang sekolah..."
                         error={errors['about.content']}
+                    />
+
+                    <FormImagePicker
+                        label="Gambar Maskot"
+                        value={mascotImageUrl}
+                        onChange={onMascotImageChange}
+                        folder="about"
+                        error={errors['about_mascot_image_url']}
                     />
 
                     {/* Feature Cards */}
