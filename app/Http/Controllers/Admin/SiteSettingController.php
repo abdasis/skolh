@@ -84,12 +84,15 @@ class SiteSettingController extends Controller
     {
         $heroRaw = SiteSetting::get('welcome_hero');
         $aboutRaw = SiteSetting::get('welcome_about');
+        $ctaRaw = SiteSetting::get('welcome_cta');
 
         $hero = $heroRaw ? json_decode($heroRaw, true) : [];
         $about = $aboutRaw ? json_decode($aboutRaw, true) : [];
+        $cta = $ctaRaw ? json_decode($ctaRaw, true) : [];
 
         $bgPath = SiteSetting::get('site_hero_bg_image');
         $sidePath = SiteSetting::get('site_hero_side_image');
+        $ctaImagePath = SiteSetting::get('site_cta_image');
 
         return Inertia::render('admin/settings/welcome-content', [
             'hero' => array_merge([
@@ -100,8 +103,13 @@ class SiteSettingController extends Controller
             'about' => array_merge([
                 'heading' => '', 'paragraphs' => [], 'feature_cards' => [],
             ], is_array($about) ? $about : []),
+            'cta' => array_merge([
+                'title' => null, 'subtitle' => null,
+                'button_label' => 'Daftar Sekarang', 'button_href' => '#kontak',
+            ], is_array($cta) ? $cta : []),
             'heroBgImageUrl' => $bgPath ? Storage::disk('public')->url($bgPath) : null,
             'heroSideImageUrl' => $sidePath ? Storage::disk('public')->url($sidePath) : null,
+            'ctaImageUrl' => $ctaImagePath ? Storage::disk('public')->url($ctaImagePath) : null,
         ]);
     }
 
@@ -113,27 +121,18 @@ class SiteSettingController extends Controller
             SiteSetting::set('welcome_hero', json_encode($data['hero']));
         }
 
-        if ($request->hasFile('hero_bg_image')) {
-            $oldPath = SiteSetting::get('site_hero_bg_image');
-            if ($oldPath && Storage::disk('public')->exists($oldPath)) {
-                Storage::disk('public')->delete($oldPath);
-            }
-            $path = $request->file('hero_bg_image')->store('site', 'public');
-            SiteSetting::set('site_hero_bg_image', $path);
-        }
-
-        if ($request->hasFile('hero_side_image')) {
-            $oldPath = SiteSetting::get('site_hero_side_image');
-            if ($oldPath && Storage::disk('public')->exists($oldPath)) {
-                Storage::disk('public')->delete($oldPath);
-            }
-            $path = $request->file('hero_side_image')->store('site', 'public');
-            SiteSetting::set('site_hero_side_image', $path);
-        }
+        $this->updateImageSetting($data['hero_bg_image_url'] ?? null, 'site_hero_bg_image');
+        $this->updateImageSetting($data['hero_side_image_url'] ?? null, 'site_hero_side_image');
 
         if (isset($data['about'])) {
             SiteSetting::set('welcome_about', json_encode($data['about']));
         }
+
+        if (isset($data['cta'])) {
+            SiteSetting::set('welcome_cta', json_encode($data['cta']));
+        }
+
+        $this->updateImageSetting($data['cta_image_url'] ?? null, 'site_cta_image');
 
         $this->siteConfig->clearCache();
 
@@ -199,5 +198,26 @@ class SiteSettingController extends Controller
         $this->siteConfig->clearCache();
 
         return redirect()->back()->with('success', 'Preferensi seksi berhasil diperbarui.');
+    }
+
+    /** Simpan path relatif dari URL gambar yang sudah diupload via media endpoint. */
+    private function updateImageSetting(?string $imageUrl, string $settingKey): void
+    {
+        if ($imageUrl === null) {
+            $oldPath = SiteSetting::get($settingKey);
+            if ($oldPath && Storage::disk('public')->exists($oldPath)) {
+                Storage::disk('public')->delete($oldPath);
+            }
+            SiteSetting::set($settingKey, null);
+
+            return;
+        }
+
+        $storageBaseUrl = rtrim(Storage::disk('public')->url(''), '/');
+        $relativePath = str_replace($storageBaseUrl . '/', '', $imageUrl);
+
+        if ($relativePath !== $imageUrl && Storage::disk('public')->exists($relativePath)) {
+            SiteSetting::set($settingKey, $relativePath);
+        }
     }
 }

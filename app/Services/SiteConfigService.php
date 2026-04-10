@@ -58,6 +58,19 @@ class SiteConfigService
     ];
 
     /**
+     * Default CTA banner content.
+     *
+     * @var array<string, string|null>
+     */
+    private const DEFAULT_CTA = [
+        'image_url' => null,
+        'title' => null,
+        'subtitle' => null,
+        'button_label' => 'Daftar Sekarang',
+        'button_href' => '#kontak',
+    ];
+
+    /**
      * Default about content matching current hardcoded values.
      *
      * @var array<string, mixed>
@@ -238,6 +251,7 @@ class SiteConfigService
             'sections' => $this->getSectionPreferences(),
             'hero' => $this->getHeroContent(),
             'about' => $this->getAboutContent(),
+            'cta' => $this->getCtaContent(),
         ];
     }
 
@@ -370,6 +384,26 @@ class SiteConfigService
         $data = $raw ? json_decode($raw, true) : [];
 
         return is_array($data) && !empty($data) ? array_merge(self::DEFAULT_ABOUT, $data) : self::DEFAULT_ABOUT;
+    }
+
+    /**
+     * Get CTA banner content with defaults.
+     *
+     * @return array<string, string|null>
+     */
+    public function getCtaContent(): array
+    {
+        $raw = SiteSetting::get('welcome_cta');
+        $data = $raw ? json_decode($raw, true) : [];
+
+        $cta = is_array($data) && !empty($data)
+            ? array_merge(self::DEFAULT_CTA, $data)
+            : self::DEFAULT_CTA;
+
+        $imagePath = SiteSetting::get('site_cta_image');
+        $cta['image_url'] = $imagePath ? Storage::disk('public')->url($imagePath) : null;
+
+        return $cta;
     }
 
     /**

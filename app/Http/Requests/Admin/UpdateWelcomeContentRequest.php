@@ -31,8 +31,8 @@ class UpdateWelcomeContentRequest extends FormRequest
             'hero.stats' => ['nullable', 'array', 'max:6'],
             'hero.stats.*.value' => ['required', 'string', 'max:20'],
             'hero.stats.*.label' => ['required', 'string', 'max:50'],
-            'hero_bg_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
-            'hero_side_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'hero_bg_image_url' => ['nullable', 'string', 'max:500'],
+            'hero_side_image_url' => ['nullable', 'string', 'max:500'],
             'about' => ['nullable', 'array'],
             'about.heading' => ['required', 'string', 'max:200'],
             'about.paragraphs' => ['nullable', 'array', 'max:5'],
@@ -43,6 +43,12 @@ class UpdateWelcomeContentRequest extends FormRequest
             'about.feature_cards.*.description' => ['nullable', 'string', 'max:200'],
             'about.feature_cards.*.stat_value' => ['nullable', 'string', 'max:20'],
             'about.feature_cards.*.stat_label' => ['nullable', 'string', 'max:50'],
+            'cta' => ['nullable', 'array'],
+            'cta.title' => ['nullable', 'string', 'max:200'],
+            'cta.subtitle' => ['nullable', 'string', 'max:200'],
+            'cta.button_label' => ['nullable', 'string', 'max:50'],
+            'cta.button_href' => ['nullable', 'string', 'max:200'],
+            'cta_image_url' => ['nullable', 'string', 'max:500'],
         ];
     }
 }

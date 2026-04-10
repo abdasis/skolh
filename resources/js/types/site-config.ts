@@ -105,6 +105,14 @@ export type SiteSections = {
     contact: SectionConfig;
 };
 
+export type SiteCta = {
+    image_url: string | null;
+    title: string | null;
+    subtitle: string | null;
+    button_label: string | null;
+    button_href: string | null;
+};
+
 export type SiteConfig = {
     identity: SiteIdentity;
     social: SiteSocial;
@@ -113,4 +121,5 @@ export type SiteConfig = {
     sections: SiteSections;
     hero: SiteHero;
     about: SiteAbout;
+    cta: SiteCta;
 };
