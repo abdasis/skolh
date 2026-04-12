@@ -161,6 +161,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::put('settings/page-meta', [AdminSiteSettingController::class, 'updatePageMeta'])->name('settings.page-meta.update');
     Route::get('settings/section-preferences', [AdminSiteSettingController::class, 'sectionPreferences'])->name('settings.section-preferences');
     Route::put('settings/section-preferences', [AdminSiteSettingController::class, 'updateSectionPreferences'])->name('settings.section-preferences.update');
+    Route::get('settings/theme-preferences', [AdminSiteSettingController::class, 'themePreferences'])->name('settings.theme-preferences');
+    Route::put('settings/theme-preferences', [AdminSiteSettingController::class, 'updateThemePreferences'])->name('settings.theme-preferences.update');
     Route::resource('reports', AdminReportController::class)->only(['index', 'show', 'update']);
 });
 

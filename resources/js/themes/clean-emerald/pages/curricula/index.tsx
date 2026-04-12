@@ -28,7 +28,7 @@ const CurriculumIndex = ({ curricula }: Props) => {
             </Head>
 
             <div className="bg-gray-50 py-20 sm:py-28 dark:bg-gray-900/50">
-                <div className="mx-auto mt-[calc(1.75rem+3.75rem)] max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     {/* Page header */}
                     <div className="text-center">
                         <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-semibold tracking-widest text-emerald-700 uppercase dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400">

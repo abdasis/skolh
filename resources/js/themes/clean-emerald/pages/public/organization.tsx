@@ -12,7 +12,7 @@ const PublicOrganizationPage = ({ nodes }: Props) => {
         <>
             <Head title="Struktur Organisasi" />
 
-            <div className="mx-auto mt-[calc(1.75rem+3.75rem)] max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
                 <PageHero
                     badge="Organisasi"
                     title="Struktur"

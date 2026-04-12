@@ -30,7 +30,7 @@ const FacilityIndex = ({ facilities }: Props) => {
                 <link rel="canonical" href={facilityIndex.url()} />
             </Head>
 
-            <div className="mx-auto mt-[calc(1.75rem+3.75rem)] max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
                 {/* Page header */}
                 <div className="relative">
                     <div className="absolute -top-4 -left-4 h-24 w-24 rounded-full bg-emerald-100/60 blur-2xl dark:bg-emerald-900/30" />

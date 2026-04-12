@@ -257,7 +257,7 @@ const AdmissionRegisterPage = ({ period, customFields }: Props) => {
         <>
             <Head title="Formulir Pendaftaran" />
 
-            <div className="mx-auto mt-[calc(1.75rem+3.75rem)] max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
                 <PageHero
                     badge="Pendaftaran Dibuka"
                     title="Formulir"

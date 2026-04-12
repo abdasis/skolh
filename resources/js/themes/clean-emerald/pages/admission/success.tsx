@@ -18,7 +18,7 @@ const AdmissionSuccessPage = ({ registration }: Props) => {
         <>
             <Head title="Pendaftaran Berhasil" />
 
-            <div className="mx-auto mt-[calc(1.75rem+3.75rem)] max-w-2xl px-4 py-16 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:px-8">
                 <div className="relative text-center">
                     {/* Dekoratif */}
                     <div className="absolute -top-8 left-1/2 -translate-x-1/2 h-32 w-32 rounded-full bg-emerald-100/60 blur-3xl dark:bg-emerald-900/30 pointer-events-none" />

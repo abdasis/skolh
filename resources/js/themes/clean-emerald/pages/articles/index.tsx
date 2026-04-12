@@ -72,7 +72,7 @@ const ArticlesIndex = ({ articles, categories, selectedCategory }: Props) => {
                 />
             </Head>
 
-            <div className="mx-auto mt-[calc(1.75rem+3.75rem)] max-w-7xl px-4 pb-20 font-[Plus_Jakarta_Sans] sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-7xl px-4 pb-20 font-[Plus_Jakarta_Sans] sm:px-6 lg:px-8">
                 {/* Page header */}
                 <div className="py-10 text-center">
                     <span className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-4 py-1.5 text-xs font-semibold tracking-widest text-emerald-700 uppercase dark:bg-emerald-900/30 dark:text-emerald-400">

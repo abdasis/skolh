@@ -91,7 +91,7 @@ const AlumniIndex = ({ alumni, filters }: Props) => {
                 <link rel="canonical" href={PublicAlumniController.url()} />
             </Head>
 
-            <div className="mx-auto mt-[calc(1.75rem+3.75rem)] max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+            <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
                 {/* Header */}
                 <div className="text-center">
                     <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest text-gray-500 uppercase dark:text-gray-400">

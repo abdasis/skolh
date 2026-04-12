@@ -28,7 +28,7 @@ const VisiMisiPage = ({ vision, mission, curricula }: Props) => {
                     <div className="absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-emerald-100/40 blur-3xl dark:bg-emerald-900/15" />
                 </div>
 
-                <div className="relative mx-auto mt-[calc(1.75rem+3.75rem)] max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+                <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
                     <PageHero
                         badge="Tentang Kami"
                         title="Visi &"

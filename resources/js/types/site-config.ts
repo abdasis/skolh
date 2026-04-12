@@ -123,4 +123,5 @@ export type SiteConfig = {
     hero: SiteHero;
     about: SiteAbout;
     cta: SiteCta;
+    emeraldHeaderStyle: string;
 };

@@ -10,7 +10,7 @@ const AdmissionClosedPage = ({ nextPeriod }: Props) => {
         <>
             <Head title="Pendaftaran Belum Dibuka" />
 
-            <div className="relative mx-auto mt-[calc(1.75rem+3.75rem)] max-w-2xl overflow-hidden px-4 py-16 sm:px-6 lg:px-8">
+            <div className="relative mx-auto max-w-2xl overflow-hidden px-4 py-16 sm:px-6 lg:px-8">
                 {/* Dekoratif shapes */}
                 <div className="pointer-events-none absolute inset-0 overflow-hidden">
                     <div className="absolute -top-10 -left-10 h-48 w-48 rounded-full bg-emerald-100/50 blur-3xl dark:bg-emerald-900/20" />

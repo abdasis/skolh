@@ -145,7 +145,7 @@ const PublicTeachersPage = ({ teachers }: Props) => {
                     <div className="absolute bottom-36 left-36 h-3 w-3 rotate-45 rounded-sm border border-teal-300/35 dark:border-teal-700/25" />
                 </div>
 
-                <div className="relative mx-auto mt-[calc(1.75rem+3.75rem)] max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+                <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
                     <PageHero
                         badge="Tenaga Pendidik"
                         title="Daftar"

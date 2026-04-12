@@ -55,7 +55,7 @@ const AnnouncementShow = ({ announcement, latest, related }: Props) => {
                 />
             </Head>
 
-            <div className="mx-auto mt-[calc(1.75rem+3.75rem)] max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
                 <Link
                     href={announcementIndex.url()}
                     className="inline-flex items-center gap-2 text-sm text-gray-500 transition hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400"

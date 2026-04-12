@@ -48,7 +48,7 @@ const AnnouncementIndex = ({ announcements }: Props) => {
                 <link rel="canonical" href={announcementIndex.url()} />
             </Head>
 
-            <div className="mx-auto mt-[calc(1.75rem+3.75rem)] max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
                 {/* Page header */}
                 <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
                     <div className="relative">

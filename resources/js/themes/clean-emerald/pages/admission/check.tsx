@@ -42,7 +42,7 @@ const AdmissionCheckPage = ({ result, not_found, query }: Props) => {
         <>
             <Head title="Cek Status Pendaftaran" />
 
-            <div className="mx-auto mt-[calc(1.75rem+3.75rem)] max-w-lg px-4 py-16 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-lg px-4 py-16 sm:px-6 lg:px-8">
                 <div className="relative">
                     <div className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 h-32 w-32 rounded-full bg-emerald-100/50 blur-3xl dark:bg-emerald-900/20" />
 

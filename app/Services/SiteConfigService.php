@@ -249,7 +249,16 @@ class SiteConfigService
             'hero' => $this->getHeroContent(),
             'about' => $this->getAboutContent(),
             'cta' => $this->getCtaContent(),
+            'emeraldHeaderStyle' => $this->getEmeraldHeaderStyle(),
         ];
+    }
+
+    /**
+     * Get the active header style key for the clean-emerald theme.
+     */
+    public function getEmeraldHeaderStyle(): string
+    {
+        return SiteSetting::get('emerald_header_style', 'style-one') ?? 'style-one';
     }
 
     /**

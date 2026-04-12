@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\UpdateNavigationRequest;
 use App\Http\Requests\Admin\UpdatePageMetaRequest;
 use App\Http\Requests\Admin\UpdateSectionPreferencesRequest;
 use App\Http\Requests\Admin\UpdateSiteIdentityRequest;
+use App\Http\Requests\Admin\UpdateThemePreferencesRequest;
 use App\Http\Requests\Admin\UpdateWelcomeContentRequest;
 use App\Models\SiteSetting;
 use App\Services\SiteConfigService;
@@ -223,5 +224,23 @@ class SiteSettingController extends Controller
         if ($relativePath !== $imageUrl && Storage::disk('public')->exists($relativePath)) {
             SiteSetting::set($settingKey, $relativePath);
         }
+    }
+
+    public function themePreferences(): Response
+    {
+        return Inertia::render('admin/settings/theme-preferences', [
+            'emeraldHeaderStyle' => $this->siteConfig->getEmeraldHeaderStyle(),
+        ]);
+    }
+
+    public function updateThemePreferences(UpdateThemePreferencesRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+
+        SiteSetting::set('emerald_header_style', $data['emerald_header_style']);
+
+        $this->siteConfig->clearCache();
+
+        return redirect()->back()->with('success', 'Preferensi tampilan tema berhasil diperbarui.');
     }
 }

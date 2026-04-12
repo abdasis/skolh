@@ -26,6 +26,7 @@ import {
     navigation as siteNavigation,
     pageMeta as sitePageMeta,
     sectionPreferences as siteSectionPreferences,
+    themePreferences as siteThemePreferences,
 } from '@/actions/App/Http/Controllers/Admin/SiteSettingController';
 import { dashboard } from '@/routes';
 import type { BreadcrumbItem } from '@/types';
@@ -35,6 +36,7 @@ import {
     Globe,
     Home,
     LayoutGrid,
+    LayoutPanelTop,
     Settings2,
 } from 'lucide-react';
 
@@ -63,6 +65,11 @@ const navItems = [
         title: 'Preferensi Seksi',
         href: siteSectionPreferences.url(),
         icon: LayoutGrid,
+    },
+    {
+        title: 'Preferensi Tema',
+        href: siteThemePreferences.url(),
+        icon: LayoutPanelTop,
     },
 ];
 
