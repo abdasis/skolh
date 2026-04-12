@@ -128,6 +128,9 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('media', [AdminMediaController::class, 'index'])->name('media.index');
     Route::post('media', [AdminMediaController::class, 'store'])->name('media.store');
     Route::post('media/chunks', [AdminMediaController::class, 'uploadChunk'])->name('media.chunks');
+    Route::delete('media', [AdminMediaController::class, 'bulkDestroy'])->name('media.bulk-destroy');
+    Route::post('media/optimize', [AdminMediaController::class, 'optimize'])->name('media.optimize');
+    Route::post('media/optimize-all', [AdminMediaController::class, 'optimizeAll'])->name('media.optimize-all');
     Route::get('themes', [AdminThemeController::class, 'index'])->name('themes.index');
     Route::post('themes/{slug}/activate', [AdminThemeController::class, 'activate'])->name('themes.activate');
     Route::post('testimonials/reorder', [AdminTestimonialController::class, 'reorder'])->name('testimonials.reorder');

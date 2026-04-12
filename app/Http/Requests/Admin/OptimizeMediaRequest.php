@@ -5,7 +5,7 @@ namespace App\Http\Requests\Admin;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class IndexMediaRequest extends FormRequest
+class OptimizeMediaRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -18,8 +18,8 @@ class IndexMediaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'search' => ['nullable', 'string', 'max:255'],
-            'type' => ['nullable', 'string', 'in:all,images,documents'],
+            'paths' => ['required', 'array', 'min:1'],
+            'paths.*' => ['required', 'string'],
         ];
     }
 }

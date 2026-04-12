@@ -8,6 +8,7 @@ import {
     CalendarDays,
     ClipboardList,
     FileText,
+    FolderOpen,
     Globe,
     GraduationCap,
     HelpCircle,
@@ -46,6 +47,7 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { index as achievementsIndex } from '@/actions/App/Http/Controllers/Admin/AchievementController';
+import { index as mediaIndex } from '@/actions/App/Http/Controllers/Admin/MediaController';
 import { index as extracurricularsIndex } from '@/actions/App/Http/Controllers/Admin/ExtracurricularController';
 import { index as teachersIndex } from '@/actions/App/Http/Controllers/Admin/TeacherController';
 import { index as galleryAlbumsIndex } from '@/actions/App/Http/Controllers/Admin/GalleryAlbumController';
@@ -184,6 +186,12 @@ export function AppSidebar() {
                     href: galleryAlbumsIndex.url(),
                     icon: Image,
                     component: 'admin/gallery-albums/index',
+                },
+                {
+                    title: 'Media Manager',
+                    href: mediaIndex.url(),
+                    icon: FolderOpen,
+                    component: 'admin/media/index',
                 },
             ],
         },
