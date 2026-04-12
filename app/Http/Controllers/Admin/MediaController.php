@@ -47,6 +47,13 @@ class MediaController extends Controller
         ]);
     }
 
+    public function listFiles(): JsonResponse
+    {
+        $files = $this->listAction->handle(['type' => 'images']);
+
+        return response()->json(['data' => $files]);
+    }
+
     public function store(UploadMediaRequest $request): JsonResponse
     {
         $result = $this->uploadAction->handle(

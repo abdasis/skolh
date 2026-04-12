@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { MediaFileResource } from '@/types';
 import * as MediaController from '@/actions/App/Http/Controllers/Admin/MediaController';
 
@@ -20,12 +20,10 @@ const useMediaFiles = (uploadFolder: string, enabled: boolean) => {
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
-    const fetchedRef = useRef(false);
-
     const fetchFiles = useCallback(async () => {
         setLoading(true);
         try {
-            const res = await fetch(MediaController.index.url(), {
+            const res = await fetch(MediaController.listFiles.url(), {
                 headers: { Accept: 'application/json' },
             });
             if (res.ok) {
@@ -41,10 +39,6 @@ const useMediaFiles = (uploadFolder: string, enabled: boolean) => {
         if (!enabled) {
             return;
         }
-        if (fetchedRef.current) {
-            return;
-        }
-        fetchedRef.current = true;
         fetchFiles();
     }, [enabled, fetchFiles]);
 

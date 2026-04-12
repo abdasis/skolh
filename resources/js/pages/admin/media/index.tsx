@@ -11,14 +11,14 @@ import { MediaDeleteDialog } from './components/media-delete-dialog';
 import { showOptimizeSummaryToast } from './components/optimize-summary-toast';
 
 interface Props {
-    files: MediaFile[];
+    files?: MediaFile[];
     filters: {
         search: string;
         type: string;
     };
 }
 
-const AdminMediaIndex = ({ files, filters }: Props) => {
+const AdminMediaIndex = ({ files = [], filters = { search: '', type: 'all' } }: Props) => {
     setLayoutProps({
         breadcrumbs: [
             { title: 'Dashboard', href: '/dashboard' },

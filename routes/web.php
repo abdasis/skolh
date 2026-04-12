@@ -128,6 +128,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::delete('gallery-images/{galleryImage}', [GalleryImageController::class, 'destroy'])
         ->name('gallery-images.destroy');
     Route::get('media', [AdminMediaController::class, 'index'])->name('media.index');
+    Route::get('media/files', [AdminMediaController::class, 'listFiles'])->name('media.files');
     Route::post('media', [AdminMediaController::class, 'store'])->name('media.store');
     Route::post('media/chunks', [AdminMediaController::class, 'uploadChunk'])->name('media.chunks');
     Route::delete('media', [AdminMediaController::class, 'bulkDestroy'])->name('media.bulk-destroy');
