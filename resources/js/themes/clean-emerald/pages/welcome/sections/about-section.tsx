@@ -91,7 +91,7 @@ const AboutSection = ({ siteConfig }: { siteConfig: SiteConfig | null }) => {
 
                     <div className="grid h-full grid-cols-1 gap-4 lg:grid-cols-5">
                         {/* Gambar maskot - 3 col */}
-                        <div className="relative min-h-70 overflow-hidden rounded-3xl bg-gray-50 lg:col-span-3 dark:bg-gray-800/50">
+                        <div className="relative aspect-[3/4] w-full overflow-hidden rounded-3xl bg-gray-50 lg:col-span-3 dark:bg-gray-800/50">
                             <img
                                 src={
                                     siteConfig?.about?.mascot_image_url ??
