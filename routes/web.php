@@ -43,6 +43,7 @@ use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\MajorController;
+use App\Http\Controllers\RobotsController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\ContactPageController;
 use App\Http\Controllers\ReportController;
@@ -57,6 +58,7 @@ Route::post('/install', [InstallController::class, 'store'])->name('install.stor
 
 Route::get('/', WelcomeController::class)->name('home');
 Route::get('/contact', ContactPageController::class)->name('contact.index');
+Route::get('/robots.txt', RobotsController::class)->name('robots');
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 Route::get('/facilities', [FacilityController::class, 'index'])->name('facilities.index');
 Route::get('/facilities/{facility:slug}', [FacilityController::class, 'show'])->name('facilities.show');
