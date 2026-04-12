@@ -52,18 +52,18 @@ export const MediaPreviewModal = ({ file, onClose }: Props) => {
 
     return (
         <Dialog open={file !== null} onOpenChange={(open) => { if (!open) { onClose(); } }}>
-            <DialogContent className="max-w-3xl">
+            <DialogContent className="max-w-4xl min-w-2xl w-full">
                 <DialogHeader>
                     <DialogTitle className="truncate pr-8">{file?.name}</DialogTitle>
                 </DialogHeader>
 
                 {file && (
                     <div className="flex flex-col gap-4">
-                        <div className="flex items-center justify-center bg-muted rounded-lg overflow-hidden max-h-96">
+                        <div className="flex items-center justify-center bg-muted rounded-lg overflow-hidden">
                             <img
                                 src={file.url}
                                 alt={file.name}
-                                className="max-w-full max-h-96 object-contain"
+                                className="w-full max-w-full max-h-[60vh] object-contain"
                             />
                         </div>
 
